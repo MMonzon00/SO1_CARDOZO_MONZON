@@ -1,5 +1,7 @@
 import cmd2
 import argparse
+import os 
+import shutil
 
 #!/usr/bin/env python
 """A simple cmd2 application."""
@@ -12,8 +14,8 @@ class shell(cmd2.Cmd):
         
     
     def do_copy(self,archcopy,dir,dirdes):
-        source = r'dir'
-        destination = r'dirdes'
+        source = os.path.abspath(r'dir')
+        destination = os.path.abspath(r'dirdes')
         try:
             shutil.copyfile(source, destination)
             self.("File copied successfully.")
@@ -50,10 +52,8 @@ class shell(cmd2.Cmd):
     def do_makedir(self,*dirname):
         for dirname
         #4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
-    def do_changedir(self,):
-    def do_hello(self):
-    def do_hello(self):
-    def do_hello(self):
+    def do_changedir(self):
+
     
   
 
