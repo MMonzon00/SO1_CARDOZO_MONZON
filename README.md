@@ -1,5 +1,6 @@
 # SO1_CARDOZO_MONZON
 Shell implementation in python
+
 2. Desarrollo del Shell
 2.1. Descripción
 1. El Shell debe ser cargado de manera automática al iniciar la sesión.
