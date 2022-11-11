@@ -11,18 +11,18 @@ class shell(cmd2.Cmd):
         self.prompt='Martinshell$'
         
     
-    def do_copy(self,archcopy,dir,dirdes):
-        source = r'dir'
-        destination = r'dirdes'
+    def do_copy(self,archcp,dirsrc,dirdst):
+        src = r'dirsrc'
+        dst = r'dirdst'
         try:
-            shutil.copyfile(source, destination)
+            os.sendfile(src, dst)
             self.("File copied successfully.")
         
-        # If source and destination are same
+        # If src and dst are same
         except shutil.SameFileError:
             print("Source and destination represents the same file.")
         
-        # If destination is a directory.
+        # If dst is a directory.
         except IsADirectoryError:
             print("Destination is a directory.")
         
@@ -35,12 +35,13 @@ class shell(cmd2.Cmd):
             print("Error occurred while copying file.")
         # 4.1. Copiar (no puede ser una llamada a sistema a la función cp) - copiar
         # 4.1.1. El input debe tener el siguiente formato: Archivo(s) DirectorioDestino
-    def do_move(self,archcopy,dir,dirdes):
+    def do_move(self,archcp,dirsrc,dirdst):
         # 4.2. Mover - mover
         # 4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s)
         # DirectorioDestino.
         # 4.2.2. Ejemplos: https://linuxhandbook.com/mv-command/
     def do_rename(self):
+
     def do_listdir(self):
         #4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
         # 4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la
