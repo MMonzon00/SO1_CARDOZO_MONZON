@@ -26,7 +26,7 @@ class shell(cmd2.Cmd):
        
         hostname = socket.gethostname()
         
-        self.default_to_shell = True #siestofuncamemato xd
+        self.default_to_shell = True #use default shell commands
         self.prompt = f"{username}@{hostname}:{os.path.expanduser('~')} $"
         shortcuts = {'?': 'help', '+': 'shell', '@': 'run_script', '@@': '_relative_run_script'}
         print(shortcuts)
