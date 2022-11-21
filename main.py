@@ -2,8 +2,6 @@ import cmd2
 import argparse
 import os 
 import shutil
-import os
-import shutil
 import getpass
 import socket
 
@@ -25,27 +23,23 @@ class shell(cmd2.Cmd):
         super().__init__()
         username = getpass.getuser()
         homedir = os.path.expanduser("~")
-       
         hostname = socket.gethostname()
         
         self.default_to_shell = True #use default shell commands
         self.prompt = f"{username}@{hostname}:{os.path.expanduser('~')} $"
         shortcuts = {'?': 'help', '+': 'shell', '@': 'run_script', '@@': '_relative_run_script'}
         print(shortcuts)
+
     def do_copy(self,archcp,dirsrc,dirdst):
         src = r'dirsrc'
         dst = r'dirdst'
         try:
-            os.sendfile(src, dst)
+            shutil.copy(src, dst)
             self.popout("File copied successfully.")
         
         # If src and dst are same
         except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
-        
-        # If dst is a directory.
-        except IsADirectoryError:
-            self.poutput("Destination is a directory.")
         
         # If there is any permission issue
         except PermissionError:
@@ -53,17 +47,42 @@ class shell(cmd2.Cmd):
         
         # For other errors
         except:
-            self.poutput("Error occurred while copying file.")
+            self.poutput("Error occurred while copying file/s.")
         # 4.1. Copiar (no puede ser una llamada a sistema a la función cp) - copiar
         # 4.1.1. El input debe tener el siguiente formato: Archivo(s) DirectorioDestino
-    #def do_move(self,archcp,dirsrc,dirdst):
+    
+    
+    def do_move(self,archcp,dirsrc,dirdst):
+        src = r'dirsrc/{}'.format(archcp)
+        dst = r'dirdst/{}'.format(archcp)
+        try:
+            shutil.move(r"src", r"dst")
+            self.popout("File moved successfully.")
+        except shutil.SameFileError:
+            self.poutput("Source and destination represents the same file.")
+        except PermissionError:
+            self.poutput("Permission denied.")
+        except:
+            self.poutput("Error occurred while moving file/s.")
         # 4.2. Mover - mover
         # 4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s)
         # DirectorioDestino.
         # 4.2.2. Ejemplos: https://linuxhandbook.com/mv-command/
-    # def do_rename(self):
+    
+    def do_rename(FILENAME,FILERENAME):
+        src = r'FILENAME'
+        dst = r'FILERENAME'
+        if src!=dst:
+            os.rename(src,dst)
+            self.popout("File renamed successfully.")
+        elif src==dst:
+            self.poutput("Name has to be different to current.")
 
-    # def do_listdir(self):
+
+
+    def do_listdir(self,dirPATH):
+             self.poutput(os.listdir(dirPATH))
+
     #     #4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
     #     # 4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la
     #     # carpeta actual.
