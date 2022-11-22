@@ -106,6 +106,7 @@ class shell(cmd2.Cmd):
         cwd = os.getcwd() #current working directory
         hostname = socket.gethostname()
         self.prompt = f"{username}@{hostname}:{cwd}#"   
+    
     def do_hello(self,statement):
             self.poutput(statement.arg_list)    
 
