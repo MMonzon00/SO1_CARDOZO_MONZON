@@ -4,6 +4,10 @@ import os
 import shutil
 import getpass
 import socket
+import os 
+import shutil
+import getpass
+import socket
 
 #!/usr/bin/env python
 """A simple shell application."""
@@ -34,8 +38,8 @@ class shell(cmd2.Cmd):
         src = r'dirsrc'
         dst = r'dirdst'
         try:
-            shutil.copy2(src, dst)
-            self.poutput("File copied successfully.")
+            shutil.copyfile(source, destination)
+            self.("File copied successfully.")
         
         # If src and dst are same
         except shutil.SameFileError:
@@ -70,6 +74,20 @@ class shell(cmd2.Cmd):
         # 4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s)
         # DirectorioDestino.
         # 4.2.2. Ejemplos: https://linuxhandbook.com/mv-command/
+    def do_rename(self):
+    def do_listdir(self):
+        #4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
+        # 4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la
+        # carpeta actual.
+        # 4.4.2. En caso de recibir un directorio, listar archivos/directorios de ese
+        # directorio.
+    def do_makedir(self,*dirname):
+        for dirname
+        #4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
+    def do_changedir(self,):
+    def do_hello(self):
+    def do_hello(self):
+    def do_hello(self):
     
     def do_rename(self,FILENAME): #these are the parameters needed
         cwd = os.getcwd() #Get current working directory
