@@ -3,17 +3,22 @@ Shell implementation in python
 
 2. Desarrollo del Shell
 2.1. Descripción
+
 1. El Shell debe ser cargado de manera automática al iniciar la sesión.
+
 2. Deben utilizar versionamiento de código y subir en GitLAB o GitHub los avances de
 código.
+
 3. Además, deben habilitar una cuenta en la plataforma Jira y utilizando metodología
 ágiles para la implementación del proyecto, construyendo todo el escenario.
+
 4. El usuario debe poder realizar un conjunto de comando básicos:
 4.1. Copiar (no puede ser una llamada a sistema a la función cp) - copiar
 4.1.1. El input debe tener el siguiente formato: Archivo(s) DirectorioDestino
 4.1.2. Ejemplos:
 https://www.ionos.com/digitalguide/server/configuration/linux-cp-com
 mand/
+
 4.2. Mover - mover
 4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s)
 DirectorioDestino.
