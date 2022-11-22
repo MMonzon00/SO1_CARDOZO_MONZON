@@ -7,6 +7,7 @@ import socket
 
 #!/usr/bin/env python
 """A simple shell application."""
+
 class shell(cmd2.Cmd):
     
     HEADER = '\033[95m'
@@ -22,20 +23,19 @@ class shell(cmd2.Cmd):
     def __init__(self):
         super().__init__()
         username = getpass.getuser()
-        homedir = os.path.expanduser("~")
+        homedir = os.getcwd()
         hostname = socket.gethostname()
         
         self.default_to_shell = True #use default shell commands
-        self.prompt = f"{username}@{hostname}:{os.path.expanduser('~')} $"
+        self.prompt = f"{username}@{hostname}:{homedir}#"
         shortcuts = {'?': 'help', '+': 'shell', '@': 'run_script', '@@': '_relative_run_script'}
         print(shortcuts)
-
     def do_copy(self,archcp,dirsrc,dirdst):
         src = r'dirsrc'
         dst = r'dirdst'
         try:
-            shutil.copy(src, dst)
-            self.popout("File copied successfully.")
+            shutil.copy2(src, dst)
+            self.poutput("File copied successfully.")
         
         # If src and dst are same
         except shutil.SameFileError:
@@ -52,11 +52,13 @@ class shell(cmd2.Cmd):
         # 4.1.1. El input debe tener el siguiente formato: Archivo(s) DirectorioDestino
     
     
-    def do_move(self,archcp,dirsrc,dirdst):
-        src = r'dirsrc/{}'.format(archcp)
-        dst = r'dirdst/{}'.format(archcp)
+    def do_move(self,arguments):
+        dirsrc=arguments.arg_list[0]
+        dirdst=arguments.arg_list[1]
+        src = f'{dirsrc}'
+        dst = f'{dirdst}'
         try:
-            shutil.move(r"src", r"dst")
+            shutil.move(src,dst)
             self.popout("File moved successfully.")
         except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
@@ -69,36 +71,43 @@ class shell(cmd2.Cmd):
         # DirectorioDestino.
         # 4.2.2. Ejemplos: https://linuxhandbook.com/mv-command/
     
-    def do_rename(FILENAME,FILERENAME):
-        src = r'FILENAME'
-        dst = r'FILERENAME'
-        if src!=dst:
+    def do_rename(self,FILENAME): #these are the parameters needed
+        cwd = os.getcwd() #Get current working directory
+        src = f'{cwd}/{FILENAME.arg_list[0]}' #current name
+        dst = f'{cwd}/{FILENAME.arg_list[1]}' #new name
+        if src!=dst: #if name different rename
             os.rename(src,dst)
-            self.popout("File renamed successfully.")
-        elif src==dst:
-            self.poutput("Name has to be different to current.")
+            self.poutput("File renamed successfully.")
+        elif src==dst: #if name same show error
+             self.poutput("Name has to be different to current.")
 
 
 
     def do_listdir(self,dirPATH):
-             self.poutput(os.listdir(dirPATH))
+            cwd=os.getcwd()
+            if dirPATH!=cwd:
+                self.poutput(os.listdir(cwd))
+            else:
+                self.poutput(os.listdir(dirPATH))
 
     #     #4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
-    #     # 4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la
-    #     # carpeta actual.
-    #     # 4.4.2. En caso de recibir un directorio, listar archivos/directorios de ese
-    #     # directorio.
+    #     #4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la
+    #     #carpeta actual.
+    #     #4.4.2. En caso de recibir un directorio, listar archivos/directorios de ese
+    #     #directorio.
         
     # def do_makedir(self,*dirname):
     #     for dirname
     #     return 0
     #4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
-    # def do_changedir(self):
-    #     return 0
-    def do_hello(self,opt):
-        opt=f"hello {opt} "
-        self.poutput(opt)
-        
+    def do_changedir(self,dirPATH):
+        username = getpass.getuser()
+        os.chdir(dirPATH)
+        cwd = os.getcwd() #current working directory
+        hostname = socket.gethostname()
+        self.prompt = f"{username}@{hostname}:{cwd}#"   
+    def do_hello(self,statement):
+            self.poutput(statement.arg_list)    
 
 
 if __name__ == '__main__':
