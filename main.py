@@ -4,10 +4,8 @@ import os
 import shutil
 import getpass
 import socket
-import os 
-import shutil
-import getpass
-import socket
+from os import system
+# from usefunctions import *
 
 #!/usr/bin/env python
 """A simple shell application."""
@@ -31,15 +29,18 @@ class shell(cmd2.Cmd):
         hostname = socket.gethostname()
         
         self.default_to_shell = True #use default shell commands
-        self.prompt = f"{username}@{hostname}:{homedir}#"
-        shortcuts = {'?': 'help', '+': 'shell', '@': 'run_script', '@@': '_relative_run_script'}
-        print(shortcuts)
-    def do_copy(self,archcp,dirsrc,dirdst):
-        src = r'dirsrc'
-        dst = r'dirdst'
+        self.prompt = f"{username}@{hostname}:{homedir}$"
+        # shortcuts = {'?': 'help', '+': 'shell', '@': 'run_script', '@@': '_relative_run_script'}
+        # print(shortcuts)
+        self.poutput("Welcome to So1_Shell_2022")
+    def do_copy(self,arguments):
+        dirsrc=arguments.arg_list[0]
+        dirdst=arguments.arg_list[1]
+        src = f'{dirsrc}'
+        dst = f'{dirdst}'
         try:
-            shutil.copyfile(source, destination)
-            self.("File copied successfully.")
+            shutil.copy(src, dst)
+            self.poutput("File copied successfully.")
         
         # If src and dst are same
         except shutil.SameFileError:
@@ -61,33 +62,19 @@ class shell(cmd2.Cmd):
         dirdst=arguments.arg_list[1]
         src = f'{dirsrc}'
         dst = f'{dirdst}'
-        try:
+        if src!=dst:
             shutil.move(src,dst)
             self.popout("File moved successfully.")
-        except shutil.SameFileError:
+        elif src==dst:
             self.poutput("Source and destination represents the same file.")
-        except PermissionError:
-            self.poutput("Permission denied.")
-        except:
-            self.poutput("Error occurred while moving file/s.")
+        # except PermissionError:
+        #     self.poutput("Permission denied.")
+        # except:
+        #     self.poutput("Error occurred while moving file/s.")
         # 4.2. Mover - mover
         # 4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s)
         # DirectorioDestino.
         # 4.2.2. Ejemplos: https://linuxhandbook.com/mv-command/
-    def do_rename(self):
-    def do_listdir(self):
-        #4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
-        # 4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la
-        # carpeta actual.
-        # 4.4.2. En caso de recibir un directorio, listar archivos/directorios de ese
-        # directorio.
-    def do_makedir(self,*dirname):
-        for dirname
-        #4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
-    def do_changedir(self,):
-    def do_hello(self):
-    def do_hello(self):
-    def do_hello(self):
     
     def do_rename(self,FILENAME): #these are the parameters needed
         cwd = os.getcwd() #Get current working directory
@@ -103,17 +90,30 @@ class shell(cmd2.Cmd):
 
     def do_listdir(self,dirPATH):
             cwd=os.getcwd()
+            dirPATH=f"{cwd}/{dirPATH}"
             if dirPATH!=cwd:
-                self.poutput(os.listdir(cwd))
+                list=os.listdir(cwd)
+                lenlist=len(list)
+                for i in range(lenlist):
+                    if i+1==lenlist:
+                        self.poutput(f"{list[i]}")
+                    else:
+                        self.poutput(f"{list[i]}",end=" - ")
             else:
-                self.poutput(os.listdir(dirPATH))
+                list=os.listdir(dirPATH)
+                lenlist=len(list)
+                for i in range(lenlist):
+                    if i+1==lenlist:
+                        self.poutput(f"{list[i]}")
+                    else:
+                        self.poutput(f"{list[i]}",end=" - ")
 
     #     #4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
     #     #4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la
     #     #carpeta actual.
     #     #4.4.2. En caso de recibir un directorio, listar archivos/directorios de ese
     #     #directorio.
-        
+    
     def do_makedir(self,dirnames):
         cwd=os.getcwd()
         dirlen=len(dirnames.arg_list)
@@ -129,7 +129,14 @@ class shell(cmd2.Cmd):
             os.chdir(dirPATH)
             cwd = os.getcwd() #current working directory
             hostname = socket.gethostname()
-            self.prompt = f"{username}@{hostname}:{cwd}#"
+            self.prompt = f"{username}@{hostname}:{cwd}$"
+
+    def do_printdir(self,dirPATH):
+        cwd=os.getcwd()
+        self.poutput(cwd)
+
+    def do_clean(self,args):
+        _ = system('clear')
 
     def do_hello(self,statement):
             self.poutput(statement.arg_list)    
