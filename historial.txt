@@ -1,3 +1,0 @@
-copy holi.txt holi3.txt
-copy holi.txt holi4.txt
-holi2.txt copy holi.txt
