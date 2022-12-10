@@ -40,8 +40,12 @@ class shell(cmd2.Cmd):
         self.poutput("Welcome to So1_Shell_2022")
     
     def guardar(self,arguments):
-        space=' '
-        arg=space.join(arguments)
+        if arguments=="historial" or arguments=="contraseña" or arguments=="clean":
+            arg=''.join(arguments)
+        else:
+            space=' '
+            arg=space.join(arguments)
+        
         ubi='historial.txt'
         f = open (ubi,'a')
         f.write(f'{arg}\n')
@@ -190,6 +194,9 @@ class shell(cmd2.Cmd):
     ###4.8.1. Debe usar el formato USUARIO:GRUPO
     ##cambiar propietario// que hacer si no existe ese usuario o grupo?????se crea o se imprime mensaje de error
     def do_propietario(self,cad):
+        name="propietario"
+        guardarParam=(name,cad)
+        self.guardar(guardarParam)
         i=":"
         j=" "
         indice=cad.index(i)
@@ -201,6 +208,9 @@ class shell(cmd2.Cmd):
     
     ###4.9. Cambiar la contraseña - contraseña
     def do_contraseña(self,user):
+        name="contraseña"
+        guardarParam=(name)
+        self.guardar(guardarParam)
         if user == '':
             user = getpass.getuser()
             subprocess.run(['passwd', user])
@@ -224,11 +234,11 @@ class shell(cmd2.Cmd):
     def do_fgrep(self,gpath):
         gpath=gpath.split(' ', 2)
         name='fgrep'
+        guardarParam = (name,gpath[0],gpath[1])
+        self.guardar(guardarParam)
         band=False
         i=0
         if os.path.exists(gpath[1])==True:
-            guardarParam = (name,gpath[0],gpath[1])
-            self.guardar(guardarParam)
             for line in open(gpath[1], 'r'):
                 i=i+1
                 if re.search(gpath[0], line):
@@ -239,27 +249,22 @@ class shell(cmd2.Cmd):
         else:
             print("Error: El archivo no existe")
         
-        
-
-
-
+    
     ###4.14. Imprimir un historial de comandos - history
     
     
     def do_historial (self,arg):
         name = 'historial'
-        guardarParam = (name)
-        self.guardar(guardarParam)
+        self.guardar(name)
         f = open ('historial.txt','r')
         for linea in f:
            print (linea)
 
-    ###4.15 y demas dsp voy a pensar :)
+    ###4.15 y demas dsp voy a pensar ahora no quiero estresarme :)
 
     def do_clean(self,args):
         name = 'clean'
-        guardarParam = (name)
-        self.guardar(guardarParam)
+        self.guardar(name)
         _ = system('clear')  
 
 
