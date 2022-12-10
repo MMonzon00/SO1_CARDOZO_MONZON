@@ -40,10 +40,11 @@ class shell(cmd2.Cmd):
         self.poutput("Welcome to So1_Shell_2022")
     
     def guardar(self,arguments):
-        arg=" ".join(arguments)
+        space=' '
+        arg=space.join(arguments)
         ubi='historial.txt'
         f = open (ubi,'a')
-        f.write(f'{arg}')
+        f.write(f'{arg}\n')
         f.close()
     
     ###4.1. Copiar (no puede ser una llamada a sistema a la función cp) - copiar
@@ -55,7 +56,7 @@ class shell(cmd2.Cmd):
         src = f'{dirsrc}'
         dst = f'{dirdst}'
         name = "copy"
-        guardarParam = {name,src,dst}
+        guardarParam = (name,src,dst)
         self.guardar(guardarParam)
         try:
 
@@ -82,6 +83,9 @@ class shell(cmd2.Cmd):
         dirdst=arguments.arg_list[1]
         src = f'{dirsrc}'
         dst = f'{dirdst}'
+        name = "move"
+        guardarParam = (name,src,dst)
+        self.guardar(guardarParam)
         if src!=dst:
             shutil.move(src,dst)
             self.popout("File moved successfully.")
@@ -98,6 +102,9 @@ class shell(cmd2.Cmd):
         cwd = os.getcwd() #Get current working directory
         src = f'{cwd}/{FILENAME.arg_list[0]}' #current name
         dst = f'{cwd}/{FILENAME.arg_list[1]}' #new name
+        name = "rename"
+        guardarParam = (name,src,dst)
+        self.guardar(guardarParam)
         if src!=dst: #if name different rename
             os.rename(src,dst)
             self.poutput("File renamed successfully.")
@@ -110,12 +117,11 @@ class shell(cmd2.Cmd):
     ###4.4.2. En caso de recibir un directorio, listar archivos/directorios de esedirectorio.       
     #listar// okkkk // ver si se necesita -l o -la retcode = subprocess.call(['ls', '-l'])  
     def do_listar(self,dirPATH):
-        cwd=os.getcwd()
-        print("esto es cwd",cwd)
-        ##  dirPATH=f"{cwd}/{dirPATH}"
-        dir=dirPATH[1:len(dirPATH)]
-        print("esto es dirp",dirPATH)
+        name = "listar"
         if len(dirPATH)==0:
+            cwd=os.getcwd()
+            guardarParam = (name,cwd)
+            self.guardar(guardarParam)
             print("entro en misma carpeta")
             list=os.listdir(cwd)
             lenlist=len(list)
@@ -125,6 +131,9 @@ class shell(cmd2.Cmd):
                 else:
                     self.poutput(f"{list[i]}",end=" - ")
         else:
+            dir=dirPATH[1:len(dirPATH)]
+            guardarParam = (name,dir)
+            self.guardar(guardarParam)
             print("entro en dist")
             list=os.listdir(dir)
             lenlist=len(list)
@@ -138,17 +147,25 @@ class shell(cmd2.Cmd):
     ###4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
     ## okkkkk
     def do_makedir(self,dirnames):
+        name = "makedir"
+        guardarParam = []
+        guardarParam.append(name)
         cwd=os.getcwd()
         dirlen=len(dirnames.arg_list)
         for i in range(dirlen):
             dirname=f"{dirnames.arg_list[i]}"
             path=os.path.join(cwd,dirname)
             os.mkdir(path)
+            guardarParam.append(dirnames.arg_list[i])
+        self.guardar(guardarParam)
     
     ### 4.6. Cambiar de directorio (no puede ser una llamada a sistema a la función cd) - ir ///////LISTOOOOOOOOOOOOOO
     def do_ir(self,dirPATH):
+        name = "ir"
         username = getpass.getuser()
         if dirPATH==dirPATH:
+            guardarParam=(name,dirPATH)
+            self.guardar(guardarParam)
             os.chdir(dirPATH)
             cwd = os.getcwd() #current working directory
             hostname = socket.gethostname()
@@ -160,7 +177,10 @@ class shell(cmd2.Cmd):
         ##separar la cadena y ver como cambiar el numero de permisos
         ##El primer dígito corresponde a los permisos del usuario, el segundo a los del grupo y el tercero a los del resto de usuarios.
         ## split separador y cuantas divisiones en total
+        name = "permisos"
         newCAD=perPATH.split(' ', 2)
+        guardarParam=(name,newCAD[0],newCAD[1])
+        self.guardar(guardarParam)
         os.chmod(newCAD[1],int(newCAD[0],8)) ## convierte cadena octal a decimal por ej 777 a 511
        ## binario = ' '.join(format(c, 'b') for c in bytearray(newCAD[0], "utf-8"))
        ## binario = bin(newCAD[0])
@@ -177,9 +197,6 @@ class shell(cmd2.Cmd):
         user=cad[0:indice]
         group=cad[indice+1:indice1]
         propPATH=cad[indice1+1:len(cad)]
-        print("user",user)
-        print("group",group)
-        print("path",propPATH)
         shutil.chown(propPATH, user, group)
     
     ###4.9. Cambiar la contraseña - contraseña
@@ -193,7 +210,10 @@ class shell(cmd2.Cmd):
 
     ### 4.11. Imprimir el directorio en el que se encuentra la shell actualmente - pwd
     def do_printdir(self,dirPATH):
+        name = 'printdir'
         cwd=os.getcwd()
+        guardarParam = (name,cwd)
+        self.guardar(guardarParam)
         self.poutput(cwd)
     
     ###4.12. Terminar procesos con señales determinadas - kill
@@ -201,11 +221,14 @@ class shell(cmd2.Cmd):
 
 
     ###4.13. Buscar un string en un archivo - grep
-    def do_grep(self,gpath):
+    def do_fgrep(self,gpath):
         gpath=gpath.split(' ', 2)
+        name='fgrep'
         band=False
         i=0
         if os.path.exists(gpath[1])==True:
+            guardarParam = (name,gpath[0],gpath[1])
+            self.guardar(guardarParam)
             for line in open(gpath[1], 'r'):
                 i=i+1
                 if re.search(gpath[0], line):
@@ -224,6 +247,9 @@ class shell(cmd2.Cmd):
     
     
     def do_historial (self,arg):
+        name = 'historial'
+        guardarParam = (name)
+        self.guardar(guardarParam)
         f = open ('historial.txt','r')
         for linea in f:
            print (linea)
@@ -231,10 +257,10 @@ class shell(cmd2.Cmd):
     ###4.15 y demas dsp voy a pensar :)
 
     def do_clean(self,args):
-        _ = system('clear')
-
-    def do_hello(self,statement):
-            self.poutput(statement.arg_list)    
+        name = 'clean'
+        guardarParam = (name)
+        self.guardar(guardarParam)
+        _ = system('clear')  
 
 
 
