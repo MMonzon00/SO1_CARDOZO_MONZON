@@ -9,7 +9,10 @@ import shutil
 import getpass
 import socket
 import re
+import signal
 from os import system
+from cmd2 import Cmd2ArgumentParser, with_argparser
+import psutil
 # from usefunctions import *
 
 #!/usr/bin/env python
@@ -34,7 +37,8 @@ class shell(cmd2.Cmd):
         hostname = socket.gethostname()
         
         self.default_to_shell = True #use default shell commands
-        self.prompt = f"{username}@{hostname}:{homedir}$"
+        self.prompt = f"{username}@{hostname}:{homedir}$ "
+        self.maxrepeats = 3
         # shortcuts = {'?': 'help', '+': 'shell', '@': 'run_script', '@@': '_relative_run_script'}
         # print(shortcuts)
         self.poutput("Welcome to So1_Shell_2022")
@@ -49,7 +53,6 @@ class shell(cmd2.Cmd):
     
     ###4.1. Copiar (no puede ser una llamada a sistema a la función cp) - copiar
     ###4.1.1. El input debe tener el siguiente formato: Archivo(s) DirectorioDestino
-    
     def do_copy(self,arguments):
         dirsrc=arguments.arg_list[0]
         dirdst=arguments.arg_list[1]
@@ -172,6 +175,7 @@ class shell(cmd2.Cmd):
             self.prompt = f"{username}@{hostname}:{cwd}$"
         else:
             print("no se encontro el archivo o directorio")
+
     ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos//// falta
     def do_permisos(self,perPATH):
         ##separar la cadena y ver como cambiar el numero de permisos
@@ -215,10 +219,38 @@ class shell(cmd2.Cmd):
         guardarParam = (name,cwd)
         self.guardar(guardarParam)
         self.poutput(cwd)
-    
+
     ###4.12. Terminar procesos con señales determinadas - kill
     ###4.12.1. Debe aceptar el input con el formato: PID(s) señal
-
+    matarparser = Cmd2ArgumentParser()
+    matarparser.add_argument('-9', '--SIGKILL', action='store_true', help='Kill signal.')
+    matarparser.add_argument('-15', '--SIGTERM', action='store_true', help='Termination signal.')
+    matarparser.add_argument('-19', '--SIGSTOP', action='store_true', help='Stop signal.')
+    matarparser.add_argument('pids',type=int,nargs='+', help='Process ids.')
+    
+    @with_argparser(matarparser)
+    def do_matar(self,args):
+        name = 'matar'
+        pids=[]
+        for pid in range(len(args.pids)):
+            if args.SIGKILL:
+                signal_ID=9   
+                os.kill(args.pids[pid],signal_ID)
+                process = psutil.Process(args.pids[pid])
+                process_name = process.name()
+                self.poutput(f'Process {process_name} killed. PID:{args.pids[pid]}\n')
+            if args.SIGTERM:
+                signal_ID=15
+                os.kill(args.pids[pid],signal_ID)
+                process = psutil.Process(args.pids[pid])
+                process_name = process.name()
+                self.poutput(f'Process {process_name} terminated. PID:{args.pids[pid]}\n')
+            if args.SIGSTOP:
+                signal_ID=19
+                os.kill(args.pids[pid],signal_ID)
+                process = psutil.Process(args.pids[pid])
+                process_name = process.name()
+                self.poutput(f'Process {process_name} stopped. PID:{args.pids[pid]}\n')
 
     ###4.13. Buscar un string en un archivo - grep
     def do_fgrep(self,gpath):
@@ -239,13 +271,7 @@ class shell(cmd2.Cmd):
         else:
             print("Error: El archivo no existe")
         
-        
-
-
-
     ###4.14. Imprimir un historial de comandos - history
-    
-    
     def do_historial (self,arg):
         name = 'historial'
         guardarParam = (name)
@@ -254,7 +280,21 @@ class shell(cmd2.Cmd):
         for linea in f:
            print (linea)
 
-    ###4.15 y demas dsp voy a pensar :)
+    ###4.15 El usuario debe poder levantar y apagar demonios dentro del sistema,
+    ###     utilizando una herramienta como service de CentOS. (no puede ser una
+    ###     llamada a sistema a la función service o systemctl)
+
+    ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 
+    ###      sean los comandos mencionados arriba.
+
+    ###4.17. Registrar el inicio de sesión y la salida sesión del usuario. Se puede comparar
+    ###      con los registros de su horario cada vez que inicia/cierra la sesión y si esta
+    ###      fuera del rango escribir en el archivo de log (usuario_horarios_log) un
+    ###      mensaje que aclare que está fuera del rango y deben agregar el lugar desde
+    ###      donde realizó la conexión que también puede estar fuera de sus IPs habilitado.
+
+    ###4.18. Ejecutar una transferencia por ftp o scp, se debe registrar en el log
+    ###      Shell_transferencias del usuario.
 
     def do_clean(self,args):
         name = 'clean'
