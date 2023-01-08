@@ -9,13 +9,10 @@ import shutil
 import getpass
 import socket
 import re
-<<<<<<< HEAD
 import logging
 import time
 import datetime
-=======
 import signal
->>>>>>> 9f2cb54669bfeccd9b0fe9fa6bd7797412ca9d44
 from os import system
 from cmd2 import Cmd2ArgumentParser, with_argparser
 import psutil
@@ -292,11 +289,7 @@ class shell(cmd2.Cmd):
             self.logRegistroDiario(' '.join(guardarParam))
         else:
             print("no se encontro el archivo o directorio")
-<<<<<<< HEAD
             self.logRegistroError(' '.join(guardarParam))
-=======
-
->>>>>>> 9f2cb54669bfeccd9b0fe9fa6bd7797412ca9d44
     ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos//// falta
     def do_permisos(self,perPATH):
         ##separar la cadena y ver como cambiar el numero de permisos
@@ -330,32 +323,24 @@ class shell(cmd2.Cmd):
         user=cad[0:indice]
         group=cad[indice+1:indice1]
         propPATH=cad[indice1+1:len(cad)]
-<<<<<<< HEAD
         try:
             shutil.chown(propPATH, user, group)
             self.logRegistroDiario(' '.join(guardarParam))
         except :
             self.logRegistroError(' '.join(guardarParam))
-=======
         shutil.chown(propPATH, user, group)
         
->>>>>>> 9f2cb54669bfeccd9b0fe9fa6bd7797412ca9d44
     
     ###4.9. Cambiar la contraseña - contraseña
     def do_contraseña(self,user):
         name="contraseña"
         guardarParam=(name)
         self.guardar(guardarParam)
-<<<<<<< HEAD
         #self.logRegistroDiario(''.join(guardarParam))
         if user == '':
-=======
-        if user == '':                                                                                              ##FIX
->>>>>>> 9f2cb54669bfeccd9b0fe9fa6bd7797412ca9d44
             user = getpass.getuser()
         try:    
             subprocess.run(['passwd', user])
-<<<<<<< HEAD
             self.logRegistroDiario(''.join(guardarParam))
         except: 
             self.logRegistroError(' '.join(guardarParam))
@@ -367,9 +352,6 @@ class shell(cmd2.Cmd):
             return True
         except ValueError:
             return False
-=======
-        
->>>>>>> 9f2cb54669bfeccd9b0fe9fa6bd7797412ca9d44
 
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
     userparser = Cmd2ArgumentParser()
@@ -536,7 +518,6 @@ class shell(cmd2.Cmd):
     def do_clean(self,args):
         name = 'clean'
         self.guardar(name)
-<<<<<<< HEAD
         self.logRegistroDiario(''.join(name))
         _ = system('clear')  
         
@@ -548,11 +529,6 @@ class shell(cmd2.Cmd):
         quit()
         
     
-=======
-        _ = system('clear') 
-
-
->>>>>>> 9f2cb54669bfeccd9b0fe9fa6bd7797412ca9d44
 
 if __name__ == '__main__':
     import sys
