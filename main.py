@@ -9,6 +9,9 @@ import shutil
 import getpass
 import socket
 import re
+import logging
+import time
+import datetime
 from os import system
 # from usefunctions import *
 
@@ -39,6 +42,81 @@ class shell(cmd2.Cmd):
         # print(shortcuts)
         self.poutput("Welcome to So1_Shell_2022")
     
+
+    def logRegistroDiario(self,ch):
+        direccion='var/log/comandosDiarios.log'
+        if os.path.exists('var/log')==False:
+            print("entra en no existe")
+            cwd=os.getcwd()
+            path=os.path.join(cwd,'var','log')
+            os.makedirs(path)
+        
+        file = open(direccion, 'a')
+        
+        logger = logging.getLogger('RegistroDiario')
+        logger.setLevel(logging.DEBUG)
+       
+        fileHandler = logging.FileHandler(direccion, mode='a')# envía la salida de registro a un archivo de disco
+        fileHandler.setLevel(logging.DEBUG)
+       
+        formato = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fileHandler.setFormatter(formato)
+        logger.addHandler(fileHandler)
+       
+        logger.debug(ch)
+        logger.removeHandler(fileHandler)
+        fileHandler.close()
+
+    def logRegistroUsuario(self,ch):
+        direccion='var/log/registrosUsuarios.log'
+        if os.path.exists('var/log')==False:
+            print("entra en no existeee")
+            cwd=os.getcwd()
+            path=os.path.join(cwd,'var','log')
+            os.makedirs(path)
+
+        file = open(direccion, 'a')
+
+        logger = logging.getLogger('RegistroUsuario')
+        logger.setLevel(logging.DEBUG)
+
+        fileHandler = logging.FileHandler(direccion, mode='a')# envía la salida de registro a un archivo de disco
+        fileHandler.setLevel(logging.DEBUG)
+       
+        formato = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fileHandler.setFormatter(formato)
+        logger.addHandler(fileHandler)
+        logger.debug(ch)
+        
+        logger.removeHandler(fileHandler)
+        fileHandler.close()
+
+    # def logRegistroHorario(self,ch): # log para guardar usuarios fuera de horario
+
+    def logRegistroError(self,ch):
+        direccion='var/log/shell/sistema_error.log'
+        if os.path.exists('var/log/shell')==False:
+            print("entra en no existe")
+            cwd=os.getcwd()
+            path=os.path.join(cwd,'var/log/shell')
+            os.makedirs(path)
+        
+        file = open(direccion, 'a')
+        
+        logger = logging.getLogger('RegistroError')
+        logger.setLevel(logging.ERROR)
+       
+        fileHandler = logging.FileHandler(direccion, mode='a')
+        fileHandler.setLevel(logging.ERROR)
+       
+        formato = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fileHandler.setFormatter(formato)
+        logger.addHandler(fileHandler)
+       
+        logger.error(ch)
+        logger.removeHandler(fileHandler)
+        fileHandler.close()
+
     def guardar(self,arguments):
         if arguments=="historial" or arguments=="contraseña" or arguments=="clean":
             arg=''.join(arguments)
@@ -66,18 +144,22 @@ class shell(cmd2.Cmd):
 
             shutil.copy(src, dst)
             self.poutput("File copied successfully.")
+            self.logRegistroDiario(' '.join(guardarParam))
         
         # If src and dst are same
         except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
+            self.logRegistroError(' '.join(guardarParam))
         
         # If there is any permission issue
         except PermissionError:
             self.poutput("Permission denied.")
+            self.logRegistroError(' '.join(guardarParam))
         
         # For other errors
         except:
             self.poutput("Error occurred while copying file/s.")
+            self.logRegistroError(' '.join(guardarParam))
     
     ###4.2. Mover - mover
     ###4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s) DirectorioDestino.
@@ -93,8 +175,10 @@ class shell(cmd2.Cmd):
         if src!=dst:
             shutil.move(src,dst)
             self.popout("File moved successfully.")
+            self.logRegistroDiario(' '.join(guardarParam))
         elif src==dst:
             self.poutput("Source and destination represents the same file.")
+            self.logRegistroError(' '.join(guardarParam))
         # except PermissionError:
         #     self.poutput("Permission denied.")
         # except:
@@ -109,11 +193,16 @@ class shell(cmd2.Cmd):
         name = "rename"
         guardarParam = (name,src,dst)
         self.guardar(guardarParam)
+        self.logRegistroDiario(' '.join(guardarParam))
         if src!=dst: #if name different rename
             os.rename(src,dst)
             self.poutput("File renamed successfully.")
+            self.logRegistroDiario(' '.join(guardarParam))
         elif src==dst: #if name same show error
-             self.poutput("Name has to be different to current.")
+            self.poutput("Name has to be different to current.")
+            self.logRegistroError(' '.join(guardarParam))
+        else:
+            self.logRegistroError(' '.join(guardarParam))
     
     
     ###4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
@@ -126,6 +215,7 @@ class shell(cmd2.Cmd):
             cwd=os.getcwd()
             guardarParam = (name,cwd)
             self.guardar(guardarParam)
+            self.logRegistroDiario(' '.join(guardarParam))
             print("entro en misma carpeta")
             list=os.listdir(cwd)
             lenlist=len(list)
@@ -135,47 +225,67 @@ class shell(cmd2.Cmd):
                 else:
                     self.poutput(f"{list[i]}",end=" - ")
         else:
-            dir=dirPATH[1:len(dirPATH)]
-            guardarParam = (name,dir)
+            dir=dirPATH[0:len(dirPATH)]
+            
+            if dirPATH[0]=='/':
+                dir=dirPATH[1:len(dirPATH)]
+            
+            guardarParam=(name,dir)#historial
             self.guardar(guardarParam)
-            print("entro en dist")
-            list=os.listdir(dir)
-            lenlist=len(list)
-            for i in range(lenlist):
-                if i+1==lenlist:
-                    self.poutput(f"{list[i]}")
-                else:
-                    self.poutput(f"{list[i]}",end=" - ")
+
+            if os.path.exists(dir)==True:
+                guardarParam1 = name+' '+dir
+                self.logRegistroDiario(guardarParam1)
+                print("entro en dist")
+                list=os.listdir(dir)
+                lenlist=len(list)
+                for i in range(lenlist):
+                    if i+1==lenlist:
+                        self.poutput(f"{list[i]}")
+                    else:
+                        self.poutput(f"{list[i]}",end=" - ")
+            elif os.path.exists(dir)==False:
+                print("El archivo", dir ,"no existe")
+                self.logRegistroError(' '.join(guardarParam))
+
+
 
     ###4.5. Crear un directorio - creardir
     ###4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
-    ## okkkkk
+    ## ver historial!!!!!!!!!!!!!
     def do_makedir(self,dirnames):
         name = "makedir"
-        guardarParam = []
-        guardarParam.append(name)
+        guardarParam=(name, dirnames)
         cwd=os.getcwd()
         dirlen=len(dirnames.arg_list)
-        for i in range(dirlen):
-            dirname=f"{dirnames.arg_list[i]}"
-            path=os.path.join(cwd,dirname)
-            os.mkdir(path)
-            guardarParam.append(dirnames.arg_list[i])
         self.guardar(guardarParam)
+        try:
+            for i in range(dirlen):
+                dirname=f"{dirnames.arg_list[i]}"
+                path=os.path.join(cwd,dirname)
+                os.mkdir(path)
+                #guardarParam.append(dirnames.arg_list[i])
+            self.logRegistroDiario(' '.join(guardarParam))
+        except:
+            self.logRegistroError(' '.join(guardarParam))
     
-    ### 4.6. Cambiar de directorio (no puede ser una llamada a sistema a la función cd) - ir ///////LISTOOOOOOOOOOOOOO
+    ### 4.6. Cambiar de directorio (no puede ser una llamada a sistema a la función cd) - ir ///////ver ir ..
     def do_ir(self,dirPATH):
         name = "ir"
         username = getpass.getuser()
-        if dirPATH==dirPATH:
-            guardarParam=(name,dirPATH)
-            self.guardar(guardarParam)
+        guardarParam=(name,dirPATH)
+        self.guardar(guardarParam)
+        if os.path.exists(dirPATH)==True:
+            self.logRegistroDiario(' '.join(guardarParam))
             os.chdir(dirPATH)
             cwd = os.getcwd() #current working directory
             hostname = socket.gethostname()
             self.prompt = f"{username}@{hostname}:{cwd}$"
+        if dirPATH=='..' or '../..' or '../../..'or '../../../..':
+            self.logRegistroDiario(' '.join(guardarParam))
         else:
             print("no se encontro el archivo o directorio")
+            self.logRegistroError(' '.join(guardarParam))
     ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos//// falta
     def do_permisos(self,perPATH):
         ##separar la cadena y ver como cambiar el numero de permisos
@@ -185,10 +295,14 @@ class shell(cmd2.Cmd):
         newCAD=perPATH.split(' ', 2)
         guardarParam=(name,newCAD[0],newCAD[1])
         self.guardar(guardarParam)
-        os.chmod(newCAD[1],int(newCAD[0],8)) ## convierte cadena octal a decimal por ej 777 a 511
-       ## binario = ' '.join(format(c, 'b') for c in bytearray(newCAD[0], "utf-8"))
-       ## binario = bin(newCAD[0])
-       
+        self.logRegistroDiario(' '.join(guardarParam))
+        try:
+            os.chmod(newCAD[1],int(newCAD[0],8)) ## convierte cadena octal a decimal por ej 777 a 511 y el decimal se envia como parametro
+            ## binario = ' '.join(format(c, 'b') for c in bytearray(newCAD[0], "utf-8"))
+            ## binario = bin(newCAD[0])
+        except:
+            print("Error a cambiar permisos")
+            self.logRegistroError(' '.join(guardarParam))
 
     ###4.8. Cambiar los propietarios sobre un archivo o un conjunto de archivos. - propietario
     ###4.8.1. Debe usar el formato USUARIO:GRUPO
@@ -197,6 +311,7 @@ class shell(cmd2.Cmd):
         name="propietario"
         guardarParam=(name,cad)
         self.guardar(guardarParam)
+        #self.logRegistroDiario(' '.join(guardarParam))
         i=":"
         j=" "
         indice=cad.index(i)
@@ -204,25 +319,94 @@ class shell(cmd2.Cmd):
         user=cad[0:indice]
         group=cad[indice+1:indice1]
         propPATH=cad[indice1+1:len(cad)]
-        shutil.chown(propPATH, user, group)
+        try:
+            shutil.chown(propPATH, user, group)
+            self.logRegistroDiario(' '.join(guardarParam))
+        except :
+            self.logRegistroError(' '.join(guardarParam))
     
     ###4.9. Cambiar la contraseña - contraseña
     def do_contraseña(self,user):
         name="contraseña"
         guardarParam=(name)
         self.guardar(guardarParam)
+        #self.logRegistroDiario(''.join(guardarParam))
         if user == '':
             user = getpass.getuser()
+        try:    
             subprocess.run(['passwd', user])
-
+            self.logRegistroDiario(''.join(guardarParam))
+        except: 
+            self.logRegistroError(' '.join(guardarParam))
+    
+    #validar formato hora
+    def isValidTime(self,data): 
+        try:
+            time.strptime(data, "%H:%M")
+            return True
+        except ValueError:
+            return False
 
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
+
+    def do_agregarUsuario(self,p):
+        name="agregarUsuario "
+        
+        i=input("Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
+       
+        while(len(i)==0): #si se ingresa vacio
+            i=input("Error Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
+
+        Upath=i.split(' ', 4) #separar en 4 partes (usuario, ip,entrada,salida)
+        ip=re.match(r'^((0|[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.|$)){4}$', Upath[1]) # vaiidar ip
+        
+        while not ip or self.isValidTime(Upath[2])==False or self.isValidTime(Upath[3])==False or len(Upath)<4 :
+            i=input("Error Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
+            Upath=i.split(' ', 4)
+            ip=re.match(r'^((0|[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.|$)){4}$', Upath[1])
+        
+        passw=getpass.getpass(prompt='Password: ', stream=None) #agregar contra
+        
+        try:
+            subprocess.run(['sudo', 'useradd','-p', passw, Upath[0] ])   # agregar usuario , -p encrypted password of the new account
+            arg=' '.join(Upath)
+            guardarParam=(name,arg)
+            self.guardar(guardarParam)#historial
+            self.logRegistroUsuario(arg)#registro usuarios
+            self.logRegistroDiario(''.join(guardarParam))#registro diario
+        
+        except:
+            print("ERROR al agregar usuario")
+            self.logRegistroError(''.join('errorUsuario '+arg))
+    
+    # verficar horario laboral-falta
+    def do_verificarHorario(self,b):
+        hora_actual = datetime.datetime.now().time()
+        actualHora=hora_actual.hour
+        actualMin=hora_actual.minute
+        band=False
+        i=0
+        username = getpass.getuser()
+        if os.path.exists('var/log/registrosUsuarios.log')==True:
+            for line in open('var/log/registrosUsuarios.log', 'r'):
+                i=i+1
+                if re.search(username, line):
+                    print("en la linea:",i,  line)
+                    band=True
+            cadena=line.split(' ', 4)
+
+        entrada=cadena[2].split(':', 2)
+        salida=cadena[3].split(':', 2)
+        if int(entrada[0])<actualHora or int(salida[0])>actualHora: #ver 
+            print("FUERA DE HORARIO LABORAL")
+            #self.logRegistroHorario(''.join(guardarParam))
 
     ### 4.11. Imprimir el directorio en el que se encuentra la shell actualmente - pwd
     def do_printdir(self,dirPATH):
         name = 'printdir'
         cwd=os.getcwd()
         guardarParam = (name,cwd)
+        self.logRegistroDiario(''.join(guardarParam))
         self.guardar(guardarParam)
         self.poutput(cwd)
     
@@ -236,6 +420,7 @@ class shell(cmd2.Cmd):
         name='fgrep'
         guardarParam = (name,gpath[0],gpath[1])
         self.guardar(guardarParam)
+        #self.logRegistroDiario(' '.join(guardarParam))
         band=False
         i=0
         if os.path.exists(gpath[1])==True:
@@ -244,10 +429,13 @@ class shell(cmd2.Cmd):
                 if re.search(gpath[0], line):
                     print("en la linea:",i,  line)
                     band=True
+            self.logRegistroDiario(' '.join(guardarParam))       
             if band==False:
                 print("Error: El string no existe")
+                self.logRegistroError(' '.join(guardarParam))
         else:
             print("Error: El archivo no existe")
+            self.logRegistroError(' '.join(guardarParam))
         
     
     ###4.14. Imprimir un historial de comandos - history
@@ -256,6 +444,7 @@ class shell(cmd2.Cmd):
     def do_historial (self,arg):
         name = 'historial'
         self.guardar(name)
+        self.logRegistroDiario(''.join(name))
         f = open ('historial.txt','r')
         for linea in f:
            print (linea)
@@ -265,11 +454,20 @@ class shell(cmd2.Cmd):
     def do_clean(self,args):
         name = 'clean'
         self.guardar(name)
+        self.logRegistroDiario(''.join(name))
         _ = system('clear')  
-
-
+        
+    
+    def do_exit(self,e): # tdv  no funciona
+        print("EXIT!")
+        self.logRegistroDiario(''.join('exit'))
+       #self.verificarHorario()
+        quit()
+        
+    
 
 if __name__ == '__main__':
     import sys
     c = shell()
+    #verificarHorario() # para inicio sesion
     sys.exit(c.cmdloop())
