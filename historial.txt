@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 listar /home/erika/SO1_CARDOZO_MONZON/SO1_CARDOZO_MONZON
 ir holep
 listar /home/erika/SO1_CARDOZO_MONZON/SO1_CARDOZO_MONZON
@@ -37,3 +38,6 @@ l i s t a r   t e s t
 listar test
 listar /test
 listar test
+=======
+listar /root/so1_shell/SO1_CARDOZO_MONZON
+>>>>>>> 9f2cb54669bfeccd9b0fe9fa6bd7797412ca9d44
