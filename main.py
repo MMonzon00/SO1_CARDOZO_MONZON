@@ -13,6 +13,7 @@ import signal
 from os import system
 from cmd2 import Cmd2ArgumentParser, with_argparser
 import psutil
+from datetime import datetime
 # from usefunctions import *
 
 #!/usr/bin/env python
@@ -37,7 +38,7 @@ class shell(cmd2.Cmd):
         hostname = socket.gethostname()
         
         self.default_to_shell = True #use default shell commands
-        self.prompt = f"{username}@{hostname}:{homedir}$ "
+        self.prompt = f"{username}@{hostname}:{homedir.replace('/root','~')}$ "
         self.maxrepeats = 3
         # shortcuts = {'?': 'help', '+': 'shell', '@': 'run_script', '@@': '_relative_run_script'}
         # print(shortcuts)
@@ -204,23 +205,39 @@ class shell(cmd2.Cmd):
         i=":"
         j=" "
         indice=cad.index(i)
-        indice1=cad.index(j)
+        indice1=cad.index(j)                                                                                        ##FIX
         user=cad[0:indice]
         group=cad[indice+1:indice1]
         propPATH=cad[indice1+1:len(cad)]
         shutil.chown(propPATH, user, group)
+        
     
     ###4.9. Cambiar la contraseña - contraseña
     def do_contraseña(self,user):
         name="contraseña"
         guardarParam=(name)
         self.guardar(guardarParam)
-        if user == '':
+        if user == '':                                                                                              ##FIX
             user = getpass.getuser()
             subprocess.run(['passwd', user])
-
+        
 
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
+    userparser = Cmd2ArgumentParser()
+    userparser.add_argument('-usr', '--username', action='store_true',required = True , help='Nombre de usuario')
+    userparser.add_argument('username')
+    userparser.add_argument('-pw', '--password', action='store_true',required = True , help='Contraseña de usuario')
+    userparser.add_argument('username')
+    userparser.add_argument('-n', '--name', action='store_true',required = True , help='Nombre y apellido.')
+    userparser.add_argument('name',nargs=2)
+    userparser.add_argument('-H', '--horario', action='store_true',required = True , help='Horario de trabajo.')
+    userparser.add_argument('horario',type=int)
+    userparser.add_argument('-IPs', '--address', action='store_true',required = True , help='IP addresses.')
+    userparser.add_argument('ipAddress',nargs='+')
+
+    @with_argparser(userparser)
+    def do_addusuario(self,args):
+        return 0
 
     ### 4.11. Imprimir el directorio en el que se encuentra la shell actualmente - pwd
     def do_printdir(self,dirPATH):
@@ -294,13 +311,17 @@ class shell(cmd2.Cmd):
     ###     llamada a sistema a la función service o systemctl)
 
     ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 
-    ###      sean los comandos mencionados arriba.
+    ###      sean los comandos mencionados arriba.- LISTO
 
     ###4.17. Registrar el inicio de sesión y la salida sesión del usuario. Se puede comparar
     ###      con los registros de su horario cada vez que inicia/cierra la sesión y si esta
     ###      fuera del rango escribir en el archivo de log (usuario_horarios_log) un
     ###      mensaje que aclare que está fuera del rango y deben agregar el lugar desde
     ###      donde realizó la conexión que también puede estar fuera de sus IPs habilitado.
+        # controller
+        # now = datetime.now()
+        # current_time = now.strftime("%H:%M:%S")
+        # print("Current Time =", current_time)
 
     ###4.18. Ejecutar una transferencia por ftp o scp, se debe registrar en el log
     ###      Shell_transferencias del usuario.
@@ -308,7 +329,7 @@ class shell(cmd2.Cmd):
     def do_clean(self,args):
         name = 'clean'
         self.guardar(name)
-        _ = system('clear')  
+        _ = system('clear') 
 
 
 
