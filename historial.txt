@@ -41,3 +41,8 @@ listar test
 =======
 listar /root/so1_shell/SO1_CARDOZO_MONZON
 >>>>>>> 9f2cb54669bfeccd9b0fe9fa6bd7797412ca9d44
+ir /etc/passwd
+printdir /root/so1_shell/SO1_CARDOZO_MONZON
+clean
+ir ..
+clean

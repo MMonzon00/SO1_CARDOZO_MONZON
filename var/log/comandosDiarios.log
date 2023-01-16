@@ -37,3 +37,12 @@
 2023-01-08 16:00:20,498 - RegistroDiario - DEBUG - listar test
 2023-01-08 16:00:39,644 - RegistroDiario - DEBUG - listar test
 2023-01-08 16:01:30,563 - RegistroDiario - DEBUG - listar test
+2023-01-08 17:38:07,909 - RegistroDiario - DEBUG - ir /etc/passwd
+2023-01-08 17:39:01,599 - RegistroDiario - DEBUG - printdir/root/so1_shell/SO1_CARDOZO_MONZON
+2023-01-08 17:39:25,813 - RegistroDiario - DEBUG - clean
+2023-01-08 17:39:30,999 - RegistroDiario - DEBUG - ir ..
+2023-01-08 18:02:06,990 - RegistroDiario - DEBUG - clean
+2023-01-15 21:34:14,151 - RegistroDiario - DEBUG - exit
+2023-01-15 21:42:06,926 - RegistroDiario - DEBUG - exit
+2023-01-15 21:43:14,406 - RegistroDiario - DEBUG - exit
+2023-01-15 21:47:28,030 - RegistroDiario - DEBUG - exit
