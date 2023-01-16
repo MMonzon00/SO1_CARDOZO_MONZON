@@ -17,6 +17,7 @@ from os import system
 from cmd2 import Cmd2ArgumentParser, with_argparser
 import psutil
 from datetime import datetime
+from utilities import getUID
 # from usefunctions import *
 
 #!/usr/bin/env python
@@ -167,7 +168,7 @@ class shell(cmd2.Cmd):
     
     ###4.2. Mover - mover
     ###4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s) DirectorioDestino.
-    
+
     def do_move(self,arguments):
         dirsrc=arguments.arg_list[0]
         dirdst=arguments.arg_list[1]
@@ -276,20 +277,15 @@ class shell(cmd2.Cmd):
     ### 4.6. Cambiar de directorio (no puede ser una llamada a sistema a la función cd) - ir ///////ver ir ..
     def do_ir(self,dirPATH):
         name = "ir"
+        cwd = os.getcwd()#current working directory
+        if cwd==dirPATH:
+            self.poutput("Path is the same as current directory. \n")
         username = getpass.getuser()
-        guardarParam=(name,dirPATH)
-        self.guardar(guardarParam)
-        if os.path.exists(dirPATH)==True:
-            self.logRegistroDiario(' '.join(guardarParam))
-            os.chdir(dirPATH)
-            cwd = os.getcwd() #current working directory
-            hostname = socket.gethostname()
-            self.prompt = f"{username}@{hostname}:{cwd}$"
-        if dirPATH=='..' or '../..' or '../../..'or '../../../..':
-            self.logRegistroDiario(' '.join(guardarParam))
-        else:
-            print("no se encontro el archivo o directorio")
-            self.logRegistroError(' '.join(guardarParam))
+        os.chdir(dirPATH)
+        hostname = socket.gethostname()
+        self.prompt = f"{username}@{hostname}:{cwd}$ "
+
+            
     ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos//// falta
     def do_permisos(self,perPATH):
         ##separar la cadena y ver como cambiar el numero de permisos
@@ -357,48 +353,71 @@ class shell(cmd2.Cmd):
     userparser = Cmd2ArgumentParser()
     userparser.add_argument('-usr', '--username', action='store_true',required = True , help='Nombre de usuario')
     userparser.add_argument('username')
-    userparser.add_argument('-pw', '--password', action='store_true',required = True , help='Contraseña de usuario')
-    userparser.add_argument('username')
+    userparser.add_argument('-pw', '--password', action='store_true' , help='Contraseña de usuario')
+    userparser.add_argument('pwname')
     userparser.add_argument('-n', '--name', action='store_true',required = True , help='Nombre y apellido.')
     userparser.add_argument('name',nargs=2)
-    userparser.add_argument('-H', '--horario', action='store_true',required = True , help='Horario de trabajo.')
+    userparser.add_argument('-H', '--horario', action='store_true',required = True , help='Horario de trabajo en horas.')
     userparser.add_argument('horario',type=int)
-    userparser.add_argument('-IPs', '--address', action='store_true',required = True , help='IP addresses.')
+    userparser.add_argument('-IPs', '--addresses', action='store_true',required = True , help='IP addresses.')
     userparser.add_argument('ipAddress',nargs='+')
 
     @with_argparser(userparser)
     def do_addusuario(self,args):
+        path = '/etc/passwd'
+        homeDIR=f'/home/{args.username}'
+        shellPATH='/bin/bash'
+        encrypted_pwd= 'x'
+        groupID = os.getpgrp()
+        userID = getUID()
+        fullname =' '.join(map(str,args.name))
+        ipadresses =' '.join(map(str,args.adresses))
+        GECOS = [fullname,args.horario,ipadresses]
+        fieldstring = {f"{args.username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDIR}:{shellPATH}"}
+        f = open('test1.txt','a')
+        f.append(fieldstring)
+        f.close()
         return 0
 
-    def do_agregarUsuario(self,p):
-        name="agregarUsuario "
+    userparser2 = Cmd2ArgumentParser()
+    userparser2.add_argument('-usr', '--username', action='store_true',required = True , help='Nombre de usuario')
+    userparser2.add_argument('username')
+    userparser2.add_argument('-n', '--name', action='store_true',required = True , help='Nombre y apellido.')
+    userparser2.add_argument('name',nargs=2)
+    @with_argparser(userparser2)
+    def do_test(self,args):
+        print(args.username,args.name)
+        return 0
         
-        i=input("Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
+    # def do_agregarUsuario(self,p):
+    #     name="agregarUsuario "
+        
+    #     i=input("Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
        
-        while(len(i)==0): #si se ingresa vacio
-            i=input("Error Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
+    #     while(len(i)==0): #si se ingresa vacio
+    #         i=input("Error Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
 
-        Upath=i.split(' ', 4) #separar en 4 partes (usuario, ip,entrada,salida)
-        ip=re.match(r'^((0|[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.|$)){4}$', Upath[1]) # vaiidar ip
+    #     Upath=i.split(' ', 4) #separar en 4 partes (usuario, ip,entrada,salida)
+    #     ip=re.match(r'^((0|[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.|$)){4}$', Upath[1]) # vaiidar ip
         
-        while not ip or self.isValidTime(Upath[2])==False or self.isValidTime(Upath[3])==False or len(Upath)<4 :
-            i=input("Error Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
-            Upath=i.split(' ', 4)
-            ip=re.match(r'^((0|[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.|$)){4}$', Upath[1])
+    #     while not ip or self.isValidTime(Upath[2])==False or self.isValidTime(Upath[3])==False or len(Upath)<4 :
+    #         i=input("Error Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
+    #         Upath=i.split(' ', 4)
+    #         ip=re.match(r'^((0|[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.|$)){4}$', Upath[1])
         
-        passw=getpass.getpass(prompt='Password: ', stream=None) #agregar contra
+    #     passw=getpass.getpass(prompt='Password: ', stream=None) #agregar contra
         
-        try:
-            subprocess.run(['sudo', 'useradd','-p', passw, Upath[0] ])   # agregar usuario , -p encrypted password of the new account
-            arg=' '.join(Upath)
-            guardarParam=(name,arg)
-            self.guardar(guardarParam)#historial
-            self.logRegistroUsuario(arg)#registro usuarios
-            self.logRegistroDiario(''.join(guardarParam))#registro diario
+    #     try:
+    #         subprocess.run(['sudo', 'useradd','-p', passw, Upath[0] ])   # agregar usuario , -p encrypted password of the new account
+    #         arg=' '.join(Upath)
+    #         guardarParam=(name,arg)
+    #         self.guardar(guardarParam)#historial
+    #         self.logRegistroUsuario(arg)#registro usuarios
+    #         self.logRegistroDiario(''.join(guardarParam))#registro diario
         
-        except:
-            print("ERROR al agregar usuario")
-            self.logRegistroError(''.join('errorUsuario '+arg))
+    #     except:
+    #         print("ERROR al agregar usuario")
+    #         self.logRegistroError(''.join('errorUsuario '+arg))
     
     # verficar horario laboral-falta
     def do_verificarHorario(self,b):
