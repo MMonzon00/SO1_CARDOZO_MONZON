@@ -348,19 +348,27 @@ class shell(cmd2.Cmd):
             return True
         except ValueError:
             return False
-
+    def readFile(filename):
+        with open(filename) as file:
+            lines = file.readlines() 
+            lines = [line.rstrip() for line in lines]
+        return lines
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
     userparser = Cmd2ArgumentParser()
     userparser.add_argument('usr',nargs=1, help='Nombre de usuario')
 
     @with_argparser(userparser)
     def do_addusuario(self,args):
+        def readFile(filename):
+            with open(filename) as file:
+                lines = file.readlines() 
+                lines = [line.rstrip() for line in lines]
+            return lines  
         username = args.usr[0]
         paths = ["/etc/shadow","/etc/passwd","/etc/group"]
         files = []
         for path in paths:
-            files.append(utilities.readFile(path))
-            files[path] = open(paths[path],"a+")
+            files.append(readFile(path))
         homeDIR=f'/home/{args.usr[0]}'
         shellPATH='/bin/bash'
         encrypted_pwd= 'x'
@@ -370,7 +378,8 @@ class shell(cmd2.Cmd):
         ipadresses = []
         while True:
             i=0
-            ipadresses[i] = input('Ingrese las ip por donde se puede conectar')
+            ipadresses[i] = input('Ingrese las ip por donde se puede conectar: ')
+            i+=1
             exit = input('Ingrese 1 si agrego las ip correspondientes.')
             if exit==1:
                 break
@@ -382,7 +391,9 @@ class shell(cmd2.Cmd):
         workphone=input("Teléfono del Trabajo:")
         homephone=input("Teléfono de casa: ")
         GECOS = [fullname,workphone,homephone,horario,ipadresses]
-            
+        for path in paths:
+            files[path] = open(paths[path],"a+")
+    
         files[0].write(f"{username}:!:{int(time()/86400)}:0:99999:7:::\n")
         files[2].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDIR}:{shellPATH}\n")
         files[2].write(f"{username}:x:{groupID}:\n")
