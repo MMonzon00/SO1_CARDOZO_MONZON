@@ -17,7 +17,7 @@ from os import system
 from cmd2 import Cmd2ArgumentParser, with_argparser
 import psutil
 from datetime import datetime
-from utilities import getUID
+import utilities
 # from usefunctions import *
 
 #!/usr/bin/env python
@@ -351,42 +351,46 @@ class shell(cmd2.Cmd):
 
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
     userparser = Cmd2ArgumentParser()
-    userparser.add_argument('-usr', '--username', action='store_true',required = True , help='Nombre de usuario')
-    userparser.add_argument('username')
-    userparser.add_argument('-pw', '--password', action='store_true' , help='Contraseña de usuario')
-    userparser.add_argument('pwname')
-    userparser.add_argument('-n', '--name', action='store_true',required = True , help='Nombre y apellido.')
-    userparser.add_argument('name',nargs=2)
-    userparser.add_argument('-H', '--horario', action='store_true',required = True , help='Horario de trabajo en horas.')
-    userparser.add_argument('horario',type=int)
-    userparser.add_argument('-IPs', '--addresses', action='store_true',required = True , help='IP addresses.')
-    userparser.add_argument('ipAddress',nargs='+')
+    userparser.add_argument('usr',nargs=1, help='Nombre de usuario')
 
     @with_argparser(userparser)
     def do_addusuario(self,args):
-        path = '/etc/passwd'
-        homeDIR=f'/home/{args.username}'
+        username = args.usr[0]
+        paths = ["/etc/shadow","/etc/passwd","/etc/group"]
+        files = []
+        for path in paths:
+            files.append(utilities.readFile(path))
+            files[path] = open(paths[path],"a+")
+        homeDIR=f'/home/{args.usr[0]}'
         shellPATH='/bin/bash'
         encrypted_pwd= 'x'
         groupID = os.getpgrp()
-        userID = getUID()
-        fullname =' '.join(map(str,args.name))
-        ipadresses =' '.join(map(str,args.adresses))
-        GECOS = [fullname,args.horario,ipadresses]
-        fieldstring = {f"{args.username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDIR}:{shellPATH}"}
-        f = open('test1.txt','a')
-        f.append(fieldstring)
-        f.close()
-        return 0
+        userID = utilities.getUID()
+        fullname =input('Ingrese su Nombre y Apellido: ')
+        ipadresses = []
+        while True:
+            i=0
+            ipadresses[i] = input('Ingrese las ip por donde se puede conectar')
+            exit = input('Ingrese 1 si agrego las ip correspondientes.')
+            if exit==1:
+                break
+        hentrada=input('Ingrese el horario de entrada en formato H:M: ')
+        hentrada=hentrada.replace(":","")
+        hsalida=input('Ingrese el horario de salida en formato H:M: ')
+        hsalida=hsalida.replace(":","")
+        horario=[hentrada,hsalida]
+        workphone=input("Teléfono del Trabajo:")
+        homephone=input("Teléfono de casa: ")
+        GECOS = [fullname,workphone,homephone,horario,ipadresses]
+            
+        files[0].write(f"{username}:!:{int(time()/86400)}:0:99999:7:::\n")
+        files[2].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDIR}:{shellPATH}\n")
+        files[2].write(f"{username}:x:{groupID}:\n")
 
-    userparser2 = Cmd2ArgumentParser()
-    userparser2.add_argument('-usr', '--username', action='store_true',required = True , help='Nombre de usuario')
-    userparser2.add_argument('username')
-    userparser2.add_argument('-n', '--name', action='store_true',required = True , help='Nombre y apellido.')
-    userparser2.add_argument('name',nargs=2)
-    @with_argparser(userparser2)
-    def do_test(self,args):
-        print(args.username,args.name)
+        for path in paths:
+            files[path].close()
+
+        self.poutput(f'User {username} created. Set password with passSet ''username''.\n ')
         return 0
         
     # def do_agregarUsuario(self,p):
@@ -442,7 +446,7 @@ class shell(cmd2.Cmd):
             #self.logRegistroHorario(''.join(guardarParam))
 
     ### 4.11. Imprimir el directorio en el que se encuentra la shell actualmente - pwd
-    def do_printdir(self,dirPATH):
+    def do_printdir(self):
         name = 'printdir'
         cwd=os.getcwd()
         guardarParam = (name,cwd)

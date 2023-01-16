@@ -46,3 +46,4 @@ printdir /root/so1_shell/SO1_CARDOZO_MONZON
 clean
 ir ..
 clean
+clean
