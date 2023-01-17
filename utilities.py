@@ -45,3 +45,8 @@ def getGID():
     GID_list = list(map(int, GID_list))
     GID=max(GID_list)+1
     return GID
+
+def readFile(filePATH):
+    f = open(filePATH ,'r')
+    fileList = f.readlines()
+    return fileList
