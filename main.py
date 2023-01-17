@@ -359,16 +359,11 @@ class shell(cmd2.Cmd):
 
     @with_argparser(userparser)
     def do_addusuario(self,args):
-        def readFile(filename):
-            with open(filename) as file:
-                lines = file.readlines() 
-                lines = [line.rstrip() for line in lines]
-            return lines  
         username = args.usr[0]
         paths = ["/etc/shadow","/etc/passwd","/etc/group"]
         files = []
         for path in paths:
-            files.append(readFile(path))
+            files.append(utilities.readFile(path))
         homeDIR=f'/home/{args.usr[0]}'
         shellPATH='/bin/bash'
         encrypted_pwd= 'x'
@@ -376,13 +371,13 @@ class shell(cmd2.Cmd):
         userID = utilities.getUID()
         fullname =input('Ingrese su Nombre y Apellido: ')
         ipadresses = []
-        while True:
-            i=0
-            ipadresses[i] = input('Ingrese las ip por donde se puede conectar: ')
-            i+=1
-            exit = input('Ingrese 1 si agrego las ip correspondientes.')
-            if exit==1:
-                break
+        exit=0
+        while exit != '1':
+            ip=input('Ingrese la ip por donde se puede conectar: ')
+            if ip =='':
+                ip=input('Ingrese una ip valida: ')
+            ipadresses.append(ip)
+            exit = input('Ingrese 1 si agrego las ip correspondientes:')
         hentrada=input('Ingrese el horario de entrada en formato H:M: ')
         hentrada=hentrada.replace(":","")
         hsalida=input('Ingrese el horario de salida en formato H:M: ')
