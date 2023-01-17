@@ -1,9 +1,5 @@
-import cmd
-import readline
 import subprocess
-from typing import Iterable
 import cmd2
-import argparse
 import os 
 import shutil
 import getpass
@@ -12,7 +8,6 @@ import re
 import logging
 import time
 import datetime
-import signal
 import socket
 from os import system
 from cmd2 import Cmd2ArgumentParser, with_argparser
@@ -45,15 +40,13 @@ class shell(cmd2.Cmd):
         self.default_to_shell = True #use default shell commands
         self.prompt = f"{username}@{hostname}:{homedir.replace('/root','~')}$ "
         self.maxrepeats = 3
-        # shortcuts = {'?': 'help', '+': 'shell', '@': 'run_script', '@@': '_relative_run_script'}
-        # print(shortcuts)
         self.poutput("Welcome to So1_Shell_2022")
     
 
     def logRegistroDiario(self,ch):
         direccion='var/log/comandosDiarios.log'
         if os.path.exists('var/log')==False:
-            print("entra en no existe")
+            print("Directory doesn't exist.")
             cwd=os.getcwd()
             path=os.path.join(cwd,'var','log')
             os.makedirs(path)
