@@ -47,8 +47,22 @@ def readFileLines(filename):
                 lines = [line.rstrip() for line in lines]
             return lines
 
+def processText(text):
+    processedText = list(text)
+    for i in range(len(processedText)):
+        processedText[i] = processedText[i].split(':')
+    return processedText
+
+def turnElementTostr(list):
+    for element in range(len(list)):
+        list[element]=(str(list[element]))
+    return list
+
+def joinList(list,separator):
+    str=separator.join(list)
+    return str
+
 if __name__== '__main__':
-    lines = readFileLines('test1.txt')
-    print(lines)
-    getUID()
+    list = ['1','2','3']
+    print(joinList(list,','))
 

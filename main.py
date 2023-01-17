@@ -13,6 +13,7 @@ import logging
 import time
 import datetime
 import signal
+import socket
 from os import system
 from cmd2 import Cmd2ArgumentParser, with_argparser
 import psutil
@@ -274,7 +275,7 @@ class shell(cmd2.Cmd):
         except:
             self.logRegistroError(' '.join(guardarParam))
     
-    ### 4.6. Cambiar de directorio (no puede ser una llamada a sistema a la función cd) - ir ///////ver ir ..
+    ### 4.6. Cambiar de directorio (no puede ser una llamada a sistema a la función cd) - ir
     def do_ir(self,dirPATH):
         name = "ir"
         cwd = os.getcwd()#current working directory
@@ -328,7 +329,7 @@ class shell(cmd2.Cmd):
         
     
     ###4.9. Cambiar la contraseña - contraseña
-    def do_contraseña(self,user):
+    def do_passSET(self,user):
         name="contraseña"
         guardarParam=(name)
         self.guardar(guardarParam)
@@ -359,12 +360,20 @@ class shell(cmd2.Cmd):
 
     @with_argparser(userparser)
     def do_addusuario(self,args):
+        separator=','
         username = args.usr[0]
-        paths = ["/etc/shadow","/etc/passwd","/etc/group"]
+        paths = ["/etc/passwd","/etc/shadow","/etc/group"]
         files = []
         for path in paths:
-            files.append(utilities.readFile(path))
-        homeDIR=f'/home/{args.usr[0]}'
+            files.append(utilities.readFileLines(path))
+        for path in range(len(paths)):
+            files[path] = utilities.processText(files[path])
+        for i in range(len(files[2])):
+            if files[2][i][0] == username:
+                self._errorLogger.error(f"{username} already exists.Try again")
+                return 
+        homeDIR=f'/home/{username}'
+        os.mkdir(homeDIR)
         shellPATH='/bin/bash'
         encrypted_pwd= 'x'
         groupID = os.getpgrp()
@@ -378,6 +387,8 @@ class shell(cmd2.Cmd):
                 ip=input('Ingrese una ip valida: ')
             ipadresses.append(ip)
             exit = input('Ingrese 1 si agrego las ip correspondientes:')
+        ipadresses=utilities.turnElementTostr(ipadresses)
+        ipadresses=utilities.joinList(ipadresses,separator)
         hentrada=input('Ingrese el horario de entrada en formato H:M: ')
         hentrada=hentrada.replace(":","")
         hsalida=input('Ingrese el horario de salida en formato H:M: ')
@@ -385,17 +396,16 @@ class shell(cmd2.Cmd):
         horario=[hentrada,hsalida]
         workphone=input("Teléfono del Trabajo:")
         homephone=input("Teléfono de casa: ")
+        horario=utilities.joinList(horario,',')
         GECOS = [fullname,workphone,homephone,horario,ipadresses]
-        for path in paths:
-            files[path] = open(paths[path],"a+")
-    
-        files[0].write(f"{username}:!:{int(time()/86400)}:0:99999:7:::\n")
-        files[2].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDIR}:{shellPATH}\n")
-        files[2].write(f"{username}:x:{groupID}:\n")
-
-        for path in paths:
+        GECOS=utilities.joinList(GECOS,',')
+        for path in range(len(paths)):
+            files[path] = open(paths[path],"a+") 
+        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDIR}:{shellPATH}\n")
+        files[1].write(f"{username}:!:0:0:99999:7:::\n")
+        files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
+        for path in range(len(paths)):
             files[path].close()
-
         self.poutput(f'User {username} created. Set password with passSet ''username''.\n ')
         return 0
         
@@ -555,7 +565,7 @@ class shell(cmd2.Cmd):
         print("EXIT!")
         self.logRegistroDiario(''.join('exit'))
        #self.verificarHorario()
-        quit()
+        return True
         
     
 
