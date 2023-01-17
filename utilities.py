@@ -1,7 +1,4 @@
-def getUID():
-    filePATH='/etc/passwd'
-    separator=':'
-    def readFile(filePATH,separator):
+def readFile(filePATH,separator):
         f = open(filePATH ,'r')
         fileList = f.readlines()
         resultMatrix=[]
@@ -11,6 +8,9 @@ def getUID():
         f.close()   
         return resultMatrix
 
+def getUID():
+    filePATH='/etc/passwd'
+    separator=':'
     resultMatrix=readFile(filePATH,separator)
     UID_list = []
     GID_list = []
@@ -20,21 +20,12 @@ def getUID():
     UID_list = list(map(int, UID_list))
     GID_list = list(map(int, GID_list))
     UID=max(UID_list)+1
+    print(UID)
     return UID
 
 def getGID():
     filePATH='/etc/passwd'
     separator=':'
-    def readFile(filePATH,separator):
-        f = open(filePATH ,'r')
-        fileList = f.readlines()
-        resultMatrix=[]
-        for i in range(len(fileList)):
-            matrix=fileList[i].split(separator)
-            resultMatrix.append(matrix)
-        f.close()   
-        return resultMatrix
-
     resultMatrix=readFile(filePATH,separator)
     UID_list = []
     GID_list = []
@@ -46,7 +37,18 @@ def getGID():
     GID=max(GID_list)+1
     return GID
 
-def readFile(filePATH):
-    f = open(filePATH ,'r')
-    fileList = f.readlines()
-    return fileList
+def checkip(ip):
+    ipFormat=0
+    return True
+
+def readFileLines(filename):
+            with open(filename) as file:
+                lines = file.readlines() 
+                lines = [line.rstrip() for line in lines]
+            return lines
+
+if __name__== '__main__':
+    lines = readFileLines('test1.txt')
+    print(lines)
+    getUID()
+
