@@ -383,8 +383,11 @@ class shell(cmd2.Cmd):
         ipadresses=utilities.turnElementTostr(ipadresses)
         ipadresses=utilities.joinList(ipadresses,separator)
         hentrada=input('Ingrese el horario de entrada en formato H:M: ')
-        hentrada=hentrada.replace(":","")
         hsalida=input('Ingrese el horario de salida en formato H:M: ')
+        while hentrada or hsalida == '':
+            hentrada=input('Debe ingresar el horario de entrada en formato H:M: ')
+            hsalida=input('Debe ingresar el horario de salida en formato H:M: ')
+        hentrada=hentrada.replace(":","")
         hsalida=hsalida.replace(":","")
         horario=[hentrada,hsalida]
         workphone=input("Teléfono del Trabajo:")
@@ -555,10 +558,15 @@ class shell(cmd2.Cmd):
         
     
     def do_exit(self,e): # tdv  no funciona
-        print("EXIT!")
+        
         self.logRegistroDiario(''.join('exit'))
+        check=input('Are you sure you want to exit?.y/n: ')
+        if check=='y'or 'Y': 
+            print("EXIT!")
+            return True 
+        else: 
+            return
        #self.verificarHorario()
-        return True
         
     
 
