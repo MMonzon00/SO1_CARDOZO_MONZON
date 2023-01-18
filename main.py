@@ -387,6 +387,7 @@ class shell(cmd2.Cmd):
         while hentrada or hsalida == '':
             hentrada=input('Debe ingresar el horario de entrada en formato H:M: ')
             hsalida=input('Debe ingresar el horario de salida en formato H:M: ')
+            
         hentrada=hentrada.replace(":","")
         hsalida=hsalida.replace(":","")
         horario=[hentrada,hsalida]
