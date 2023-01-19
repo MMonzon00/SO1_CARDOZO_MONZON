@@ -329,7 +329,7 @@ class shell(cmd2.Cmd):
     passparser.add_argument('usr',nargs=1, help='Nombre de usuario')
 
     @with_argparser(passparser)
-    def do_passSet(self,args):
+    def do_setPass(self,args):
         username=args.usr[0]
         lastchanged = mutilities.days_since()
         paths = ["/etc/passwd","/etc/shadow"]
@@ -381,6 +381,7 @@ class shell(cmd2.Cmd):
                 break
         mutilities.writePass(paths[0],passwdFile)
         mutilities.writePass(paths[1],shadowFile)
+        self.popout('Password set.')
         
         
 
