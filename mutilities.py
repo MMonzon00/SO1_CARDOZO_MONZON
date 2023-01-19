@@ -1,3 +1,7 @@
+from datetime import date
+import datetime
+
+
 def readFile(filePATH,separator):
         f = open(filePATH ,'r')
         fileList = f.readlines()
@@ -37,6 +41,13 @@ def getGID():
     GID=max(GID_list)+1
     return GID
 
+def days_since():
+    dateThen=date(1970,1,1) #Format: year, month, date.
+    dateNow=date.today()
+    days_since=dateNow - dateThen
+    return days_since.days
+
+
 def checkip(ip):
     ipFormat=0
     return True
@@ -53,6 +64,13 @@ def processText(text):
         processedText[i] = processedText[i].split(':')
     return processedText
 
+def parseFile(files,paths):
+    for path in paths:
+        files.append(readFileLines(path))
+    for path in range(len(paths)):
+        files[path] = processText(files[path])
+    return files
+    
 def turnElementTostr(list):
     for element in range(len(list)):
         list[element]=(str(list[element]))
@@ -63,6 +81,4 @@ def joinList(list,separator):
     return str
 
 if __name__== '__main__':
-    list = ['1','2','3']
-    print(joinList(list,','))
-
+    print(days_since())
