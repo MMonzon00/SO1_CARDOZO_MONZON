@@ -15,6 +15,8 @@ import psutil
 from datetime import datetime
 import mutilities
 import bcrypt
+import hashlib
+import base64
 
 # from usefunctions import *
 
@@ -98,7 +100,7 @@ class shell(cmd2.Cmd):
     def logRegistroError(self,ch):
         direccion='var/log/shell/sistema_error.log'
         if os.path.exists('var/log/shell')==False:
-            print("entra en no existe")
+            # print("entra en no existe")
             cwd=os.getcwd()
             path=os.path.join(cwd,'var/log/shell')
             os.makedirs(path)
@@ -164,7 +166,6 @@ class shell(cmd2.Cmd):
     
     ###4.2. Mover - mover
     ###4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s) DirectorioDestino.
-
     def do_move(self,arguments):
         dirsrc=arguments.arg_list[0]
         dirdst=arguments.arg_list[1]
@@ -329,13 +330,63 @@ class shell(cmd2.Cmd):
 
     @with_argparser(passparser)
     def do_passSet(self,args):
-        path="/etc/shadow"
+        username=args.usr[0]
         lastchanged = mutilities.days_since()
-        password = getpass.getpass()
-        password =b'{}'.format(password)
-        p_hashed = bcrypt.hashpw(password, bcrypt.gensalt())
-        print(p_hashed)
-    
+        paths = ["/etc/passwd","/etc/shadow"]
+        files = []
+        files = mutilities.parseFile(files,paths)
+        passwdFile = files[0]
+        shadowFile = files[1]
+        userlist = []
+        for line in range(len(passwdFile)):
+            userlist.append(passwdFile[line][0])
+        for line in range(len(userlist)):
+            if username not in userlist:
+                timeNow = datetime.now()
+                current_time = timeNow.strftime("%H:%M:%S")
+                self.logRegistroError(f"Username: {username} doesn't exist. Time of error: {current_time}")
+                self.poutput(f"Username: {username} doesn't exist.\nExiting...")
+                return 
+        password = getpass.getpass('New password:')
+        passwordcheck = getpass.getpass('Retype new password:')
+        if password == passwordcheck:
+            password = password.encode("utf-8")
+        else:
+            self.poutput('Sorry, passwords do not match.')
+            self.poutput('passSet: password unchanged.')
+            return
+        salt = bcrypt.gensalt(prefix=b"2a")
+        saltstr = mutilities.rmquotes(salt)
+        p_hashed = bcrypt.hashpw(base64.b64encode(hashlib.sha512(password).digest()),salt)
+        passString= mutilities.rmquotes(p_hashed)
+        passwordFormat=f'$6${saltstr}${passString}'
+        
+        with open('test.txt', 'r') as file:
+             # read a list of lines into data
+             data = file.readlines()
+        for i in range(len(passwdFile)):
+            currentusername =passwdFile[i][0] #username
+            if args.usr[0] == currentusername:
+                passwdFile[i][1] = passwordFormat
+                passwdtextline=passwdFile[i]
+                passwdtextline = str(passwdtextline)
+                break
+        for i in range(len(shadowFile)):
+            currentusername=shadowFile[i][0]
+            if args.usr[0] == currentusername:
+                shadowFile[i][1] = passwordFormat
+                shadowFile[i][2] = str(lastchanged)
+                shadowtextline=shadowFile[i]
+                shadowtextline=str(shadowtextline)
+                break
+        mutilities.writePass(paths[0],passwdFile)
+        mutilities.writePass(paths[1],shadowFile)
+        
+        
+
+        # for i in range(len(files[0])):
+        #     for j in range(len(files[0])):
+        #         print(files[i][j][1])
     
     
     
@@ -378,16 +429,26 @@ class shell(cmd2.Cmd):
     @with_argparser(userparser)
     def do_addusuario(self,args):
         separator=','
-        username = args.usr
+        username = args.usr[0]
         paths = ["/etc/passwd","/etc/shadow","/etc/group"]
         files = []
-        files=mutilities.parseFile(files,paths)
+        files = mutilities.parseFile(files,paths)
+        # print(files)
         for path in range(len(files[2])):
+            timeNow = datetime.now()
+            current_time = timeNow.strftime("%H:%M:%S")
             if files[2][path][0] == username:
-                self.logRegistroError(f"{username} already exists.Try again")
-            return 
+                self.logRegistroError(f"{username} already exists. {current_time}")
+                self.poutput(f"{username} already exists.Try again")
+                return 
         homeDIR=f'/home/{username}'
-        os.mkdir(homeDIR)
+        flagP=mutilities.checkpath(homeDIR) #check if path exists
+        if flagP==True:
+            self.poutput('Path already exists. Exiting...')
+            return
+        else:
+            os.mkdir(homeDIR)
+            self.poutput(f'Path {homeDIR} created.')
         shellPATH='/bin/bash'
         encrypted_pwd= 'x'
         groupID = os.getpgrp()
@@ -405,7 +466,7 @@ class shell(cmd2.Cmd):
         ipadresses=mutilities.joinList(ipadresses,separator)
         hentrada=input('Ingrese el horario de entrada en formato H:M: ')
         hsalida=input('Ingrese el horario de salida en formato H:M: ')
-        while hentrada or hsalida == '':
+        if hentrada or hsalida == '':
             hentrada=input('Debe ingresar el horario de entrada en formato H:M: ')
             hsalida=input('Debe ingresar el horario de salida en formato H:M: ')
             
@@ -424,12 +485,13 @@ class shell(cmd2.Cmd):
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
             files[path].close()
-        self.poutput(f'User {username} created. Set password with passSet ''username''.\n ')
+        self.poutput(f'User {username} created. Set password with passSet ''<username>''.\n ')
         return 0
     
     # verficar horario laboral-falta
     def do_verificarHorario(self,b):
         hora_actual = datetime.datetime.now().time()
+        print(hora_actual)
         actualHora=hora_actual.hour
         actualMin=hora_actual.minute
         band=False

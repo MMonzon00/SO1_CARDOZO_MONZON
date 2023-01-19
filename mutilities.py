@@ -1,7 +1,9 @@
 from datetime import date
 import datetime
+import os
 
-
+def checkpath(path):
+    return os.path.exists(path)
 def readFile(filePATH,separator):
         f = open(filePATH ,'r')
         fileList = f.readlines()
@@ -24,7 +26,6 @@ def getUID():
     UID_list = list(map(int, UID_list))
     GID_list = list(map(int, GID_list))
     UID=max(UID_list)+1
-    print(UID)
     return UID
 
 def getGID():
@@ -58,6 +59,10 @@ def readFileLines(filename):
         lines = [line.rstrip() for line in lines]
     return lines
 
+def rmquotes(byteline):
+    byteline = str(byteline).replace('b','').replace("'",'')
+    return byteline
+
 def processText(text):
     processedText = list(text)
     for i in range(len(processedText)):
@@ -75,6 +80,12 @@ def turnElementTostr(list):
     for element in range(len(list)):
         list[element]=(str(list[element]))
     return list
+
+def writePass(path,file):
+    fileo=open(path, 'w')
+    for i in range(len(file)):
+        lineparsed=joinList(file[i],':')
+        fileo.write(f'{lineparsed}\n')
 
 def joinList(list,separator):
     str=separator.join(list)
