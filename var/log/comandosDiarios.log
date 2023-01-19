@@ -1,0 +1,64 @@
+2023-01-06 02:06:35,025 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON/SO1_CARDOZO_MONZON
+2023-01-06 02:07:26,922 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON/SO1_CARDOZO_MONZON
+2023-01-06 02:08:26,565 - RegistroDiario - DEBUG - makedir ho
+2023-01-06 02:08:30,267 - RegistroDiario - DEBUG - ir ho
+2023-01-06 02:08:44,473 - RegistroDiario - DEBUG - ir ..
+2023-01-06 02:08:53,086 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON/SO1_CARDOZO_MONZON
+2023-01-06 03:50:05,922 - RegistroDiario - DEBUG - propietario aw:root test1.txt
+2023-01-06 03:50:14,848 - RegistroDiario - DEBUG - propietario a:root test1.txt
+2023-01-06 03:56:14,196 - RegistroDiario - DEBUG - propietario ce:root test1.txt
+2023-01-06 18:29:12,755 - RegistroDiario - DEBUG - exit
+2023-01-06 18:29:45,436 - RegistroDiario - DEBUG - exit
+2023-01-06 18:30:17,380 - RegistroDiario - DEBUG - exit
+2023-01-06 18:31:56,564 - RegistroDiario - DEBUG - exit
+2023-01-06 18:34:29,533 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON/SO1_CARDOZO_MONZON
+2023-01-06 19:07:53,609 - RegistroDiario - DEBUG - exit
+2023-01-08 14:56:17,626 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON/SO1_CARDOZO_MONZON
+2023-01-08 14:57:04,421 - RegistroDiario - DEBUG - ('listar', 'var/log')
+2023-01-08 14:57:30,288 - RegistroDiario - DEBUG - ('listar', 'var')
+2023-01-08 15:10:48,389 - RegistroDiario - DEBUG - makedir var/log/registrosUsuarios.log
+2023-01-08 15:25:05,610 - RegistroDiario - DEBUG - agregarUsuarioa 192.168.0.15 07:00 12:00
+2023-01-08 15:25:23,571 - RegistroDiario - DEBUG - agregarUsuarioe 192.168.0.15 07:00 12:00
+2023-01-08 15:27:30,168 - RegistroDiario - DEBUG - agregarUsuario c 192.168.0.15 07:00 12:00
+2023-01-08 15:27:39,727 - RegistroDiario - DEBUG - agregarUsuario d 192.168.0.15 07:00 12:00
+2023-01-08 15:34:34,780 - RegistroDiario - DEBUG - ('listar', 'test')
+2023-01-08 15:34:55,022 - RegistroDiario - DEBUG - ('listar', 'var/log')
+2023-01-08 15:36:46,313 - RegistroDiario - DEBUG - ('listar', 'test')
+2023-01-08 15:38:43,105 - RegistroDiario - DEBUG - ('listar', 'holaaaa.txt')
+2023-01-08 15:38:56,194 - RegistroDiario - DEBUG - ('listar', 'holaaaa.txt')
+2023-01-08 15:39:35,197 - RegistroDiario - DEBUG - listartest
+2023-01-08 15:39:53,255 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON/SO1_CARDOZO_MONZON
+2023-01-08 15:41:32,869 - RegistroDiario - DEBUG - ('listar', Statement(args='test', raw='listar test', command='listar', arg_list=['test'], multiline_command='', terminator='', suffix='', pipe_to='', output='', output_to=''))
+2023-01-08 15:44:30,606 - RegistroDiario - DEBUG - ('listar', Statement(args='test', raw='listar test', command='listar', arg_list=['test'], multiline_command='', terminator='', suffix='', pipe_to='', output='', output_to=''))
+2023-01-08 15:48:57,631 - RegistroDiario - DEBUG - ('listar', 'test')
+2023-01-08 15:49:57,868 - RegistroDiario - DEBUG - listartest
+2023-01-08 15:50:49,504 - RegistroDiario - DEBUG - listar test
+2023-01-08 15:50:57,438 - RegistroDiario - DEBUG - listar test
+2023-01-08 16:00:20,498 - RegistroDiario - DEBUG - listar test
+2023-01-08 16:00:39,644 - RegistroDiario - DEBUG - listar test
+2023-01-08 16:01:30,563 - RegistroDiario - DEBUG - listar test
+2023-01-08 17:38:07,909 - RegistroDiario - DEBUG - ir /etc/passwd
+2023-01-08 17:39:01,599 - RegistroDiario - DEBUG - printdir/root/so1_shell/SO1_CARDOZO_MONZON
+2023-01-08 17:39:25,813 - RegistroDiario - DEBUG - clean
+2023-01-08 17:39:30,999 - RegistroDiario - DEBUG - ir ..
+2023-01-08 18:02:06,990 - RegistroDiario - DEBUG - clean
+2023-01-15 21:34:14,151 - RegistroDiario - DEBUG - exit
+2023-01-15 21:42:06,926 - RegistroDiario - DEBUG - exit
+2023-01-15 21:43:14,406 - RegistroDiario - DEBUG - exit
+2023-01-15 21:47:28,030 - RegistroDiario - DEBUG - exit
+2023-01-16 15:02:30,093 - RegistroDiario - DEBUG - clean
+2023-01-16 15:50:30,355 - RegistroDiario - DEBUG - exit
+2023-01-18 13:49:09,427 - RegistroDiario - DEBUG - exit
+2023-01-18 13:50:52,147 - RegistroDiario - DEBUG - exit
+2023-01-08 17:07:25,613 - RegistroDiario - DEBUG - clean
+2023-01-18 22:33:13,806 - RegistroDiario - DEBUG - exit
+2023-01-18 22:37:23,087 - RegistroDiario - DEBUG - exit
+2023-01-18 22:39:12,254 - RegistroDiario - DEBUG - clean
+2023-01-18 22:39:18,969 - RegistroDiario - DEBUG - clean
+2023-01-18 22:39:21,463 - RegistroDiario - DEBUG - clean
+2023-01-18 22:39:24,900 - RegistroDiario - DEBUG - clean
+2023-01-18 22:41:42,887 - RegistroDiario - DEBUG - exit
+2023-01-19 08:26:31,511 - RegistroDiario - DEBUG - exit
+2023-01-19 09:14:32,339 - RegistroDiario - DEBUG - listar /home/martinm/SO1_CARDOZO_MONZON
+2023-01-19 09:14:58,961 - RegistroDiario - DEBUG - copy test1.txt test2.txt
+2023-01-19 09:17:35,716 - RegistroDiario - DEBUG - copy test1.txt test2.txt

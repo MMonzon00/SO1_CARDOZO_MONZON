@@ -1,0 +1,7 @@
+clean
+clean
+clean
+clean
+listar /home/martinm/SO1_CARDOZO_MONZON
+copy test1.txt test2.txt
+copy test1.txt test2.txt
