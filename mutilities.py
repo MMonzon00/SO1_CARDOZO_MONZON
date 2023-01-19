@@ -1,6 +1,7 @@
 from datetime import date
 import datetime
 import os
+import time
 
 def checkpath(path):
     return os.path.exists(path)
@@ -58,6 +59,14 @@ def readFileLines(filename):
         lines = file.readlines() 
         lines = [line.rstrip() for line in lines]
     return lines
+
+    #validar formato hora
+def isValidTime(self,data): 
+        try:
+            time.strptime(data, "%H:%M")
+            return True
+        except ValueError:
+            return False
 
 def rmquotes(byteline):
     byteline = str(byteline).replace('b','').replace("'",'')

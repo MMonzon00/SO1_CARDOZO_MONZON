@@ -6,7 +6,6 @@ import getpass
 import socket
 import re
 import logging
-import time
 import datetime
 import socket
 from os import system
@@ -382,45 +381,8 @@ class shell(cmd2.Cmd):
         mutilities.writePass(paths[0],passwdFile)
         mutilities.writePass(paths[1],shadowFile)
         self.popout('Password set.')
-        
-        
 
-        # for i in range(len(files[0])):
-        #     for j in range(len(files[0])):
-        #         print(files[i][j][1])
     
-    
-    
-    
-    
-    
-    
-    
-    
-        # name="contraseña"
-        # guardarParam=(name)
-        # self.guardar(guardarParam)
-        # #self.logRegistroDiario(''.join(guardarParam))
-        # if user == '':
-        #     user = getpass.getuser()
-        # try:    
-        #     subprocess.run(['passwd', user])
-        #     self.logRegistroDiario(''.join(guardarParam))
-        # except: 
-        #     self.logRegistroError(' '.join(guardarParam))
-    
-    #validar formato hora
-    def isValidTime(self,data): 
-        try:
-            time.strptime(data, "%H:%M")
-            return True
-        except ValueError:
-            return False
-    def readFile(filename):
-        with open(filename) as file:
-            lines = file.readlines() 
-            lines = [line.rstrip() for line in lines]
-        return lines
 
 
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
