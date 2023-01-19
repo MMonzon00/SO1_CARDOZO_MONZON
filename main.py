@@ -1,9 +1,5 @@
-import cmd
-import readline
 import subprocess
-from typing import Iterable
 import cmd2
-import argparse
 import os 
 import shutil
 import getpass
@@ -12,11 +8,16 @@ import re
 import logging
 import time
 import datetime
-import signal
+import socket
 from os import system
 from cmd2 import Cmd2ArgumentParser, with_argparser
 import psutil
 from datetime import datetime
+import mutilities
+import bcrypt
+import hashlib
+import base64
+
 # from usefunctions import *
 
 #!/usr/bin/env python
@@ -43,15 +44,13 @@ class shell(cmd2.Cmd):
         self.default_to_shell = True #use default shell commands
         self.prompt = f"{username}@{hostname}:{homedir.replace('/root','~')}$ "
         self.maxrepeats = 3
-        # shortcuts = {'?': 'help', '+': 'shell', '@': 'run_script', '@@': '_relative_run_script'}
-        # print(shortcuts)
         self.poutput("Welcome to So1_Shell_2022")
     
 
     def logRegistroDiario(self,ch):
         direccion='var/log/comandosDiarios.log'
         if os.path.exists('var/log')==False:
-            print("entra en no existe")
+            print("Directory doesn't exist.")
             cwd=os.getcwd()
             path=os.path.join(cwd,'var','log')
             os.makedirs(path)
@@ -101,7 +100,7 @@ class shell(cmd2.Cmd):
     def logRegistroError(self,ch):
         direccion='var/log/shell/sistema_error.log'
         if os.path.exists('var/log/shell')==False:
-            print("entra en no existe")
+            # print("entra en no existe")
             cwd=os.getcwd()
             path=os.path.join(cwd,'var/log/shell')
             os.makedirs(path)
@@ -167,7 +166,6 @@ class shell(cmd2.Cmd):
     
     ###4.2. Mover - mover
     ###4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s) DirectorioDestino.
-    
     def do_move(self,arguments):
         dirsrc=arguments.arg_list[0]
         dirdst=arguments.arg_list[1]
@@ -273,23 +271,18 @@ class shell(cmd2.Cmd):
         except:
             self.logRegistroError(' '.join(guardarParam))
     
-    ### 4.6. Cambiar de directorio (no puede ser una llamada a sistema a la función cd) - ir ///////ver ir ..
+    ### 4.6. Cambiar de directorio (no puede ser una llamada a sistema a la función cd) - ir
     def do_ir(self,dirPATH):
         name = "ir"
+        cwd = os.getcwd()#current working directory
+        if cwd==dirPATH:
+            self.poutput("Path is the same as current directory. \n")
         username = getpass.getuser()
-        guardarParam=(name,dirPATH)
-        self.guardar(guardarParam)
-        if os.path.exists(dirPATH)==True:
-            self.logRegistroDiario(' '.join(guardarParam))
-            os.chdir(dirPATH)
-            cwd = os.getcwd() #current working directory
-            hostname = socket.gethostname()
-            self.prompt = f"{username}@{hostname}:{cwd}$"
-        if dirPATH=='..' or '../..' or '../../..'or '../../../..':
-            self.logRegistroDiario(' '.join(guardarParam))
-        else:
-            print("no se encontro el archivo o directorio")
-            self.logRegistroError(' '.join(guardarParam))
+        os.chdir(dirPATH)
+        hostname = socket.gethostname()
+        self.prompt = f"{username}@{hostname}:{cwd}$ "
+
+            
     ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos//// falta
     def do_permisos(self,perPATH):
         ##separar la cadena y ver como cambiar el numero de permisos
@@ -332,18 +325,89 @@ class shell(cmd2.Cmd):
         
     
     ###4.9. Cambiar la contraseña - contraseña
-    def do_contraseña(self,user):
-        name="contraseña"
-        guardarParam=(name)
-        self.guardar(guardarParam)
-        #self.logRegistroDiario(''.join(guardarParam))
-        if user == '':
-            user = getpass.getuser()
-        try:    
-            subprocess.run(['passwd', user])
-            self.logRegistroDiario(''.join(guardarParam))
-        except: 
-            self.logRegistroError(' '.join(guardarParam))
+    passparser = Cmd2ArgumentParser()
+    passparser.add_argument('usr',nargs=1, help='Nombre de usuario')
+
+    @with_argparser(passparser)
+    def do_setPass(self,args):
+        username=args.usr[0]
+        lastchanged = mutilities.days_since()
+        paths = ["/etc/passwd","/etc/shadow"]
+        files = []
+        files = mutilities.parseFile(files,paths)
+        passwdFile = files[0]
+        shadowFile = files[1]
+        userlist = []
+        for line in range(len(passwdFile)):
+            userlist.append(passwdFile[line][0])
+        for line in range(len(userlist)):
+            if username not in userlist:
+                timeNow = datetime.now()
+                current_time = timeNow.strftime("%H:%M:%S")
+                self.logRegistroError(f"Username: {username} doesn't exist. Time of error: {current_time}")
+                self.poutput(f"Username: {username} doesn't exist.\nExiting...")
+                return 
+        password = getpass.getpass('New password:')
+        passwordcheck = getpass.getpass('Retype new password:')
+        if password == passwordcheck:
+            password = password.encode("utf-8")
+        else:
+            self.poutput('Sorry, passwords do not match.')
+            self.poutput('passSet: password unchanged.')
+            return
+        salt = bcrypt.gensalt(prefix=b"2a")
+        saltstr = mutilities.rmquotes(salt)
+        p_hashed = bcrypt.hashpw(base64.b64encode(hashlib.sha512(password).digest()),salt)
+        passString= mutilities.rmquotes(p_hashed)
+        passwordFormat=f'$6${saltstr}${passString}'
+        
+        with open('test.txt', 'r') as file:
+             # read a list of lines into data
+             data = file.readlines()
+        for i in range(len(passwdFile)):
+            currentusername =passwdFile[i][0] #username
+            if args.usr[0] == currentusername:
+                passwdFile[i][1] = passwordFormat
+                passwdtextline=passwdFile[i]
+                passwdtextline = str(passwdtextline)
+                break
+        for i in range(len(shadowFile)):
+            currentusername=shadowFile[i][0]
+            if args.usr[0] == currentusername:
+                shadowFile[i][1] = passwordFormat
+                shadowFile[i][2] = str(lastchanged)
+                shadowtextline=shadowFile[i]
+                shadowtextline=str(shadowtextline)
+                break
+        mutilities.writePass(paths[0],passwdFile)
+        mutilities.writePass(paths[1],shadowFile)
+        self.popout('Password set.')
+        
+        
+
+        # for i in range(len(files[0])):
+        #     for j in range(len(files[0])):
+        #         print(files[i][j][1])
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        # name="contraseña"
+        # guardarParam=(name)
+        # self.guardar(guardarParam)
+        # #self.logRegistroDiario(''.join(guardarParam))
+        # if user == '':
+        #     user = getpass.getuser()
+        # try:    
+        #     subprocess.run(['passwd', user])
+        #     self.logRegistroDiario(''.join(guardarParam))
+        # except: 
+        #     self.logRegistroError(' '.join(guardarParam))
     
     #validar formato hora
     def isValidTime(self,data): 
@@ -352,57 +416,83 @@ class shell(cmd2.Cmd):
             return True
         except ValueError:
             return False
+    def readFile(filename):
+        with open(filename) as file:
+            lines = file.readlines() 
+            lines = [line.rstrip() for line in lines]
+        return lines
+
 
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
     userparser = Cmd2ArgumentParser()
-    userparser.add_argument('-usr', '--username', action='store_true',required = True , help='Nombre de usuario')
-    userparser.add_argument('username')
-    userparser.add_argument('-pw', '--password', action='store_true',required = True , help='Contraseña de usuario')
-    userparser.add_argument('username')
-    userparser.add_argument('-n', '--name', action='store_true',required = True , help='Nombre y apellido.')
-    userparser.add_argument('name',nargs=2)
-    userparser.add_argument('-H', '--horario', action='store_true',required = True , help='Horario de trabajo.')
-    userparser.add_argument('horario',type=int)
-    userparser.add_argument('-IPs', '--address', action='store_true',required = True , help='IP addresses.')
-    userparser.add_argument('ipAddress',nargs='+')
+    userparser.add_argument('usr',nargs=1, help='Nombre de usuario')
 
     @with_argparser(userparser)
     def do_addusuario(self,args):
+        separator=','
+        username = args.usr[0]
+        paths = ["/etc/passwd","/etc/shadow","/etc/group"]
+        files = []
+        files = mutilities.parseFile(files,paths)
+        # print(files)
+        for path in range(len(files[2])):
+            timeNow = datetime.now()
+            current_time = timeNow.strftime("%H:%M:%S")
+            if files[2][path][0] == username:
+                self.logRegistroError(f"{username} already exists. {current_time}")
+                self.poutput(f"{username} already exists.Try again")
+                return 
+        homeDIR=f'/home/{username}'
+        flagP=mutilities.checkpath(homeDIR) #check if path exists
+        if flagP==True:
+            self.poutput('Path already exists. Exiting...')
+            return
+        else:
+            os.mkdir(homeDIR)
+            self.poutput(f'Path {homeDIR} created.')
+        shellPATH='/bin/bash'
+        encrypted_pwd= 'x'
+        groupID = os.getpgrp()
+        userID = mutilities.getUID()
+        fullname =input('Insert your Name and Surname: ')
+        ipadresses = []
+        exit=0
+        while exit != '1':
+            ip=input('Ingrese la ip por donde se puede conectar: ')
+            if ip =='':
+                ip=input('Ingrese una ip valida: ')
+            ipadresses.append(ip)
+            exit = input('Ingrese 1 si agrego las ip correspondientes:')
+        ipadresses=mutilities.turnElementTostr(ipadresses)
+        ipadresses=mutilities.joinList(ipadresses,separator)
+        hentrada=input('Ingrese el horario de entrada en formato H:M: ')
+        hsalida=input('Ingrese el horario de salida en formato H:M: ')
+        if hentrada or hsalida == '':
+            hentrada=input('Debe ingresar el horario de entrada en formato H:M: ')
+            hsalida=input('Debe ingresar el horario de salida en formato H:M: ')
+            
+        hentrada=hentrada.replace(":","")
+        hsalida=hsalida.replace(":","")
+        horario=[hentrada,hsalida]
+        workphone=input("Teléfono del Trabajo:")
+        homephone=input("Teléfono de casa: ")
+        horario=mutilities.joinList(horario,',')
+        GECOS = [fullname,workphone,homephone,horario,ipadresses]
+        GECOS=mutilities.joinList(GECOS,',')
+        for path in range(len(paths)):
+            files[path] = open(paths[path],"a+") 
+        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDIR}:{shellPATH}\n")
+        files[1].write(f"{username}:!:0:0:99999:7:::\n")
+        files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
+        for path in range(len(paths)):
+            files[path].close()
+        self.poutput(f'User {username} created. Set password with passSet ''<username>''.\n ')
         return 0
-
-    def do_agregarUsuario(self,p):
-        name="agregarUsuario "
-        
-        i=input("Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
-       
-        while(len(i)==0): #si se ingresa vacio
-            i=input("Error Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
-
-        Upath=i.split(' ', 4) #separar en 4 partes (usuario, ip,entrada,salida)
-        ip=re.match(r'^((0|[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.|$)){4}$', Upath[1]) # vaiidar ip
-        
-        while not ip or self.isValidTime(Upath[2])==False or self.isValidTime(Upath[3])==False or len(Upath)<4 :
-            i=input("Error Ingrese usuario en este formato: nombre ip horarioEntrada(ej 08:00) horarioSalida: ")
-            Upath=i.split(' ', 4)
-            ip=re.match(r'^((0|[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.|$)){4}$', Upath[1])
-        
-        passw=getpass.getpass(prompt='Password: ', stream=None) #agregar contra
-        
-        try:
-            subprocess.run(['sudo', 'useradd','-p', passw, Upath[0] ])   # agregar usuario , -p encrypted password of the new account
-            arg=' '.join(Upath)
-            guardarParam=(name,arg)
-            self.guardar(guardarParam)#historial
-            self.logRegistroUsuario(arg)#registro usuarios
-            self.logRegistroDiario(''.join(guardarParam))#registro diario
-        
-        except:
-            print("ERROR al agregar usuario")
-            self.logRegistroError(''.join('errorUsuario '+arg))
     
     # verficar horario laboral-falta
     def do_verificarHorario(self,b):
         hora_actual = datetime.datetime.now().time()
+        print(hora_actual)
         actualHora=hora_actual.hour
         actualMin=hora_actual.minute
         band=False
@@ -423,7 +513,7 @@ class shell(cmd2.Cmd):
             #self.logRegistroHorario(''.join(guardarParam))
 
     ### 4.11. Imprimir el directorio en el que se encuentra la shell actualmente - pwd
-    def do_printdir(self,dirPATH):
+    def do_printdir(self):
         name = 'printdir'
         cwd=os.getcwd()
         guardarParam = (name,cwd)
@@ -522,11 +612,16 @@ class shell(cmd2.Cmd):
         _ = system('clear')  
         
     
-    def do_exit(self,e): # tdv  no funciona
-        print("EXIT!")
+    def do_exit(self,e): 
+        
         self.logRegistroDiario(''.join('exit'))
+        check=input('Are you sure you want to exit?. y/n: ')
+        if check=='y'or 'Y': 
+            print("EXIT!")
+            return True 
+        else: 
+            return
        #self.verificarHorario()
-        quit()
         
     
 
