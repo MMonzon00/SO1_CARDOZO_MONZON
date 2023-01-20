@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 clean
 clean
 clean
@@ -80,6 +81,8 @@ propietario erika:erika historial.txt holaaaa.txt
 =======
 =======
 >>>>>>> 70d168a7fb4da419b19316f5cefa81c6e4940a14
+=======
+>>>>>>> 70d168a7fb4da419b19316f5cefa81c6e4940a14
 clean
 clean
 clean
@@ -142,7 +145,10 @@ listar /home/martinm/SO1_CARDOZO_MONZON
 makedir test
 historial
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 70d168a7fb4da419b19316f5cefa81c6e4940a14
 propietario root:root historial.txt holaaaa.txt
+=======
+>>>>>>> 70d168a7fb4da419b19316f5cefa81c6e4940a14
 =======
 >>>>>>> 70d168a7fb4da419b19316f5cefa81c6e4940a14
