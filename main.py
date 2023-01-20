@@ -49,7 +49,7 @@ class shell(cmd2.Cmd):
         #self.prompt = f"{username}@{hostname}:{homedir.replace('/root','~')}$ "
         self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+homedir.replace('/root','~')+"$ "+MAGENTA
         self.maxrepeats = 3
-        self.poutput("Welcome to So1_Shell_2022 Cardozo y Monzon")
+        self.poutput("Welcome to So1_Shell_2022. Made by: Cardozo & Monzon")
  
   
     def onecmd( self, s, **kwargs): #  **kwargssimplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
