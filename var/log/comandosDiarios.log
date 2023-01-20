@@ -62,4 +62,44 @@
 2023-01-19 09:14:32,339 - RegistroDiario - DEBUG - listar /home/martinm/SO1_CARDOZO_MONZON
 2023-01-19 09:14:58,961 - RegistroDiario - DEBUG - copy test1.txt test2.txt
 2023-01-19 09:17:35,716 - RegistroDiario - DEBUG - copy test1.txt test2.txt
-2023-01-20 09:48:12,514 - RegistroDiario - DEBUG - clean
+2023-01-19 21:55:57,590 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:05:40,150 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:06:49,097 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:11:03,941 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:12:32,139 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:13:38,984 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:14:20,704 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:16:35,101 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:20:40,508 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:31:46,432 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:32:07,011 - RegistroDiario - DEBUG - listar test
+2023-01-19 22:34:29,136 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:38:08,946 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 22:38:28,425 - RegistroDiario - DEBUG - makedir hoa hola
+2023-01-19 22:53:24,488 - RegistroDiario - DEBUG - exit
+2023-01-19 22:54:20,176 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 23:07:51,879 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 23:08:14,685 - RegistroDiario - DEBUG - listar var
+2023-01-19 23:08:57,099 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 23:09:13,910 - RegistroDiario - DEBUG - listar var
+2023-01-19 23:10:53,929 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 23:10:53,931 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 23:11:40,477 - RegistroDiario - DEBUG - listar hoa
+2023-01-19 23:11:40,478 - RegistroDiario - DEBUG - listar hoa
+2023-01-19 23:17:24,671 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 23:18:28,562 - RegistroDiario - DEBUG - exit
+2023-01-19 23:19:22,015 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-19 23:50:01,172 - RegistroDiario - DEBUG - makedir holas
+2023-01-19 23:54:04,588 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 00:20:32,022 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 00:41:16,470 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 00:42:08,300 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 00:42:15,477 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 00:54:33,736 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 00:54:43,843 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 01:19:13,828 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 01:24:33,773 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 02:50:04,306 - RegistroDiario - DEBUG - exit
+2023-01-20 10:02:52,564 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 10:03:09,121 - RegistroDiario - DEBUG - listar test
+2023-01-20 10:05:32,681 - RegistroDiario - DEBUG - exit
