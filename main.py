@@ -16,6 +16,7 @@ import mutilities
 import bcrypt
 import hashlib
 import base64
+import string
 
 # from usefunctions import *
 
@@ -23,7 +24,6 @@ import base64
 """A simple shell application."""
 
 class shell(cmd2.Cmd):
-    
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
@@ -33,7 +33,6 @@ class shell(cmd2.Cmd):
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-    """A simple cmd2 application."""
     def __init__(self):
         super().__init__()
         username = getpass.getuser()
@@ -45,7 +44,6 @@ class shell(cmd2.Cmd):
         self.maxrepeats = 3
         self.poutput("Welcome to So1_Shell_2022")
     
-
     def logRegistroDiario(self,ch):
         direccion='var/log/comandosDiarios.log'
         if os.path.exists('var/log')==False:
@@ -185,7 +183,6 @@ class shell(cmd2.Cmd):
         # except:
         #     self.poutput("Error occurred while moving file/s.")
     
-    
     ###4.3. Renombrar - renombrar
     def do_rename(self,FILENAME): #these are the parameters needed
         cwd = os.getcwd() #Get current working directory
@@ -204,8 +201,7 @@ class shell(cmd2.Cmd):
             self.logRegistroError(' '.join(guardarParam))
         else:
             self.logRegistroError(' '.join(guardarParam))
-    
-    
+     
     ###4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
     ###4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la carpeta actual.
     ###4.4.2. En caso de recibir un directorio, listar archivos/directorios de esedirectorio.       
@@ -249,8 +245,6 @@ class shell(cmd2.Cmd):
                 print("El archivo", dir ,"no existe")
                 self.logRegistroError(' '.join(guardarParam))
 
-
-
     ###4.5. Crear un directorio - creardir
     ###4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
     ## ver historial!!!!!!!!!!!!!
@@ -281,7 +275,6 @@ class shell(cmd2.Cmd):
         hostname = socket.gethostname()
         self.prompt = f"{username}@{hostname}:{cwd}$ "
 
-            
     ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos//// falta
     def do_permisos(self,perPATH):
         ##separar la cadena y ver como cambiar el numero de permisos
@@ -382,9 +375,6 @@ class shell(cmd2.Cmd):
         mutilities.writePass(paths[1],shadowFile)
         self.popout('Password set.')
 
-    
-
-
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
     userparser = Cmd2ArgumentParser()
     userparser.add_argument('usr',nargs=1, help='Nombre de usuario')
@@ -409,9 +399,6 @@ class shell(cmd2.Cmd):
         if flagP==True:
             self.poutput('Path already exists. Exiting...')
             return
-        else:
-            os.mkdir(homeDIR)
-            self.poutput(f'Path {homeDIR} created.')
         shellPATH='/bin/bash'
         encrypted_pwd= 'x'
         groupID = os.getpgrp()
@@ -427,15 +414,7 @@ class shell(cmd2.Cmd):
             exit = input('Ingrese 1 si agrego las ip correspondientes:')
         ipadresses=mutilities.turnElementTostr(ipadresses)
         ipadresses=mutilities.joinList(ipadresses,separator)
-        hentrada=input('Ingrese el horario de entrada en formato H:M: ')
-        hsalida=input('Ingrese el horario de salida en formato H:M: ')
-        if hentrada or hsalida == '':
-            hentrada=input('Debe ingresar el horario de entrada en formato H:M: ')
-            hsalida=input('Debe ingresar el horario de salida en formato H:M: ')
-            
-        hentrada=hentrada.replace(":","")
-        hsalida=hsalida.replace(":","")
-        horario=[hentrada,hsalida]
+        horario=mutilities.verifyTime()
         workphone=input("Teléfono del Trabajo:")
         homephone=input("Teléfono de casa: ")
         horario=mutilities.joinList(horario,',')
@@ -448,7 +427,9 @@ class shell(cmd2.Cmd):
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
             files[path].close()
-        self.poutput(f'User {username} created. Set password with passSet ''<username>''.\n ')
+        os.mkdir(homeDIR)
+        self.poutput(f'Path {homeDIR} created.')
+        self.poutput(f'User {username} created.\nSet password with passSet ''<username>''.\n ')
         return 0
     
     # verficar horario laboral-falta

@@ -62,3 +62,4 @@
 2023-01-19 09:14:32,339 - RegistroDiario - DEBUG - listar /home/martinm/SO1_CARDOZO_MONZON
 2023-01-19 09:14:58,961 - RegistroDiario - DEBUG - copy test1.txt test2.txt
 2023-01-19 09:17:35,716 - RegistroDiario - DEBUG - copy test1.txt test2.txt
+2023-01-20 09:48:12,514 - RegistroDiario - DEBUG - clean
