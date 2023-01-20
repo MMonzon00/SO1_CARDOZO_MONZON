@@ -18,35 +18,25 @@ import hashlib
 import base64
 import ftplib
 import string
+import time
+from daemonClass import Daemon
+import sys
 
-# from usefunctions import *
+
+
 
 #!/usr/bin/env python
-"""A simple shell application."""
-OKBLUE = '\033[94m'
-OKCYAN = '\033[96m'
-OKGREEN = '\033[92m'
-BOLD = '\033[1m'
-WHITE = '\033[37m'
-MAGENTA='\033[35m'
+
 class shell(cmd2.Cmd):
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
     def __init__(self):
         super().__init__()
         username = getpass.getuser()
         homedir = os.getcwd()
         hostname = socket.gethostname()
+        self.colors = mutilities.colors()
         
         self.default_to_shell = True #use default shell commands
-        self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+homedir.replace('/root','~')+WHITE+"$ "
+        self.prompt =self.colors.OKGREEN+username+"@"+hostname+":"+self.colors.OKBLUE+homedir.replace('/root','~')+self.colors.WHITE+"$ "
         self.maxrepeats = 3
         self.poutput("\nWelcome to So1_Shell_2022. \nMade by: Cardozo & Monzon.")
  
@@ -358,7 +348,7 @@ class shell(cmd2.Cmd):
             
             self.logRegistroDiario(' '.join(guardarParam))
             hostname = socket.gethostname()
-            self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+cwd2+"$ "+MAGENTA
+            self.prompt =self.colors.OKGREEN+username+"@"+hostname+":"+self.colors.OKBLUE+cwd2+"$ "+self.colors.MAGENTA
         
         except:
             guardarParam=(name,dirPATH+" no such file directory")
@@ -627,6 +617,29 @@ class shell(cmd2.Cmd):
     ###4.15 El usuario debe poder levantar y apagar demonios dentro del sistema,
     ###     utilizando una herramienta como service de CentOS. (no puede ser una
     ###     llamada a sistema a la función service o systemctl)
+    daemonParser = Cmd2ArgumentParser()
+    daemonParser.add_argument('sig', nargs='1',type=str,help='Signal to send.')
+    daemonParser.add_argument('daemon',nargs='1', help='Program to daemonize.')
+
+    @with_argparser(daemonParser)
+    def daemonControl(self,args):
+        daemon = self.MyDaemon()
+        sisargsv = args.arg_list
+        # if len(sisargsv) == 2:
+        #         if 'start' == sisargsv[1]:
+        #                 daemon.start()
+        #         elif 'stop' == sisargsv[1]:
+        #                 daemon.stop()
+        #         elif 'restart' == sisargsv[1]:
+        #                 daemon.restart()
+        #         else:
+        #                 print('Unknown command')
+        #                 sys.exit(2)
+        #         sys.exit(0)
+        # else:
+        #         print("usage: %s start|stop|restart" % sisargsv[0])
+        #         sys.exit(2)
+        
 
     ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 
     ###      sean los comandos mencionados arriba.- falta agregar a historial
@@ -703,10 +716,9 @@ class shell(cmd2.Cmd):
     def do_shutdown(self,e): #ver
         self.verificarHorario(datetime.now().time())
         return os.system("shutdown /s /t 1")
-        
+    
 
 if __name__ == '__main__':
-    import sys
     c = shell()
     #c.verificarHorario(datetime.now().time()) # para inicio sesion
     sys.exit(c.cmdloop())
