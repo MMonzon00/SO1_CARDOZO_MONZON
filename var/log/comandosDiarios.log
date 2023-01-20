@@ -103,6 +103,17 @@
 2023-01-20 10:02:52,564 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
 2023-01-20 10:03:09,121 - RegistroDiario - DEBUG - listar test
 2023-01-20 10:05:32,681 - RegistroDiario - DEBUG - exit
+2023-01-20 13:56:13,549 - RegistroDiario - DEBUG - exit
+2023-01-20 13:57:21,924 - RegistroDiario - DEBUG - listar /home/martinm/SO1_CARDOZO_MONZON
+2023-01-20 13:57:25,925 - RegistroDiario - DEBUG - exit
+2023-01-20 13:58:05,349 - RegistroDiario - DEBUG - exit
+2023-01-20 13:58:58,247 - RegistroDiario - DEBUG - exit
+2023-01-20 13:59:36,143 - RegistroDiario - DEBUG - exit
+2023-01-20 14:00:10,812 - RegistroDiario - DEBUG - exit
+2023-01-20 14:00:37,335 - RegistroDiario - DEBUG - exit
+2023-01-20 14:01:24,208 - RegistroDiario - DEBUG - exit
+2023-01-20 14:02:20,394 - RegistroDiario - DEBUG - exit
+2023-01-20 14:10:35,298 - RegistroDiario - DEBUG - historial
 2023-01-20 10:39:43,811 - RegistroDiario - DEBUG - rename /home/erika/SO1_CARDOZO_MONZON-1/test /home/erika/SO1_CARDOZO_MONZON-1/testt
 2023-01-20 10:39:43,812 - RegistroDiario - DEBUG - rename /home/erika/SO1_CARDOZO_MONZON-1/test /home/erika/SO1_CARDOZO_MONZON-1/testt
 2023-01-20 10:40:02,617 - RegistroDiario - DEBUG - listar testt

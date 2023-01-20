@@ -46,10 +46,9 @@ class shell(cmd2.Cmd):
         hostname = socket.gethostname()
         
         self.default_to_shell = True #use default shell commands
-        #self.prompt = f"{username}@{hostname}:{homedir.replace('/root','~')}$ "
-        self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+homedir.replace('/root','~')+"$ "+MAGENTA
+        self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+homedir.replace('/root','~')+WHITE+"$ "
         self.maxrepeats = 3
-        self.poutput("Welcome to So1_Shell_2022. Made by: Cardozo & Monzon")
+        self.poutput("\nWelcome to So1_Shell_2022. \nMade by: Cardozo & Monzon.")
  
   
     def onecmd( self, s, **kwargs): #  **kwargs simplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
@@ -692,15 +691,13 @@ class shell(cmd2.Cmd):
         
     
     def do_exit(self,e): 
-        
         self.logRegistroDiario(''.join('exit'))
         check=input('Are you sure you want to exit?. y/n: ')
-        if check=='y'or 'Y': 
+        print(check)
+        if check in ["y","Y"]: 
             print("EXIT!")
             self.verificarHorario(datetime.now().time())
-            return True 
-        else: 
-            return
+            return True
         
     
     def do_shutdown(self,e): #ver

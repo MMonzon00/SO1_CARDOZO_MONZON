@@ -56,3 +56,6 @@ listar dgfhdjsa
 listar /home/erika/SO1_CARDOZO_MONZON-1
 listar testt
 makedir c
+listar /home/martinm/SO1_CARDOZO_MONZON
+makedir test
+historial
