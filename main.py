@@ -361,8 +361,8 @@ class shell(cmd2.Cmd):
             self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+cwd2+"$ "+MAGENTA
         
         except:
-            guardarParam=(name,dirPATH+" file not such directory")
-            print("ERROR : ",dirPATH," file not such directory ")
+            guardarParam=(name,dirPATH+" no such file directory")
+            print("ERROR : ",dirPATH," no such file directory ")
             self.logRegistroError(' '.join(guardarParam))
             
             
