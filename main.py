@@ -17,6 +17,8 @@ import bcrypt
 import hashlib
 import base64
 import ftplib
+import string
+
 # from usefunctions import *
 
 #!/usr/bin/env python
@@ -28,7 +30,6 @@ BOLD = '\033[1m'
 WHITE = '\033[37m'
 MAGENTA='\033[35m'
 class shell(cmd2.Cmd):
-    
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
@@ -38,7 +39,6 @@ class shell(cmd2.Cmd):
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-    """A simple cmd2 application."""
     def __init__(self):
         super().__init__()
         username = getpass.getuser()
@@ -49,7 +49,7 @@ class shell(cmd2.Cmd):
         #self.prompt = f"{username}@{hostname}:{homedir.replace('/root','~')}$ "
         self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+homedir.replace('/root','~')+"$ "+MAGENTA
         self.maxrepeats = 3
-        self.poutput("Welcome to So1_Shell_2022 Cardozo y Monzon")
+        self.poutput("Welcome to So1_Shell_2022. Made by: Cardozo & Monzon")
  
   
     def onecmd( self, s, **kwargs): #  **kwargs simplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
@@ -60,7 +60,6 @@ class shell(cmd2.Cmd):
         f.write(f'{comando}\n')
         f.close()
         return cmd2.Cmd.onecmd(self, s ,**kwargs)
-
     
 
     def logRegistroDiario(self,ch):
@@ -249,7 +248,6 @@ class shell(cmd2.Cmd):
         # except:
         #     self.poutput("Error occurred while moving file/s.")
     
-    
     ###4.3. Renombrar - renombrar
     def do_rename(self,FILENAME): #these are the parameters needed
         cwd = os.getcwd() #Get current working directory
@@ -268,8 +266,7 @@ class shell(cmd2.Cmd):
             self.logRegistroError(' '.join(guardarParam))
         else:
             self.logRegistroError(' '.join(guardarParam))
-    
-    
+     
     ###4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
     ###4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la carpeta actual.
     ###4.4.2. En caso de recibir un directorio, listar archivos/directorios de esedirectorio.       
@@ -312,8 +309,6 @@ class shell(cmd2.Cmd):
             elif os.path.exists(dir)==False:
                 print("El archivo", dir ,"no existe")
                 self.logRegistroError(' '.join(guardarParam))
-
-
 
     ###4.5. Crear un directorio - creardir
     ###4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
@@ -472,13 +467,12 @@ class shell(cmd2.Cmd):
         mutilities.writePass(paths[1],shadowFile)
         self.popout('Password set.')
 
-    
-
-
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
     userparser = Cmd2ArgumentParser()
     userparser.add_argument('usr',nargs=1, help='Nombre de usuario')
 
+
+    #checkip
     @with_argparser(userparser)
     def do_addusuario(self,args):
         separator=','
@@ -499,9 +493,6 @@ class shell(cmd2.Cmd):
         if flagP==True:
             self.poutput('Path already exists. Exiting...')
             return
-        else:
-            os.mkdir(homeDIR)
-            self.poutput(f'Path {homeDIR} created.')
         shellPATH='/bin/bash'
         encrypted_pwd= 'x'
         groupID = os.getpgrp()
@@ -517,15 +508,7 @@ class shell(cmd2.Cmd):
             exit = input('Ingrese 1 si agrego las ip correspondientes:')
         ipadresses=mutilities.turnElementTostr(ipadresses)
         ipadresses=mutilities.joinList(ipadresses,separator)
-        hentrada=input('Ingrese el horario de entrada en formato H:M: ')
-        hsalida=input('Ingrese el horario de salida en formato H:M: ')
-        if hentrada or hsalida == '':
-            hentrada=input('Debe ingresar el horario de entrada en formato H:M: ')
-            hsalida=input('Debe ingresar el horario de salida en formato H:M: ')
-            
-        hentrada=hentrada.replace(":","")
-        hsalida=hsalida.replace(":","")
-        horario=[hentrada,hsalida]
+        horario=mutilities.verifyTime()
         workphone=input("Teléfono del Trabajo:")
         homephone=input("Teléfono de casa: ")
         horario=mutilities.joinList(horario,',')
@@ -538,7 +521,9 @@ class shell(cmd2.Cmd):
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
             files[path].close()
-        self.poutput(f'User {username} created. Set password with passSet ''<username>''.\n ')
+        os.mkdir(homeDIR)
+        self.poutput(f'Path {homeDIR} created.')
+        self.poutput(f'User {username} created.\nSet password with passSet ''<username>''.\n ')
         return 0
     
     # verficar horario laboral-falta

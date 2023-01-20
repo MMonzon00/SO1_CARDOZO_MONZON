@@ -72,6 +72,27 @@ def rmquotes(byteline):
     byteline = str(byteline).replace('b','').replace("'",'')
     return byteline
 
+def verifyTime():
+    try:
+        hentrada = datetime.datetime.strptime(input(r'Specify starting working hours in HHMM format: '), "%H%M")
+        hsalida = datetime.datetime.strptime(input(r'Specify end working hours in HHMM format: '), "%H%M")
+        flag=False
+    except:
+        print("Please enter correct time in HHMM format")
+        flag=True
+    if flag==True:
+        while flag==True:
+            try:
+                hentrada = datetime.datetime.strptime(input(r'Please Specify starting working hours in HHMM format: '), "%H%M")
+                hsalida = datetime.datetime.strptime(input(r'Please Specify end working hours in HHMM format: '), "%H%M")
+                flag=False
+            except:
+                print("Please enter correct time in HHMM format")
+    hentradastr = hentrada.strftime("%H:%M")
+    hsalidastr = hsalida.strftime("%H:%M")
+    horario=[hentradastr,hsalidastr]
+    return horario
+
 def processText(text):
     processedText = list(text)
     for i in range(len(processedText)):
