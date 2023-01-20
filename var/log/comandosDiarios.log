@@ -103,3 +103,17 @@
 2023-01-20 10:02:52,564 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
 2023-01-20 10:03:09,121 - RegistroDiario - DEBUG - listar test
 2023-01-20 10:05:32,681 - RegistroDiario - DEBUG - exit
+2023-01-20 10:39:43,811 - RegistroDiario - DEBUG - rename /home/erika/SO1_CARDOZO_MONZON-1/test /home/erika/SO1_CARDOZO_MONZON-1/testt
+2023-01-20 10:39:43,812 - RegistroDiario - DEBUG - rename /home/erika/SO1_CARDOZO_MONZON-1/test /home/erika/SO1_CARDOZO_MONZON-1/testt
+2023-01-20 10:40:02,617 - RegistroDiario - DEBUG - listar testt
+2023-01-20 10:44:09,488 - RegistroDiario - DEBUG - permisos 777 test
+2023-01-20 10:44:20,311 - RegistroDiario - DEBUG - permisos 777 testt
+2023-01-20 10:53:18,259 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 10:58:06,088 - RegistroDiario - DEBUG - clean
+2023-01-20 11:26:04,205 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 12:51:45,153 - RegistroDiario - DEBUG - ir testt
+2023-01-20 12:54:00,379 - RegistroDiario - DEBUG - ir ..
+2023-01-20 12:54:40,849 - RegistroDiario - DEBUG - ir testt
+2023-01-20 12:54:45,369 - RegistroDiario - DEBUG - ir ..
+2023-01-20 13:20:01,494 - RegistroDiario - DEBUG - ir ..
+2023-01-20 13:54:08,987 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1

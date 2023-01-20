@@ -10,3 +10,8 @@
 2023-01-08 15:01:46,730 - RegistroError - ERROR - e r r o r U s u a r i o m a r t i n i   1 9 2 . 1 6 8 . 0 . 1 7   0 8 : 0 0   1 2 : 0 0
 2023-01-08 15:04:35,300 - RegistroError - ERROR - e r r o r U s u a r i o m a r t i n c   1 9 2 . 1 6 8 . 0 . 1 7   0 8 : 0 0   1 2 : 0 0
 2023-01-08 15:07:37,373 - RegistroError - ERROR - e r r o r U s u a r i o m a r t i n n n   1 9 2 . 1 6 8 . 0 . 1 7   0 8 : 0 0   1 2 : 0 0
+2023-01-20 10:44:09,488 - RegistroError - ERROR - permisos 777 test
+2023-01-20 13:21:58,207 - RegistroError - ERROR - ir jsdno such
+2023-01-20 13:22:51,435 - RegistroError - ERROR - ir ajs noExiste
+2023-01-20 13:23:29,640 - RegistroError - ERROR - ir jsd noExiste
+2023-01-20 13:24:01,391 - RegistroError - ERROR - ir shhd file not such directory

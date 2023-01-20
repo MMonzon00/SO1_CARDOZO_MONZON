@@ -44,3 +44,15 @@ listar /home/erika/SO1_CARDOZO_MONZON-1
 listar /home/erika/SO1_CARDOZO_MONZON-1
 listar /home/erika/SO1_CARDOZO_MONZON-1
 listar test
+rename /home/erika/SO1_CARDOZO_MONZON-1/test /home/erika/SO1_CARDOZO_MONZON-1/testt
+listar testt
+permisos 777 test
+permisos 777 testt
+listar /home/erika/SO1_CARDOZO_MONZON-1
+clean
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar dgfhdjsa
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar testt
+makedir c
