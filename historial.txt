@@ -44,3 +44,6 @@ listar /home/erika/SO1_CARDOZO_MONZON-1
 listar /home/erika/SO1_CARDOZO_MONZON-1
 listar /home/erika/SO1_CARDOZO_MONZON-1
 listar test
+listar /home/martinm/SO1_CARDOZO_MONZON
+makedir test
+historial

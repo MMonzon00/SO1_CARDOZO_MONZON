@@ -46,15 +46,12 @@ class shell(cmd2.Cmd):
         hostname = socket.gethostname()
         
         self.default_to_shell = True #use default shell commands
-        #self.prompt = f"{username}@{hostname}:{homedir.replace('/root','~')}$ "
-        self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+homedir.replace('/root','~')+"$ "+MAGENTA
+        self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+homedir.replace('/root','~')+WHITE+"$ "
         self.maxrepeats = 3
-        self.poutput("Welcome to So1_Shell_2022. Made by: Cardozo & Monzon")
+        self.poutput("\nWelcome to So1_Shell_2022. \nMade by: Cardozo & Monzon.")
  
   
     def onecmd( self, s, **kwargs): #  **kwargssimplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
-    
-        print ('onecmd(%s)' % s)
         return cmd2.Cmd.onecmd(self, s ,**kwargs)
     
 
@@ -263,7 +260,6 @@ class shell(cmd2.Cmd):
     ###4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
     ## ver historial!!!!!!!!!!!!!
     def do_makedir(self,dirnames):
-        print(self+dirnames)
         name = "makedir"
         guardarParam=(name, dirnames)
         cwd=os.getcwd()
@@ -288,7 +284,7 @@ class shell(cmd2.Cmd):
         username = getpass.getuser()
         os.chdir(dirPATH)
         hostname = socket.gethostname()
-        self.prompt = f"{username}@{hostname}:{dirPATH}$ "
+        self.prompt = OKGREEN+username+"@"+hostname+":"+OKBLUE+dirPATH+WHITE+"$ "
 
             
     ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos//// falta
@@ -606,15 +602,13 @@ class shell(cmd2.Cmd):
         
     
     def do_exit(self,e): 
-        
         self.logRegistroDiario(''.join('exit'))
         check=input('Are you sure you want to exit?. y/n: ')
-        if check=='y'or 'Y': 
+        print(check)
+        if check in ["y","Y"]: 
             print("EXIT!")
             self.verificarHorario(datetime.now().time())
-            return True 
-        else: 
-            return
+            return True
         
     
     def do_shutdown(self,e): #ver
