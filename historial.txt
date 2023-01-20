@@ -5,3 +5,42 @@ clean
 listar /home/martinm/SO1_CARDOZO_MONZON
 copy test1.txt test2.txt
 copy test1.txt test2.txt
+<bound method Cmd.postcmd of <__main__.shell object at 0x7f92a713be20>>
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+stop
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar test
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+makedir hoa hola
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar var
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar var
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar hoa
+listar hoa
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+makedir holas
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar test

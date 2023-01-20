@@ -16,12 +16,17 @@ import mutilities
 import bcrypt
 import hashlib
 import base64
-
+import ftplib
 # from usefunctions import *
 
 #!/usr/bin/env python
 """A simple shell application."""
-
+OKBLUE = '\033[94m'
+OKCYAN = '\033[96m'
+OKGREEN = '\033[92m'
+BOLD = '\033[1m'
+WHITE = '\033[37m'
+MAGENTA='\033[35m'
 class shell(cmd2.Cmd):
     
     HEADER = '\033[95m'
@@ -41,9 +46,17 @@ class shell(cmd2.Cmd):
         hostname = socket.gethostname()
         
         self.default_to_shell = True #use default shell commands
-        self.prompt = f"{username}@{hostname}:{homedir.replace('/root','~')}$ "
+        #self.prompt = f"{username}@{hostname}:{homedir.replace('/root','~')}$ "
+        self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+homedir.replace('/root','~')+"$ "+MAGENTA
         self.maxrepeats = 3
-        self.poutput("Welcome to So1_Shell_2022")
+        self.poutput("Welcome to So1_Shell_2022 Cardozo y Monzon")
+ 
+  
+    def onecmd( self, s, **kwargs): #  **kwargssimplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
+    
+        print ('onecmd(%s)' % s)
+        return cmd2.Cmd.onecmd(self, s ,**kwargs)
+
     
 
     def logRegistroDiario(self,ch):
@@ -255,6 +268,7 @@ class shell(cmd2.Cmd):
     ###4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
     ## ver historial!!!!!!!!!!!!!
     def do_makedir(self,dirnames):
+        print(self+dirnames)
         name = "makedir"
         guardarParam=(name, dirnames)
         cwd=os.getcwd()
@@ -279,7 +293,7 @@ class shell(cmd2.Cmd):
         username = getpass.getuser()
         os.chdir(dirPATH)
         hostname = socket.gethostname()
-        self.prompt = f"{username}@{hostname}:{cwd}$ "
+        self.prompt = f"{username}@{hostname}:{dirPATH}$ "
 
             
     ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos//// falta
@@ -452,8 +466,8 @@ class shell(cmd2.Cmd):
         return 0
     
     # verficar horario laboral-falta
-    def do_verificarHorario(self,b):
-        hora_actual = datetime.datetime.now().time()
+    def verificarHorario(self,b):
+        hora_actual = b
         print(hora_actual)
         actualHora=hora_actual.hour
         actualMin=hora_actual.minute
@@ -461,7 +475,7 @@ class shell(cmd2.Cmd):
         i=0
         username = getpass.getuser()
         if os.path.exists('var/log/registrosUsuarios.log')==True:
-            for line in open('var/log/registrosUsuarios.log', 'r'):
+            for line in open('var/log/etc/passwd', 'r'):
                 i=i+1
                 if re.search(username, line):
                     print("en la linea:",i,  line)
@@ -470,9 +484,12 @@ class shell(cmd2.Cmd):
 
         entrada=cadena[2].split(':', 2)
         salida=cadena[3].split(':', 2)
-        if int(entrada[0])<actualHora or int(salida[0])>actualHora: #ver 
+        if (int(entrada[0])>actualHora or int(entrada[1])>actualMin) or (int(salida[0])<actualHora or int(salida[1])<actualMin): #ver 
             print("FUERA DE HORARIO LABORAL")
-            #self.logRegistroHorario(''.join(guardarParam))
+            ip=socket.gethostbyname(socket.gethostname())#obtener ip
+            guardarParam=(username, cadena[2],cadena[3],ip)
+            self.logRegistroHorario(''.join(guardarParam))
+            
 
     ### 4.11. Imprimir el directorio en el que se encuentra la shell actualmente - pwd
     def do_printdir(self):
@@ -552,7 +569,7 @@ class shell(cmd2.Cmd):
     ###     llamada a sistema a la función service o systemctl)
 
     ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 
-    ###      sean los comandos mencionados arriba.- LISTO
+    ###      sean los comandos mencionados arriba.- falta agregar a historial
 
     ###4.17. Registrar el inicio de sesión y la salida sesión del usuario. Se puede comparar
     ###      con los registros de su horario cada vez que inicia/cierra la sesión y si esta
@@ -567,6 +584,35 @@ class shell(cmd2.Cmd):
     ###4.18. Ejecutar una transferencia por ftp o scp, se debe registrar en el log
     ###      Shell_transferencias del usuario.
 
+    def do_ftpTransferencia(self,b): # hostname user file
+        aux=b.split(' ', 3)
+        hostname = aux[0]
+        username = aux [1]
+        filename = aux [2]
+        print (hostname)
+        print (username)
+        print (filename)
+        passw = "eUj8GeW55SvYaswqUyDSm5v6N"
+       # passw = getpass.getpass()
+        #filePrueba=filename.split('.', 2)
+        while (os.path.exists(filename)==False):
+            filename=input("ingrese archivo existente")
+        ftp_server = ftplib.FTP(hostname, username, passw) 
+        ftp_server.encoding = "utf-8"
+        typ = input("Ingrese 1 para subir o 2 para bajar: ")
+        if typ==1:
+            with open(filename, "rb") as file: 
+                ftp_server.storbinary(f"STOR {filename}", file)
+            ftp_server.dir()
+            ftp_server.quit()
+        elif typ ==2:
+            with open(filename, "wb") as file: 
+                ftp_server.retrbinary(f"RETR {filename}", file.write)
+            
+            file= open(filename, "r") 
+            print('File Content:', file.read()) 
+            ftp_server.quit()
+
     def do_clean(self,args):
         name = 'clean'
         self.guardar(name)
@@ -580,15 +626,19 @@ class shell(cmd2.Cmd):
         check=input('Are you sure you want to exit?. y/n: ')
         if check=='y'or 'Y': 
             print("EXIT!")
+            self.verificarHorario(datetime.now().time())
             return True 
         else: 
             return
-       #self.verificarHorario()
         
     
+    def do_shutdown(self,e): #ver
+        self.verificarHorario(datetime.now().time())
+        return os.system("shutdown /s /t 1")
+        
 
 if __name__ == '__main__':
     import sys
     c = shell()
-    #verificarHorario() # para inicio sesion
+    #c.verificarHorario(datetime.now().time()) # para inicio sesion
     sys.exit(c.cmdloop())

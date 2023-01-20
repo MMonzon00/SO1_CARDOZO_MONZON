@@ -1,0 +1,5 @@
+False
+False
+False
+<cmd2.cmd2.Cmd object at 0x7f629e1d8a90>
+False
