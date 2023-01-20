@@ -29,6 +29,8 @@ OKGREEN = '\033[92m'
 BOLD = '\033[1m'
 WHITE = '\033[37m'
 MAGENTA='\033[35m'
+WARNING = '\033[93m'
+FAIL = '\033[91m'
 class shell(cmd2.Cmd):
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -52,7 +54,7 @@ class shell(cmd2.Cmd):
  
   
     def onecmd( self, s, **kwargs): #  **kwargs simplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
-        print(s.raw)
+        #print(s.raw)
         comando=s.raw
         ubi='historialFINAL.txt'
         f = open (ubi,'a')
@@ -362,11 +364,11 @@ class shell(cmd2.Cmd):
         
         except:
             guardarParam=(name,dirPATH+" no such file directory")
-            print("ERROR : ",dirPATH," no such file directory ")
+            print(FAIL+"ERROR : ",dirPATH," no such file directory ")
             self.logRegistroError(' '.join(guardarParam))
             
             
-    ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos//// falta
+    ####4.7. Cambiar los permisos sobre un archivo o un directorio - permisos
     def do_permisos(self,perPATH):
         ##separar la cadena y ver como cambiar el numero de permisos
         ##El primer dígito corresponde a los permisos del usuario, el segundo a los del grupo y el tercero a los del resto de usuarios.
@@ -400,11 +402,17 @@ class shell(cmd2.Cmd):
         group=cad[indice+1:indice1]
         propPATH=cad[indice1+1:len(cad)]
         try:
-            shutil.chown(propPATH, user, group)
+            dirlen=len(cad.arg_list)
+            print("dirlen",dirlen)
+            for i in range(1,dirlen):
+                dirname=f"{cad.arg_list[i]}"
+                print("dirnameeeeee",dirname)
+                #path=os.path.join(cwd,dirname)
+                shutil.chown(dirname, user, group)
             self.logRegistroDiario(' '.join(guardarParam))
         except :
+            print("error")
             self.logRegistroError(' '.join(guardarParam))
-        shutil.chown(propPATH, user, group)
         
     
     ###4.9. Cambiar la contraseña - contraseña
@@ -620,7 +628,7 @@ class shell(cmd2.Cmd):
         name = 'historial'
         self.guardar(name)
         self.logRegistroDiario(''.join(name))
-        f = open ('historial.txt','r')
+        f = open ('historialFINAL.txt','r')
         for linea in f:
            print (linea)
 
@@ -629,7 +637,7 @@ class shell(cmd2.Cmd):
     ###     llamada a sistema a la función service o systemctl)
 
     ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 
-    ###      sean los comandos mencionados arriba.- falta agregar a historial
+    ###      sean los comandos mencionados arriba.- LISTO
 
     ###4.17. Registrar el inicio de sesión y la salida sesión del usuario. Se puede comparar
     ###      con los registros de su horario cada vez que inicia/cierra la sesión y si esta
@@ -645,43 +653,69 @@ class shell(cmd2.Cmd):
     ###      Shell_transferencias del usuario.
 
     def do_ftpTransferencia(self,b): # hostname user file
+        #datos para la prueba!!!!!!!!!!!!!!!!!
+        #hostname = "ftp.dlptest.com"
+        #username = "dlpuser"
+        #passw = "rNrKYTX9g7z3RgJRmxWuGHbeu"
+        #filename = "gfg.txt"
+        
+        while len(b)==0:
+            b = input("ingrese datos novacio, ej: hostname user file ")
+            #passw = getpass.getpass()
+            passw = "rNrKYTX9g7z3RgJRmxWuGHbeu"
+        
         aux=b.split(' ', 3)
         hostname = aux[0]
         username = aux [1]
         filename = aux [2]
-        print (hostname)
-        print (username)
-        print (filename)
-        passw = "eUj8GeW55SvYaswqUyDSm5v6N"
-        while b==' ':
-            hostname = input("ingrese hostname novacio")
-            username = input("ingrese username novacio")
-            filename = input("ingrese filename novacio")
-            passw = "eUj8GeW55SvYaswqUyDSm5v6N"
-       # passw = getpass.getpass()
-        while (os.path.exists(filename)==False):
-            filename=input("ingrese archivo existente")
+      
+        passw = "rNrKYTX9g7z3RgJRmxWuGHbeu"
         
+       # passw = getpass.getpass()
+  
         ftp_server = ftplib.FTP(hostname, username, passw) 
         ftp_server.encoding = "utf-8"
-        typ = input("Ingrese S para subir o B para bajar: ")
-        while typ!='s' or typ!='b':
+        
+        typ = input("Ingrese s para subir o b para bajar: ")
+        while typ!='s' and typ!='b':
             typ = input("Ingrese s para subir o b para bajar: ")
+
         try:
             if typ=='s':
-                with open(filename, "rb") as file: 
-                    ftp_server.storbinary(f"STOR {filename}", file)
-                ftp_server.dir()
-                ftp_server.quit()
+                print("subir")
+                x=input("desea subir archivo existente o crear? ingrese existente o nuevo: ")
+                if x=='existente':
+                    while (os.path.exists(filename)==False):
+                        filename=input("ingrese archivo existente")
+                    with open(filename, "rb") as file: 
+                        ftp_server.storbinary(f"STOR {filename}", file)
+                    ftp_server.dir()
+                    ftp_server.quit()
+                elif x=='nuevo':
+                    filen=input("ingrese nombre del archivo nuevo: ")
+                    contenido=input("ingrese texto para el archivo nuevo: ")
+                    archivo=open(filen, "a")
+                    archivo.write(contenido)
+                    archivo.close()
+                    with open(filen, "rb") as file: 
+                        ftp_server.storbinary(f"STOR {filen}", file)
+                    ftp_server.dir()
+                    ftp_server.quit()
+                else:
+                    print(FAIL+"Error, vuelva a ejecutar el comando")
             elif typ =='b':
+                print("bajar")
                 with open(filename, "wb") as file: 
                     ftp_server.retrbinary(f"RETR {filename}", file.write)
+                    print("aca")
                 
+                ftp_server.dir()
                 file= open(filename, "r") 
+                print("acaa")
                 print('File Content:', file.read()) 
                 ftp_server.quit()
         except: 
-            print("Error al hacer TransferenciaFTP")
+            print(FAIL+"Error al hacer TransferenciaFTP")
 
     def do_clean(self,args):
         name = 'clean'

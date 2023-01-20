@@ -59,3 +59,19 @@ makedir c
 listar /home/martinm/SO1_CARDOZO_MONZON
 makedir test
 historial
+historial
+listar /home/erika/SO1_CARDOZO_MONZON-1
+historial
+historial
+makedir testt
+propietario root:root holaaaa.txt historial.txt
+propietario root:root testt
+propietario erika:erika testt
+propietario erika:erika testt testdhsj testdh
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt

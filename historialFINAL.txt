@@ -1,0 +1,99 @@
+historial
+listar
+historial
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com holaaaa.txt
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com holaaaa.txt
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com holaaaa.txt
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com holaaaa.txt
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com holaaaa4.txt
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com holaaaa.txt
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com holaaaa.txt
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com holaaaa.txt
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com gfg.txt
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com gfg.txt
+ls -l
+ftpTransferencia
+ftpTransferencia 
+ftpTransferencia
+ftpTransferencia 
+ftp
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia 
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+historial
+ftpTransferencia ftp.dlptest.com dlpuser@dlptest.com gfg.txt
+exit
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ftp
+ftp
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+eof
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+eof
+ftpT
+ftpTransferencia
+ftpTransferencia
+ftp
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+selfTansferencia
+ftpTansferencia
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+rm -Rf gfg.txt
+ftpTransferencia
+eof
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+rm -Rf gfg.txt
+b
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+eri
+ftpTransferencia
+vi hoe.txt
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ir sjdjs
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia
+ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+makedir testt
+ls
+ls -l
+propietario root:root holaaaa.txt historial.txt
+propietario root:root testt
+ls -l
+ir testt
+propietario erika:erika testt
+propietario erika:erika testt testdhsj testdh
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+propietario erika:erika historial.txt holaaaa.txt
+ls -l
