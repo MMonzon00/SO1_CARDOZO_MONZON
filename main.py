@@ -16,7 +16,7 @@ import mutilities
 import bcrypt
 import hashlib
 import base64
-import ftplibimport 
+import ftplib
 import string
 
 # from usefunctions import *
@@ -395,6 +395,8 @@ class shell(cmd2.Cmd):
     userparser = Cmd2ArgumentParser()
     userparser.add_argument('usr',nargs=1, help='Nombre de usuario')
 
+
+    #checkip
     @with_argparser(userparser)
     def do_addusuario(self,args):
         separator=','
