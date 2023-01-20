@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 clean
 clean
 clean
@@ -75,3 +76,67 @@ propietario erika:erika historial.txt holaaaa.txt
 propietario erika:erika historial.txt holaaaa.txt
 propietario erika:erika historial.txt holaaaa.txt
 propietario erika:erika historial.txt holaaaa.txt
+=======
+clean
+clean
+clean
+clean
+listar /home/martinm/SO1_CARDOZO_MONZON
+copy test1.txt test2.txt
+copy test1.txt test2.txt
+<bound method Cmd.postcmd of <__main__.shell object at 0x7f92a713be20>>
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+stop
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar test
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+makedir hoa hola
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar var
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar var
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar hoa
+listar hoa
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+makedir holas
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar test
+rename /home/erika/SO1_CARDOZO_MONZON-1/test /home/erika/SO1_CARDOZO_MONZON-1/testt
+listar testt
+permisos 777 test
+permisos 777 testt
+listar /home/erika/SO1_CARDOZO_MONZON-1
+clean
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar dgfhdjsa
+listar /home/erika/SO1_CARDOZO_MONZON-1
+listar testt
+makedir c
+listar /home/martinm/SO1_CARDOZO_MONZON
+makedir test
+historial
+>>>>>>> 70d168a7fb4da419b19316f5cefa81c6e4940a14
+propietario root:root historial.txt holaaaa.txt

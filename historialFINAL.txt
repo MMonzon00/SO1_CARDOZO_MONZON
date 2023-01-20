@@ -97,3 +97,4 @@ propietario erika:erika historial.txt holaaaa.txt
 propietario erika:erika historial.txt holaaaa.txt
 propietario erika:erika historial.txt holaaaa.txt
 ls -l
+propietario root:root historial.txt holaaaa.txt
