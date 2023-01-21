@@ -22,9 +22,6 @@ import time
 from daemonClass import daemon
 import sys
 
-
-
-
 #!/usr/bin/env python
 class shell(cmd2.Cmd):
     def __init__(self):
@@ -554,7 +551,6 @@ class shell(cmd2.Cmd):
     @with_argparser(matarparser)
     def do_matar(self,args):
         name = 'matar'
-        pids=[]
         for pid in range(len(args.pids)):
             if args.SIGKILL:
                 signal_ID=9   
@@ -619,16 +615,14 @@ class shell(cmd2.Cmd):
                     time.sleep(1)
                     
     daemonParser = Cmd2ArgumentParser()
+    daemonParser.add_argument('daemon',nargs=1,type=str,help='Program to daemonize.')
     daemonParser.add_argument('sig', nargs=1,type=str, help='Signal to send.')
-    daemonParser.add_argument('daemon',nargs='+', help='Program to daemonize.')
 
     @with_argparser(daemonParser)
     def do_daemonControl(self,args):
-        daemon = self.Cdaemon()
+        daemonPath=(os.path.abspath(os.path.expanduser(args.daemon[0])))
+        daemon = self.Cdaemon(daemonPath)
         sysargsv = [args.daemon[0],args.sig[0]]
-        print(type(sysargsv[0]))
-        print(sysargsv[1])
-        print(len(sysargsv))
         if len(sysargsv) == 2:
                 if 'start' == sysargsv[1]:
                         daemon.start()

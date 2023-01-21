@@ -39,3 +39,11 @@ clear
 start
 start
 start
+addusuario 2
+daemonControl 
+daemonControl start daemon.py
+daemonControl start daemon.py sad
+daemonControl main.py start
+daemonControl main.py start
+daemonControl main.py start
+daemonControl .py start
