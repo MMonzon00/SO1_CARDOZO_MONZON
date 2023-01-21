@@ -632,11 +632,11 @@ class shell(cmd2.Cmd):
                         daemon.restart()
                 else:
                         print('Unknown command')
-                        return
+                        return 1
                 sys.exit(0)
         else:
                 print(f"usage: {sysargsv[0]} start|stop|restart")
-                sys.exit(2)
+                return 1
         
 
     ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 
