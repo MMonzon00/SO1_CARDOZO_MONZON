@@ -163,12 +163,17 @@ class shell(cmd2.Cmd):
         
         # If src and dst are same
         except shutil.SameFileError:
-            self.poutput("Source and destination represents the same file.")
+            self.poutput(self.colors.FAIL+"Source and destination represents the same file.")
             self.logRegistroError(' '.join(guardarParam))
         
         # If there is any permission issue
         except PermissionError:
-            self.poutput("Permission denied.")
+            self.poutput(self.colors.FAIL+"Permission denied.")
+            self.logRegistroError(' '.join(guardarParam))
+        
+        # For other errors
+        except:
+            self.poutput(self.colors.FAIL+"Error occurred while copying file/s.")
             self.logRegistroError(' '.join(guardarParam))
     
     ###4.2. Mover - mover
@@ -194,11 +199,9 @@ class shell(cmd2.Cmd):
             self.popout("File/s moved successfully.")
             self.logRegistroDiario(' '.join(guardarParam))
             return 0
-
         except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
             self.logRegistroError(' '.join(guardarParam))
-
         except PermissionError:
             self.poutput("Permission denied.")
             self.logRegistroError(' '.join(guardarParam))
@@ -258,10 +261,10 @@ class shell(cmd2.Cmd):
                             self.poutput(f"{list[i]}",end=" - ")
                 
                 elif os.path.exists(dir)==False: #si no existe
-                   print(FAIL+"El archivo", dir ,"no existe")
+                   print(self.colors.FAIL+"El archivo", dir ,"no existe")
                    self.logRegistroError(' '.join(guardarParam))
         except: 
-            print(FAIL+"Error listar")
+            print(self.colors.FAIL+"Error listar")
             self.logRegistroError(' '.join(guardarParam))
     
     ###4.5. Crear un directorio - creardir
@@ -278,7 +281,7 @@ class shell(cmd2.Cmd):
                 os.mkdir(path)
                 #guardarParam.append(dirnames.arg_list[i])
         except:
-            print(FAIL+"error makedir")
+            print(self.colors.FAIL+"error makedir")
             self.logRegistroError(' '.join(guardarParam))
     
     ### 4.6. Cambiar de directorio (no puede ser una llamada a sistema a la función cd) - ir
@@ -309,7 +312,7 @@ class shell(cmd2.Cmd):
         
         except:
             guardarParam=(name,dirPATH+" no such file directory")
-            print(FAIL+"ERROR : ",dirPATH," no such file directory ")
+            print(self.colors.FAIL+"ERROR : ",dirPATH," no such file directory ")
             self.logRegistroError(' '.join(guardarParam))
             
             
@@ -323,9 +326,9 @@ class shell(cmd2.Cmd):
         guardarParam=(name,newCAD[0],newCAD[1])
         try:
             os.chmod(newCAD[1],int(newCAD[0],8)) ## convierte cadena octal a decimal por ej 777 a 511 y el decimal se envia como parametro
-            print(OKGREEN+"changed")
+            print(self.colors.OKGREEN+"changed")
         except:
-            print(FAIL+"error changing permissions")
+            print(self.colors.FAIL+"error changing permissions")
             self.logRegistroError(' '.join(guardarParam))
 
     ###4.8. Cambiar los propietarios sobre un archivo o un conjunto de archivos. - propietario
@@ -347,7 +350,7 @@ class shell(cmd2.Cmd):
                 dirname=f"{cad.arg_list[i]}"
                 shutil.chown(dirname, user, group)
         except :
-            print(FAIL+"error")
+            print(self.colors.FAIL+"error")
             self.logRegistroError(' '.join(guardarParam))
         
     ###4.9. Cambiar la contraseña - contraseña
@@ -497,7 +500,7 @@ class shell(cmd2.Cmd):
             guardarParam = (name,cwd) 
             self.poutput(cwd)#imprimir directorio actual
         except:
-            print(FAIL+"Error printdir",cwd)
+            print(self.colors.FAIL+"Error printdir",cwd)
             self.logRegistroHorario(''.join(guardarParam))
     
     
@@ -548,10 +551,10 @@ class shell(cmd2.Cmd):
                     band=True
            
             if band==False: #si la bandera queda false, no se encontro string
-                print(FAIL+"Error: El string no existe")
+                print(self.colors.FAIL+"Error: El string no existe")
                 self.logRegistroError(' '.join(guardarParam))
         else:
-            print(FAIL+"Error: El archivo no existe") #archivo no existe
+            print(self.colors.FAIL+"Error: El archivo no existe") #archivo no existe
             self.logRegistroError(' '.join(guardarParam))
         
     ###4.14. Imprimir un historial de comandos - history
@@ -673,11 +676,11 @@ class shell(cmd2.Cmd):
                 print('File Content:', file.read()) #imprime el contenido
                 ftp_server.quit()
             
-            print(OKGREEN+"Transferencia OK")
+            print(self.colors.OKGREEN+"Transferencia OK")
             self.logShellTransferencia(' '.join(guardarParam))
 
         except: 
-            print(FAIL+"Error al hacer TransferenciaFTP") 
+            print(self.colors.FAIL+"Error al hacer TransferenciaFTP") 
             self.logRegistroError(' '.join(guardarParam))
 
     def do_clean(self,args):
