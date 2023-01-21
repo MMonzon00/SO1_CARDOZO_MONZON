@@ -35,7 +35,7 @@ class shell(cmd2.Cmd):
         self.colors = mutilities.colors()
         
         self.default_to_shell = True #use default shell commands
-        self.prompt =self.colors.OKGREEN+username+"@"+hostname+":"+self.colors.OKBLUE+homedir.replace('/root','~')+self.colors.WHITE+"$ "
+        self.prompt =self.colors.OKGREEN+username+"@"+hostname+":"+self.colors.OKBLUE+homedir+self.colors.WHITE+"$ "
         self.maxrepeats = 3
         self.poutput("\nWelcome to So1_Shell_2022. \nMade by: Cardozo & Monzon.")
  
@@ -51,6 +51,7 @@ class shell(cmd2.Cmd):
     
     def logRegistroDiario(self,ch):
         direccion='/var/log/shell/comandosDiarios.log'
+        file = open(direccion, 'a')
         logger = logging.getLogger('RegistroDiario')
         logger.setLevel(logging.DEBUG) #DEBUG Reportar eventos que ocurren durante el funcionamiento normal de un programa
        
@@ -67,6 +68,7 @@ class shell(cmd2.Cmd):
 
     def logRegistroUsuario(self,ch):
         direccion='/var/log/shell/registrosUsuarios.log'
+        file = open(direccion, 'a')
 
         logger = logging.getLogger('RegistroUsuario')
         logger.setLevel(logging.DEBUG) # DEBUG Reportar eventos que ocurren durante el funcionamiento normal de un programa
@@ -85,6 +87,7 @@ class shell(cmd2.Cmd):
     # def logRegistroHorario(self,ch): # log para guardar usuarios fuera de horario
     def logRegistroHorario(self,ch):
         direccion='/var/log/shell/usuario_horarios_log.log'
+        file = open(direccion, 'a')
 
         logger = logging.getLogger('RegistroFueraHorario')
         logger.setLevel(logging.WARNING) #Un indicio de que algo inesperado sucedió
@@ -103,6 +106,7 @@ class shell(cmd2.Cmd):
     # log FTP
     def logShellTransferencia(self,ch):
         direccion='/var/log/shell/Shell_transferencias.log'
+        file = open(direccion, 'a')
         
         logger = logging.getLogger('ShellTransferencia')
         logger.setLevel(logging.DEBUG) #DEBUG Información detallada
@@ -120,10 +124,9 @@ class shell(cmd2.Cmd):
     #log error
     
     def logRegistroError(self,ch):
-        print(ch)
         direccion='/var/log/shell/sistema_error.log'
-        direccion = mutilities.getAbs(direccion)
-
+        file = open(direccion, 'a')
+        
         logger = logging.getLogger('RegistroError')
         logger.setLevel(logging.ERROR) #ERROR un problema más grave, el software no ha sido capaz de realizar alguna función.
        
@@ -691,7 +694,6 @@ class shell(cmd2.Cmd):
 
     def do_clean(self,args):
         name = 'clean'
-        #self.logRegistroDiario(''.join(name)) 
         _ = system('clear')  #limpiar pantalla
         
     
@@ -700,26 +702,26 @@ class shell(cmd2.Cmd):
         print(check)
         if check in ["y","Y"]: 
             print("EXIT!")
-            #self.verificarHorario(datetime.now().time()) # enviamos horario actual para verificar horario
+           # self.verificarHorario(datetime.now().time()) # enviamos horario actual para verificar horario
             return True
         
     
     def do_shutdown(self,e): 
         #self.verificarHorario(datetime.now().time()) #enviamos horario actual para verificar horario si desea apagar la maquina
-        return os.system("shutdown /s /t 1")
+        return os.system("shutdown 0 /t 1")
     
 
 if __name__ == '__main__':
         
     
     c = shell()
-    username = getpass.getuser()
-    hostname = socket.gethostname()
-    currentIP= socket.gethostbyname(hostname)  
-    paths = ["/etc/passwd"]
-    files = []
-    files = mutilities.parseFile(files,paths)
-    print = (files)
+    # username = getpass.getuser()
+    # hostname = socket.gethostname()
+    # currentIP= socket.gethostbyname(hostname)  
+    # paths = ["/etc/passwd"]
+    # files = []
+    # files = mutilities.parseFile(files,paths)
+    # print = (files)
     # passwdFile = files[0]
     # usernameline='hello'
     # for i in range(len(passwdFile)):
