@@ -128,6 +128,7 @@
 2023-01-20 12:54:45,369 - RegistroDiario - DEBUG - ir ..
 2023-01-20 13:20:01,494 - RegistroDiario - DEBUG - ir ..
 2023-01-20 13:54:08,987 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+<<<<<<< HEAD
 2023-01-20 22:48:12,310 - RegistroDiario - DEBUG - listar
 2023-01-20 22:48:12,311 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
 2023-01-20 23:28:42,369 - RegistroDiario - DEBUG - copy new1 holas
@@ -244,3 +245,5 @@
 2023-01-21 01:41:22,580 - RegistroDiario - DEBUG - rm -Rf test1
 2023-01-21 01:41:28,307 - RegistroDiario - DEBUG - rm -Rf test1
 2023-01-21 01:47:12,899 - RegistroDiario - DEBUG - eof
+=======
+>>>>>>> 0afdff117869d538d882f4f158f70bacabcc1e1e

@@ -18,8 +18,9 @@ import hashlib
 import base64
 import ftplib
 import string
-
-# from usefunctions import *
+import time
+from daemonClass import daemon
+import sys
 
 #!/usr/bin/env python
 """A simple shell application."""
@@ -32,27 +33,18 @@ MAGENTA='\033[35m'
 WARNING = '\033[93m'
 FAIL = '\033[91m'
 class shell(cmd2.Cmd):
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
     def __init__(self):
         super().__init__()
         username = getpass.getuser() #user 
         homedir = os.getcwd() #cwd
         hostname = socket.gethostname() #hostname
+        self.colors = mutilities.colors()
         
         self.default_to_shell = True #use default shell commands
-        self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+homedir.replace('/root','~')+WHITE+"$ "
+        self.prompt =self.colors.OKGREEN+username+"@"+hostname+":"+self.colors.OKBLUE+homedir.replace('/root','~')+self.colors.WHITE+"$ "
         self.maxrepeats = 3
         self.poutput("\nWelcome to So1_Shell_2022. \nMade by: Cardozo & Monzon.")
  
-  
     def onecmd( self, s, **kwargs): #  **kwargs simplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
         #print(s.raw)
         comando=s.raw # obtenemos cada comando realizado
@@ -63,7 +55,6 @@ class shell(cmd2.Cmd):
         self.logRegistroDiario(''.join(comando)) #guardamos para logDiario
         return cmd2.Cmd.onecmd(self, s ,**kwargs)
     
-
     def logRegistroDiario(self,ch):
         direccion='/var/log/comandosDiarios.log'
 
@@ -186,25 +177,32 @@ class shell(cmd2.Cmd):
     
     ###4.2. Mover - mover
     ###4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s) DirectorioDestino.
-    def do_move(self,arguments):
-        dirsrc=arguments.arg_list[0]
-        dirdst=arguments.arg_list[1]
-        src = f'{dirsrc}'
-        dst = f'{dirdst}'
+    moveParser=Cmd2ArgumentParser()
+    moveParser.add_argument('src',nargs=1,help='Source Path of file or directory.')
+    moveParser.add_argument('dst',nargs=1,help='Destiny Path of file or directory.')
+    
+    @with_argparser(moveParser)
+    def do_move(self,args):
+        src=(os.path.abspath(os.path.expanduser(args.src[0])))
+        dst=str(os.path.abspath(os.path.expanduser(args.dst[0])))
         name = "move"
-        guardarParam = (name,arguments)
-        if src!=dst:
-            print("aqui")
-            shutil.move(src,dst)
-            self.popout("File moved successfully.")
-        
-        elif src==dst:
-            print("aqui2")
+        guardarParam = (name,src,dst)
+        self.guardar(guardarParam)
+        if os.path.isfile(src)==True:
+            shutil.move(src, dst)
+            return 0
+        file_names = os.listdir(src)
+        try:   
+            for file_name in file_names:
+                shutil.move(file_names[file_name], dst)
+            self.popout("File/s moved successfully.")
+            self.logRegistroDiario(' '.join(guardarParam))
+            return 0
+        except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
             self.logRegistroError(' '.join(guardarParam))
-        else:
-            print("aqui3")
-            print(FAIL+"Error occurred while moving file/s.")
+        except PermissionError:
+            self.poutput("Permission denied.")
             self.logRegistroError(' '.join(guardarParam))
     
     ###4.3. Renombrar - renombrar
@@ -309,7 +307,7 @@ class shell(cmd2.Cmd):
                 cwd2 = os.getcwd()
 
             hostname = socket.gethostname()
-            self.prompt =OKGREEN+username+"@"+hostname+":"+OKBLUE+cwd2+"$ "+MAGENTA
+            self.prompt =self.colors.OKGREEN+username+"@"+hostname+":"+self.colors.OKBLUE+cwd2+"$ "+self.colors.MAGENTA
         
         except:
             guardarParam=(name,dirPATH+" no such file directory")
@@ -354,7 +352,6 @@ class shell(cmd2.Cmd):
             print(FAIL+"error")
             self.logRegistroError(' '.join(guardarParam))
         
-    
     ###4.9. Cambiar la contraseña - contraseña
     passparser = Cmd2ArgumentParser()
     passparser.add_argument('usr',nargs=1, help='Nombre de usuario')
@@ -497,7 +494,6 @@ class shell(cmd2.Cmd):
             guardarParam=(username, cadena[2],cadena[3],ip)
             self.logRegistroHorario(''.join(guardarParam))
             
-
     ### 4.11. Imprimir el directorio en el que se encuentra la shell actualmente - pwd
     def do_printdir(self,c):
         name = 'printdir'
@@ -521,7 +517,6 @@ class shell(cmd2.Cmd):
     @with_argparser(matarparser)
     def do_matar(self,args):
         name = 'matar'
-        pids=[]
         for pid in range(len(args.pids)):
             if args.SIGKILL:
                 signal_ID=9   
@@ -574,6 +569,38 @@ class shell(cmd2.Cmd):
     ###4.15 El usuario debe poder levantar y apagar demonios dentro del sistema,
     ###     utilizando una herramienta como service de CentOS. (no puede ser una
     ###     llamada a sistema a la función service o systemctl)
+    class Cdaemon(daemon):
+        def run(self):
+                while True:
+                        time.sleep(1)
+        def quit(self):
+                while True:
+                    time.sleep(1)
+                    
+    daemonParser = Cmd2ArgumentParser()
+    daemonParser.add_argument('daemon',nargs=1,type=str,help='Program to daemonize.')
+    daemonParser.add_argument('sig', nargs=1,type=str, help='Signal to send.')
+
+    @with_argparser(daemonParser)
+    def do_daemonControl(self,args):
+        daemonPath=(os.path.abspath(os.path.expanduser(args.daemon[0])))
+        daemon = self.Cdaemon(daemonPath)
+        sysargsv = [args.daemon[0],args.sig[0]]
+        if len(sysargsv) == 2:
+                if 'start' == sysargsv[1]:
+                        daemon.start()
+                elif 'stop' == sysargsv[1]:
+                        daemon.stop()
+                elif 'restart' == sysargsv[1]:
+                        daemon.restart()
+                else:
+                        print('Unknown command')
+                        return 1
+                sys.exit(0)
+        else:
+                print(f"usage: {sysargsv[0]} start|stop|restart")
+                return 1
+        
 
     ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 
     ###      sean los comandos mencionados arriba.- LISTO
@@ -583,10 +610,6 @@ class shell(cmd2.Cmd):
     ###      fuera del rango escribir en el archivo de log (usuario_horarios_log) un
     ###      mensaje que aclare que está fuera del rango y deben agregar el lugar desde
     ###      donde realizó la conexión que también puede estar fuera de sus IPs habilitado.
-        # controller
-        # now = datetime.now()
-        # current_time = now.strftime("%H:%M:%S")
-        # print("Current Time =", current_time)
 
     ###4.18. Ejecutar una transferencia por ftp o scp, se debe registrar en el log
     ###      Shell_transferencias del usuario.
@@ -680,10 +703,10 @@ class shell(cmd2.Cmd):
     def do_shutdown(self,e): 
         self.verificarHorario(datetime.now().time()) #enviamos horario actual para verificar horario si desea apagar la maquina
         return os.system("shutdown /s /t 1")
-        
+    
 
 if __name__ == '__main__':
-    import sys
     c = shell()
     #c.verificarHorario(datetime.now().time()) # para inicio sesion
     sys.exit(c.cmdloop())
+

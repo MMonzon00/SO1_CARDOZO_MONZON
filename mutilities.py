@@ -29,7 +29,11 @@ def readFile(filePATH,separator):
         return resultMatrix
 
 def getUID():
+<<<<<<< HEAD
     filePATH='etc/passwd'
+=======
+    filePATH='/etc/passwd'
+>>>>>>> 0afdff117869d538d882f4f158f70bacabcc1e1e
     separator=':'
     resultMatrix=readFile(filePATH,separator)
     UID_list = []
@@ -43,7 +47,11 @@ def getUID():
     return UID
 
 def getGID():
+<<<<<<< HEAD
     filePATH='etc/passwd'
+=======
+    filePATH='/etc/passwd'
+>>>>>>> 0afdff117869d538d882f4f158f70bacabcc1e1e
     separator=':'
     resultMatrix=readFile(filePATH,separator)
     UID_list = []
@@ -81,6 +89,12 @@ def isValidTime(self,data):
         except ValueError:
             return False
 
+<<<<<<< HEAD
+=======
+def getAbsPath(rePath):
+    rePath=(os.path.abspath(os.path.expanduser(rePath)))
+
+>>>>>>> 0afdff117869d538d882f4f158f70bacabcc1e1e
 def rmquotes(byteline):
     byteline = str(byteline).replace('b','').replace("'",'')
     return byteline

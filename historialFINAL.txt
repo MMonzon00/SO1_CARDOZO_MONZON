@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 historial
 listar
 historial
@@ -216,3 +217,96 @@ rm -Rf holaaaa.txt
 rm -Rf test1
 rm -Rf test1
 eof
+=======
+daemon control
+daemonControl
+daemonControl
+daemonControl
+daemonControl 1
+daemonControl 1
+daemon control
+clear
+asd
+asd
+sad
+daemonControl a b
+daemonControl a b c
+clear
+daemonControl daemonClass.py start
+daemonControl 
+daemonControl start daemonClass.py
+daemonControl daemonClass.py start
+daemonControl daemonClass.py start
+daemonControl daemonClass.py start
+daemonControl start daemonClass.py 
+daemonControl daemonClass.py start
+daemonControl start daemonClass.py
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+clear
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+clear
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+start/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+python3 daemon.py
+python3 daemon.py start
+service --status-all
+python3 main start
+python3 main.py start
+start
+clear
+start
+start
+start
+addusuario 2
+daemonControl 
+daemonControl start daemon.py
+daemonControl start daemon.py sad
+daemonControl main.py start
+daemonControl main.py start
+daemonControl main.py start
+daemonControl .py start
+daemonControl hey.py start
+daemonControl hey.py start
+daemonControl hey.py start
+clean
+makedir dirtest
+copy hey.py heycpy.py
+move hey.py /dirtest
+move hey
+move hey.py /dirtest
+move /hey.py /dirtest
+move hey.py dirtest
+move hey.py dirtest
+move hey.py
+move hey.py
+move hey.py dirtest
+move hey.py dirtest
+clear
+move heycpy.py dirtest
+move hey.py dirtest
+move heycpy.py dirtest
+move /heycpy.py SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py /SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py /SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py /SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py /SO1_CARDOZO_MONZON
+move /dirtest /SO1_CARDOZO_MONZON
+move /SO1_CARDOZO_MONZON/dirtest ..
+move dirtest
+move dirtest SO1_CARDOZO_MONZON
+move dirtest SO1_CARDOZO_MONZON
+move historial.txt dirtest
+move historial.txt /dirtest
+move historial.txt /dirtest
+move historial.txt dirtest
+set debug true
+set debug true
+move historial.txt dirtest
+move historial.txt dirtest
+move historial.txt dirtest
+move historial.txt dirtest
+clear
+>>>>>>> 0afdff117869d538d882f4f158f70bacabcc1e1e
