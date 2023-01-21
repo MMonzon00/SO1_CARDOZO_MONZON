@@ -713,35 +713,35 @@ if __name__ == '__main__':
         
     
     c = shell()
-    username = getpass.getuser()
-    hostname = socket.gethostname()
-    currentIP= socket.gethostbyname(hostname)  
-    currentPasswdLine=pwd.getpwuid(os.getuid())
-    paths = ["/etc/passwd"]
-    files = []
-    files = mutilities.parseFile(files,paths)
-    passwdFile = files[0]
-    usernameline='hello'
-    for i in range(len(passwdFile)):
-            currentusername = passwdFile[i][4] #username
-            if username == currentusername:
-                passwdtextline = passwdFile[i]
-                passwdtextline = str(passwdtextline)
-                break
-    currentWorkingHours=passwdtextline.split(',')
-    print(currentWorkingHours)
-    startHours = datetime.strptime(currentWorkingHours[1], '%H%M')
-    endHours = datetime.strptime(currentWorkingHours[2], '%H%M')
-    gecosLen=len(currentWorkingHours)
-    now=datetime.now('%H:%M')
-    if gecosLen == 3:
-        if (now>=startHours and now<=gecosLen): 
-            c.logRegistroUsuario(f"User {hostname} is in range of working hours.")
-        else:
-            c.logRegistroHorario(f"User {getpass.getuser()} loggins outside working hours from IP:{currentIP}")
-            print("This incident will be reported.")#sino se reporta (mandar a un log)
-    else:
-        c.logRegistroHorario(f"User {getpass.getuser()} loggins without working hours set from IP:{currentIP}")
+    # username = getpass.getuser()
+    # hostname = socket.gethostname()
+    # currentIP= socket.gethostbyname(hostname)  
+    # currentPasswdLine=pwd.getpwuid(os.getuid())
+    # paths = ["/etc/passwd"]
+    # files = []
+    # files = mutilities.parseFile(files,paths)
+    # passwdFile = files[0]
+    # usernameline='hello'
+    # for i in range(len(passwdFile)):
+    #         currentusername = passwdFile[i][4] #username
+    #         if username == currentusername:
+    #             passwdtextline = passwdFile[i]
+    #             passwdtextline = str(passwdtextline)
+    #             break
+    # currentWorkingHours=passwdtextline.split(',')
+    # print(currentWorkingHours)
+    # startHours = datetime.strptime(currentWorkingHours[1], '%H%M')
+    # endHours = datetime.strptime(currentWorkingHours[2], '%H%M')
+    # gecosLen=len(currentWorkingHours)
+    # now=datetime.now('%H:%M')
+    # if gecosLen == 3:
+    #     if (now>=startHours and now<=gecosLen): 
+    #         c.logRegistroUsuario(f"User {hostname} is in range of working hours.")
+    #     else:
+    #         c.logRegistroHorario(f"User {getpass.getuser()} loggins outside working hours from IP:{currentIP}")
+    #         print("This incident will be reported.")#sino se reporta (mandar a un log)
+    # else:
+    #     c.logRegistroHorario(f"User {getpass.getuser()} loggins without working hours set from IP:{currentIP}")
     c.cmdloop()
     sys.exit(0)
 
