@@ -26,7 +26,6 @@ import sys
 
 
 #!/usr/bin/env python
-
 class shell(cmd2.Cmd):
     def __init__(self):
         super().__init__()
@@ -617,28 +616,31 @@ class shell(cmd2.Cmd):
     ###4.15 El usuario debe poder levantar y apagar demonios dentro del sistema,
     ###     utilizando una herramienta como service de CentOS. (no puede ser una
     ###     llamada a sistema a la función service o systemctl)
+    
     daemonParser = Cmd2ArgumentParser()
-    daemonParser.add_argument('sig', nargs='1',type=str,help='Signal to send.')
-    daemonParser.add_argument('daemon',nargs='1', help='Program to daemonize.')
+    daemonParser.add_argument('sig', nargs=1,type=str, help='Signal to send.')
+    daemonParser.add_argument('daemon',nargs='+', help='Program to daemonize.')
 
     @with_argparser(daemonParser)
-    def daemonControl(self,args):
+    def do_daemonControl(self,args):
         daemon = self.MyDaemon()
-        sisargsv = args.arg_list
-        # if len(sisargsv) == 2:
-        #         if 'start' == sisargsv[1]:
-        #                 daemon.start()
-        #         elif 'stop' == sisargsv[1]:
-        #                 daemon.stop()
-        #         elif 'restart' == sisargsv[1]:
-        #                 daemon.restart()
-        #         else:
-        #                 print('Unknown command')
-        #                 sys.exit(2)
-        #         sys.exit(0)
-        # else:
-        #         print("usage: %s start|stop|restart" % sisargsv[0])
-        #         sys.exit(2)
+        sysargsv = [args.sig,args.daemon]
+        print(sysargsv[0])
+        print(sysargsv[1])
+        if len(sysargsv) == 2:
+                if 'start' == sysargsv[1]:
+                        daemon.start()
+                elif 'stop' == sysargsv[1]:
+                        daemon.stop()
+                elif 'restart' == sysargsv[1]:
+                        daemon.restart()
+                else:
+                        print('Unknown command')
+                        sys.exit(2)
+                sys.exit(0)
+        else:
+                print("usage: %s start|stop|restart" % sysargsv[0])
+                sys.exit(2)
         
 
     ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 

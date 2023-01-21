@@ -1,0 +1,13 @@
+daemon control
+daemonControl
+daemonControl
+daemonControl
+daemonControl 1
+daemonControl 1
+daemon control
+clear
+asd
+asd
+sad
+daemonControl a b
+daemonControl a b c
