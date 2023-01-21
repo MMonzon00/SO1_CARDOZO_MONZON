@@ -195,7 +195,7 @@ ___
 ```
 
 #### history
-#### ejemplo: history
+#### ejemplo: historial
 
 Imprime el historial de comandos.
 En caso de algun error, se lanza una excepcion.
