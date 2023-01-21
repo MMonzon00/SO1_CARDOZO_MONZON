@@ -49,9 +49,7 @@ class shell(cmd2.Cmd):
     
     def logRegistroDiario(self,ch):
         direccion='/var/log/comandosDiarios.log'
-
         file = open(direccion, 'a')
-        
         logger = logging.getLogger('RegistroDiario')
         logger.setLevel(logging.DEBUG) #DEBUG Reportar eventos que ocurren durante el funcionamiento normal de un programa
        
