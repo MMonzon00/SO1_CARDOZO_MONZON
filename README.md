@@ -216,7 +216,7 @@ En caso de algun error, se lanza una excepcion.
 ### Transferencia ftp
 ___
 
-```http
+```
   ftpTransferencia b
   b= Contiene hostname, username y archivo a enviar/descargar.
 ```
