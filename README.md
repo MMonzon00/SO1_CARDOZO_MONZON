@@ -1,4 +1,3 @@
-
 # Implementacion de Linux Shell en Python
 
 Se implemento una shell de linux en python para una version de linux siguiendo el manual de LFS.

@@ -19,7 +19,7 @@ import base64
 import ftplib
 import string
 import time
-from daemonClass import Daemon
+from daemonClass import daemon
 import sys
 
 
@@ -39,7 +39,6 @@ class shell(cmd2.Cmd):
         self.maxrepeats = 3
         self.poutput("\nWelcome to So1_Shell_2022. \nMade by: Cardozo & Monzon.")
  
-  
     def onecmd( self, s, **kwargs): #  **kwargs simplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
         print(s.raw)
         comando=s.raw
@@ -49,7 +48,6 @@ class shell(cmd2.Cmd):
         f.close()
         return cmd2.Cmd.onecmd(self, s ,**kwargs)
     
-
     def logRegistroDiario(self,ch):
         direccion='/var/log/comandosDiarios.log'
         #if os.path.exists('var/log')==False:
@@ -194,7 +192,6 @@ class shell(cmd2.Cmd):
         guardarParam = (name,src,dst)
         self.guardar(guardarParam)
         try:
-
             shutil.copy(src, dst)
             self.poutput("File copied successfully.")
             self.logRegistroDiario(' '.join(guardarParam))
@@ -395,7 +392,6 @@ class shell(cmd2.Cmd):
             self.logRegistroError(' '.join(guardarParam))
         shutil.chown(propPATH, user, group)
         
-    
     ###4.9. Cambiar la contraseña - contraseña
     passparser = Cmd2ArgumentParser()
     passparser.add_argument('usr',nargs=1, help='Nombre de usuario')
@@ -458,7 +454,6 @@ class shell(cmd2.Cmd):
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
     userparser = Cmd2ArgumentParser()
     userparser.add_argument('usr',nargs=1, help='Nombre de usuario')
-
 
     #checkip
     @with_argparser(userparser)
@@ -539,7 +534,6 @@ class shell(cmd2.Cmd):
             guardarParam=(username, cadena[2],cadena[3],ip)
             self.logRegistroHorario(''.join(guardarParam))
             
-
     ### 4.11. Imprimir el directorio en el que se encuentra la shell actualmente - pwd
     def do_printdir(self):
         name = 'printdir'
@@ -616,17 +610,25 @@ class shell(cmd2.Cmd):
     ###4.15 El usuario debe poder levantar y apagar demonios dentro del sistema,
     ###     utilizando una herramienta como service de CentOS. (no puede ser una
     ###     llamada a sistema a la función service o systemctl)
-    
+    class Cdaemon(daemon):
+        def run(self):
+                while True:
+                        time.sleep(1)
+        def quit(self):
+                while True:
+                    time.sleep(1)
+                    
     daemonParser = Cmd2ArgumentParser()
     daemonParser.add_argument('sig', nargs=1,type=str, help='Signal to send.')
     daemonParser.add_argument('daemon',nargs='+', help='Program to daemonize.')
 
     @with_argparser(daemonParser)
     def do_daemonControl(self,args):
-        daemon = self.MyDaemon()
-        sysargsv = [args.sig,args.daemon]
-        print(sysargsv[0])
+        daemon = self.Cdaemon()
+        sysargsv = [args.daemon[0],args.sig[0]]
+        print(type(sysargsv[0]))
         print(sysargsv[1])
+        print(len(sysargsv))
         if len(sysargsv) == 2:
                 if 'start' == sysargsv[1]:
                         daemon.start()
@@ -636,25 +638,21 @@ class shell(cmd2.Cmd):
                         daemon.restart()
                 else:
                         print('Unknown command')
-                        sys.exit(2)
+                        return
                 sys.exit(0)
         else:
-                print("usage: %s start|stop|restart" % sysargsv[0])
+                print(f"usage: {sysargsv[0]} start|stop|restart")
                 sys.exit(2)
         
 
     ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 
-    ###      sean los comandos mencionados arriba.- falta agregar a historial
+    ###      sean los comandos mencionados arriba.-
 
     ###4.17. Registrar el inicio de sesión y la salida sesión del usuario. Se puede comparar
     ###      con los registros de su horario cada vez que inicia/cierra la sesión y si esta
     ###      fuera del rango escribir en el archivo de log (usuario_horarios_log) un
     ###      mensaje que aclare que está fuera del rango y deben agregar el lugar desde
     ###      donde realizó la conexión que también puede estar fuera de sus IPs habilitado.
-        # controller
-        # now = datetime.now()
-        # current_time = now.strftime("%H:%M:%S")
-        # print("Current Time =", current_time)
 
     ###4.18. Ejecutar una transferencia por ftp o scp, se debe registrar en el log
     ###      Shell_transferencias del usuario.

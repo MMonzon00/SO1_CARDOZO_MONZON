@@ -11,3 +11,31 @@ asd
 sad
 daemonControl a b
 daemonControl a b c
+clear
+daemonControl daemonClass.py start
+daemonControl 
+daemonControl start daemonClass.py
+daemonControl daemonClass.py start
+daemonControl daemonClass.py start
+daemonControl daemonClass.py start
+daemonControl start daemonClass.py 
+daemonControl daemonClass.py start
+daemonControl start daemonClass.py
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+clear
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+clear
+/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+start/bin/python3 /root/so1_shell/SO1_CARDOZO_MONZON/daemon.py
+python3 daemon.py
+python3 daemon.py start
+service --status-all
+python3 main start
+python3 main.py start
+start
+clear
+start
+start
+start
