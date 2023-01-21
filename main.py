@@ -713,13 +713,13 @@ if __name__ == '__main__':
         
     
     c = shell()
-    username = getpass.getuser()
-    hostname = socket.gethostname()
-    currentIP= socket.gethostbyname(hostname)  
-    paths = ["/etc/passwd"]
-    files = []
-    files = mutilities.parseFile(files,paths)
-    print = (files)
+    # username = getpass.getuser()
+    # hostname = socket.gethostname()
+    # currentIP= socket.gethostbyname(hostname)  
+    # paths = ["/etc/passwd"]
+    # files = []
+    # files = mutilities.parseFile(files,paths)
+    # print = (files)
     # passwdFile = files[0]
     # usernameline='hello'
     # for i in range(len(passwdFile)):
