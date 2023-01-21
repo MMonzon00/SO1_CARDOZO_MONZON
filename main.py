@@ -693,12 +693,12 @@ class shell(cmd2.Cmd):
         print(check)
         if check in ["y","Y"]: 
             print("EXIT!")
-            self.verificarHorario(datetime.now().time()) # enviamos horario actual para verificar horario
+            #self.verificarHorario(datetime.now().time()) # enviamos horario actual para verificar horario
             return True
         
     
     def do_shutdown(self,e): 
-        self.verificarHorario(datetime.now().time()) #enviamos horario actual para verificar horario si desea apagar la maquina
+        #self.verificarHorario(datetime.now().time()) #enviamos horario actual para verificar horario si desea apagar la maquina
         return os.system("shutdown /s /t 1")
     
 
