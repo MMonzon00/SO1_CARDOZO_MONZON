@@ -8,11 +8,13 @@ Se implemento una shell de linux en python para una version de linux siguiendo e
 
 ### Copy
 
-```http
-  copy dirsrc dirdst
-  dirsrc=origen
-  dirdst=destino
 ```
+copy dirsrc dirdst
+dirsrc=origen
+dirdst=destino
+```
+  
+
 
 #### Copy (dirsrc,dirdst)
 #### ejemplo: copy archivo carpeta
@@ -22,7 +24,7 @@ Copia el archivo de la direccion especificada a la direccion de destino, si no s
 
 ### Move
 
-```http
+```
   move dirsrc dirdst
   dirsrc=origen archivo/directorio
   dirdst=destino
@@ -36,7 +38,7 @@ Mover un archivo/directorio de la direccion especificada a la direccion de desti
 
 ### Rename
 
-```http
+```
   rename src dst
   src=nombre actual archivo/directorio
   dirdst=nombre a cambiar archivo/directorio
@@ -51,7 +53,7 @@ En caso de algun error, se lanza una excepcion.
 
 ### List
 
-```http
+```
   list 
   list dirPATH
   list= listar directorio actual
@@ -66,7 +68,7 @@ En caso de algun error o directorio inexistente, se lanza una excepcion.
 
 ### Makedir
 
-```http
+```
   makedir dirnames 
   dirNAMES= nombre(s) de carpetas a crear
 ```
@@ -80,7 +82,7 @@ En caso de algun error o el directorio ya existe, se lanza una excepcion.
 
 ### Ir
 
-```http
+```
   ir dirPATH 
   dirPATH=direccion para cambiar de directorio 
 ```
@@ -94,7 +96,7 @@ En caso de algun error o el directorio no existe, se lanza una excepcion.
 
 ### Permisos
 
-```http
+```
   permisos perPATH 
   perPATH=contiene los permisos y el archivo/directorio que desea cambiar sus permisos. 
 ```
@@ -108,7 +110,7 @@ En caso de algun error o el archivo/directorio no existe, se lanza una excepcion
 
 ### Propietario
 
-```http
+```
   propietario cad 
   cad=contiene el usuario/grupo y el archivo/directorio. 
 ```
@@ -122,8 +124,8 @@ En caso de algun error o el archivo/directorio no existe, se lanza una excepcion
 
 ### Contraseña
 
-```http
-  setPass /// 
+```
+  setPass usuario 
   // que recibe
 ```
 
@@ -135,8 +137,8 @@ En caso de algun error se lanza una excepcion.
 
 ### Agregar Usuario
 
-```http
-  addsuario /// 
+```
+  addsuario usuario
   // que recibe
 ```
 
@@ -150,7 +152,7 @@ En caso de algun error se lanza una excepcion.
 
 ### Imprimir directorio
 
-```http
+```
   printdir  
 ```
 
@@ -163,7 +165,7 @@ En caso de algun error, se lanza una excepcion.
 
 ### Kill
 
-```http
+```
   kill //  
   que recibe //
 ``
@@ -177,7 +179,7 @@ En caso de algun error, se lanza una excepcion.
 
 ### Grep
 
-```http
+```
   fgrep gpath
   gpath= Contiene el string a buscar y el archivo
   
@@ -192,7 +194,7 @@ En caso de algun error, archivo inexistente o palabra no encontrada, se lanza un
 
 ### History
 
-```http
+```
   history
 ```
 
@@ -205,8 +207,9 @@ En caso de algun error, se lanza una excepcion.
 
 ### Daemons
 
-```http
-  
+```
+    daemonControl señal accion //  
+    que recibe //
   
 ```
 
