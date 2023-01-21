@@ -197,7 +197,6 @@ class shell(cmd2.Cmd):
         if os.path.isfile(src): #verificar
             shutil.move(src, dst)
             return 0
-        file_names = os.listdir(src) #listar
         try:   
             if os.path.isdir(src): #verificar
                 shutil.move(src, dst)
