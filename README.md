@@ -20,7 +20,7 @@ Se implemento una shell de linux en python para una version de linux siguiendo e
 Copia el archivo de la direccion especificada a la direccion de destino, si no se ingresa una direccion de destino la copia se hace en la misma direccion.
 
 
-#### Move
+### Move
 
 ```http
   move dirsrc dirdst
@@ -34,7 +34,7 @@ Copia el archivo de la direccion especificada a la direccion de destino, si no s
 Mover un archivo/directorio de la direccion especificada a la direccion de destino.
 
 
-#### Rename
+### Rename
 
 ```http
   rename src dst
@@ -49,7 +49,7 @@ Renombrar archivos/directorios
 En caso de algun error, se lanza una excepcion.
 
 
-#### List
+### List
 
 ```http
   list 
@@ -64,7 +64,7 @@ En caso de algun error, se lanza una excepcion.
 Listar un directorio 
 En caso de algun error o directorio inexistente, se lanza una excepcion.
 
-#### Makedir
+### Makedir
 
 ```http
   makedir dirnames 
@@ -78,7 +78,7 @@ Crear un directorio
 En caso de algun error o el directorio ya existe, se lanza una excepcion.
 
 
-#### Ir
+### Ir
 
 ```http
   ir dirPATH 
@@ -92,7 +92,7 @@ Cambiar de directorio
 En caso de algun error o el directorio no existe, se lanza una excepcion.
 
 
-#### Permisos
+### Permisos
 
 ```http
   permisos perPATH 
@@ -106,7 +106,7 @@ Cambiar los permisos sobre un archivo o un directorio
 En caso de algun error o el archivo/directorio no existe, se lanza una excepcion.
 
 
-#### Propietario
+### Propietario
 
 ```http
   propietario cad 
@@ -120,7 +120,7 @@ Cambiar los propietarios sobre un archivo
 En caso de algun error o el archivo/directorio no existe, se lanza una excepcion.
 
 
-#### Contraseña
+### Contraseña
 
 ```http
   setPass /// 
@@ -133,7 +133,7 @@ En caso de algun error o el archivo/directorio no existe, se lanza una excepcion
 Cambiar contraseña  
 En caso de algun error se lanza una excepcion.
 
-#### Agregar Usuario
+### Agregar Usuario
 
 ```http
   addsuario /// 
@@ -148,7 +148,7 @@ su horario de trabajo y posibles lugares de conexión
 En caso de algun error se lanza una excepcion.
 
 
-#### Imprimir directorio
+### Imprimir directorio
 
 ```http
   printdir  
@@ -161,7 +161,7 @@ Imprime el directorio en el que se encuentra la shell actualmente.
 En caso de algun error, se lanza una excepcion.
 
 
-#### Kill
+### Kill
 
 ```http
   kill //  
@@ -175,7 +175,7 @@ Terminar procesos con señales determinadas.
 En caso de algun error, se lanza una excepcion.
 
 
-#### Grep
+### Grep
 
 ```http
   fgrep gpath
@@ -190,7 +190,7 @@ Buscar un string en un archivo .
 En caso de algun error, archivo inexistente o palabra no encontrada, se lanza una excepcion.
 
 
-#### History
+### History
 
 ```http
   history
@@ -203,7 +203,7 @@ Imprime el historial de comandos.
 En caso de algun error, se lanza una excepcion.
 
 
-#### Daemons
+### Daemons
 
 ```http
   
@@ -216,7 +216,7 @@ En caso de algun error, se lanza una excepcion.
 Levantar y apagar demonios dentro del sistema.
 En caso de algun error, se lanza una excepcion.
 
-#### Transferencia ftp
+### Transferencia ftp
 
 ```http
   ftpTransferencia b
