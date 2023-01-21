@@ -10,7 +10,7 @@ Se implemento una shell de linux en python para una version de linux siguiendo e
 
 
 ### Copy
-
+___
 ```
 copy dirsrc dirdst
 dirsrc=origen
@@ -26,7 +26,7 @@ Copia el archivo de la direccion especificada a la direccion de destino, si no s
 
 
 ### Move
-
+___
 ```
   move dirsrc dirdst
   dirsrc=origen archivo/directorio
@@ -40,7 +40,7 @@ Mover un archivo/directorio de la direccion especificada a la direccion de desti
 
 
 ### Rename
-
+___
 ```
   rename src dst
   src=nombre actual archivo/directorio
@@ -54,7 +54,7 @@ Renombrar archivos/directorios.\ En caso de algun error, se lanza una excepcion.
 
 
 ### List
-
+___
 ```
   list 
   list dirPATH
@@ -68,7 +68,7 @@ Renombrar archivos/directorios.\ En caso de algun error, se lanza una excepcion.
 Listar un directorio.\ En caso de algun error o directorio inexistente, se lanza una excepcion.
 
 ### Makedir
-
+___
 ```
   makedir dirnames 
   dirNAMES= nombre(s) de carpetas a crear
@@ -82,7 +82,7 @@ En caso de algun error o el directorio ya existe, se lanza una excepcion.
 
 
 ### Ir
-
+___
 ```
   ir dirPATH 
   dirPATH=direccion para cambiar de directorio 
@@ -96,7 +96,7 @@ En caso de algun error o el directorio no existe, se lanza una excepcion.
 
 
 ### Permisos
-
+___
 ```
   permisos perPATH 
   perPATH=contiene los permisos y el archivo/directorio que desea cambiar sus permisos. 
@@ -110,7 +110,7 @@ En caso de algun error o el archivo/directorio no existe, se lanza una excepcion
 
 
 ### Propietario
-
+___
 ```
   propietario cad 
   cad=contiene el usuario/grupo y el archivo/directorio. 
@@ -124,7 +124,7 @@ En caso de algun error o el archivo/directorio no existe, se lanza una excepcion
 
 
 ### Contraseña
-
+___
 ```
   setPass usuario
   usuario = nombre de usuario
@@ -134,7 +134,7 @@ Recibe el nombre de usuario, luego verfifica si existe y cambia la contraseña \
 en el formato correspondiente. En caso de algun error se lanza una excepcion.
 
 ### Agregar Usuario
-
+___
 ```
   addsuario usuario
   usuario = nombre de usuario a ser creado.
@@ -148,7 +148,7 @@ En caso de algun error se lanza una excepcion.
 
 
 ### Imprimir directorio
-
+___
 ```
   printdir  
 ```
@@ -161,7 +161,7 @@ En caso de algun error, se lanza una excepcion.
 
 
 ### Kill
-
+___
 ```
   kill PIDs señal 
   PIDs = lista de procesos a ser terminados
@@ -173,7 +173,7 @@ En caso de algun error, se lanza una excepcion.
 
 
 ### Grep
-
+___
 ```
   fgrep gpath
   gpath= Contiene el string a buscar y el archivo
@@ -188,6 +188,7 @@ En caso de algun error, archivo inexistente o palabra no encontrada, se lanza un
 
 
 ### History
+___
 
 ```
   history
@@ -201,7 +202,7 @@ En caso de algun error, se lanza una excepcion.
 
 
 ### Daemons
-
+___
 
 ```
     daemonControl daemonPATH accion 
