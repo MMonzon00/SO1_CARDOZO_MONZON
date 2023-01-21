@@ -151,12 +151,12 @@ class shell(cmd2.Cmd):
         name = "copy"
         guardarParam = (name,src,dst)
         if os.path.isfile(src)==True:
-            shutil.copyfile(src, dst)
+            shutil.copy(src, dst)
             return 0
         file_names = os.listdir(src)
         try:   
             for file_name in file_names:
-                shutil.copyfile(file_names[file_name], dst)
+                shutil.copy(file_names[file_name], dst)
             self.poutput("File copied successfully.")
             self.logRegistroDiario(' '.join(guardarParam))
             return 0
