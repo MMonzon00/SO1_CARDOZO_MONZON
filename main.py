@@ -140,29 +140,35 @@ class shell(cmd2.Cmd):
     
     ###4.1. Copiar (no puede ser una llamada a sistema a la función cp) - copiar
     ###4.1.1. El input debe tener el siguiente formato: Archivo(s) DirectorioDestino
-    def do_copy(self,arguments):
-        dirsrc=arguments.arg_list[0]
-        dirdst=arguments.arg_list[1]
-        src = f'{dirsrc}'
-        dst = f'{dirdst}'
+    copyParser=Cmd2ArgumentParser()
+    copyParser.add_argument('src',nargs=1,help='Source Path of file or directory.')
+    copyParser.add_argument('dst',nargs=1,help='Destiny Path of file or directory.')\
+    
+    @with_argparser(copyParser)
+    def do_copy(self,args):
+        src=(os.path.abspath(os.path.expanduser(args.src[0])))
+        dst=str(os.path.abspath(os.path.expanduser(args.dst[0])))
         name = "copy"
         guardarParam = (name,src,dst)
-        try:
-            shutil.copy(src, dst)
+        if os.path.isfile(src)==True:
+            shutil.move(src, dst)
+            return 0
+        file_names = os.listdir(src)
+        try:   
+            for file_name in file_names:
+                shutil.move(file_names[file_name], dst)
             self.poutput("File copied successfully.")
+            self.logRegistroDiario(' '.join(guardarParam))
+            return 0
+        
         # If src and dst are same
         except shutil.SameFileError:
-            self.poutput(FAIL+"Source and destination represents the same file.")
+            self.poutput("Source and destination represents the same file.")
             self.logRegistroError(' '.join(guardarParam))
         
         # If there is any permission issue
         except PermissionError:
-            self.poutput(FAIL+"Permission denied.")
-            self.logRegistroError(' '.join(guardarParam))
-        
-        # For other errors
-        except:
-            self.poutput(FAIL+"Error occurred while copying file/s.")
+            self.poutput("Permission denied.")
             self.logRegistroError(' '.join(guardarParam))
     
     ###4.2. Mover - mover
@@ -188,9 +194,11 @@ class shell(cmd2.Cmd):
             self.popout("File/s moved successfully.")
             self.logRegistroDiario(' '.join(guardarParam))
             return 0
+
         except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
             self.logRegistroError(' '.join(guardarParam))
+
         except PermissionError:
             self.poutput("Permission denied.")
             self.logRegistroError(' '.join(guardarParam))
@@ -379,9 +387,6 @@ class shell(cmd2.Cmd):
         passString= mutilities.rmquotes(p_hashed)
         passwordFormat=f'$6${saltstr}${passString}'
         
-        with open('test.txt', 'r') as file:
-             # read a list of lines into data
-             data = file.readlines()
         for i in range(len(passwdFile)):
             currentusername =passwdFile[i][0] #username
             if args.usr[0] == currentusername:
@@ -399,7 +404,7 @@ class shell(cmd2.Cmd):
                 break
         mutilities.writePass(paths[0],passwdFile)
         mutilities.writePass(paths[1],shadowFile)
-        self.popout('Password set.')
+        self.poutput('Password set.')
 
     ###4.10. Agregar usuario, y deben registrar los datos personales del mismo incluyendo su horario de trabajo y posibles lugares de conexión (ejemplo IPs o localhost). - usuario
     userparser = Cmd2ArgumentParser()
