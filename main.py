@@ -175,6 +175,8 @@ class shell(cmd2.Cmd):
         except:
             self.poutput(self.colors.FAIL+"Error occurred while copying file/s.")
             self.logRegistroError(' '.join(guardarParam))
+        return
+
     
     ###4.2. Mover - mover
     ###4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s) DirectorioDestino.
@@ -188,23 +190,25 @@ class shell(cmd2.Cmd):
         dst=str(os.path.abspath(os.path.expanduser(args.dst[0])))
         name = "move"
         guardarParam = (name,src,dst)
-        self.guardar(guardarParam)
-        if os.path.isfile(src)==True: #verificar
+        if (os.path.exists(src)==False):
+            self.poutput("Destination doesn't exist.")
+            self.logRegistroError(' '.join(guardarParam))
+            return 1
+        if os.path.isfile(src): #verificar
             shutil.move(src, dst)
             return 0
         file_names = os.listdir(src) #listar
         try:   
-            for file_name in file_names:
-                shutil.move(file_names[file_name], dst)
+            if os.path.isdir(src): #verificar
+                shutil.move(src, dst)
             self.popout("File/s moved successfully.")
-           # self.logRegistroDiario(' '.join(guardarParam))
-            return 0
         except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
             self.logRegistroError(' '.join(guardarParam))
         except PermissionError:
             self.poutput("Permission denied.")
             self.logRegistroError(' '.join(guardarParam))
+        return
     
     ###4.3. Renombrar - renombrar
     def do_rename(self,FILENAME): #these are the parameters needed
@@ -223,6 +227,7 @@ class shell(cmd2.Cmd):
         except:
             print("renaming Error")
             self.logRegistroError(' '.join(guardarParam))
+        return
      
     ###4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
     ###4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la carpeta actual.
@@ -271,7 +276,6 @@ class shell(cmd2.Cmd):
     ###4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
     makeParser=Cmd2ArgumentParser()
     makeParser.add_argument('dir',nargs=(1,),help=' Path of directory to be made.')
-
 
     @with_argparser(makeParser)
     def do_makedir(self,dirnames):
