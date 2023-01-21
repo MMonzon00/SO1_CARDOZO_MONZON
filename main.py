@@ -33,7 +33,7 @@ class shell(cmd2.Cmd):
         self.colors = mutilities.colors()
         
         self.default_to_shell = True #use default shell commands
-        self.prompt =self.colors.OKGREEN+username+"@"+hostname+":"+self.colors.OKBLUE+homedir.replace('/root','~')+self.colors.WHITE+"$ "
+        self.prompt =self.colors.OKGREEN+username+"@"+hostname+":"+self.colors.OKBLUE+homedir+self.colors.WHITE+"$ "
         self.maxrepeats = 3
         self.poutput("\nWelcome to So1_Shell_2022. \nMade by: Cardozo & Monzon.")
  
@@ -48,7 +48,7 @@ class shell(cmd2.Cmd):
         return cmd2.Cmd.onecmd(self, s ,**kwargs)
     
     def logRegistroDiario(self,ch):
-        direccion='/var/log/comandosDiarios.log'
+        direccion='var/log/shell/comandosDiarios.log'
         file = open(direccion, 'a')
         logger = logging.getLogger('RegistroDiario')
         logger.setLevel(logging.DEBUG) #DEBUG Reportar eventos que ocurren durante el funcionamiento normal de un programa
@@ -65,7 +65,7 @@ class shell(cmd2.Cmd):
         fileHandler.close()
 
     def logRegistroUsuario(self,ch):
-        direccion='/var/log/registrosUsuarios.log'
+        direccion='/var/log/shell/registrosUsuarios.log'
         file = open(direccion, 'a')
 
         logger = logging.getLogger('RegistroUsuario')
@@ -84,7 +84,7 @@ class shell(cmd2.Cmd):
 
     # def logRegistroHorario(self,ch): # log para guardar usuarios fuera de horario
     def logRegistroHorario(self,ch):
-        direccion='/var/log/(usuario_horarios_log).log'
+        direccion='/var/log/shell/usuario_horarios_log.log'
         file = open(direccion, 'a')
 
         logger = logging.getLogger('RegistroFueraHorario')
@@ -103,7 +103,7 @@ class shell(cmd2.Cmd):
 
     # log FTP
     def logShellTransferencia(self,ch):
-        direccion='/var/log/Shell_transferencias.log'
+        direccion='/var/log/shell/Shell_transferencias.log'
         file = open(direccion, 'a')
         
         logger = logging.getLogger('ShellTransferencia')
@@ -121,7 +121,7 @@ class shell(cmd2.Cmd):
         fileHandler.close()
     #log error
     def logRegistroError(self,ch):
-        direccion='/var/log/shell/sistema_error.log'
+        direccion='var/log/shell/sistema_error.log'
         file = open(direccion, 'a')
         
         logger = logging.getLogger('RegistroError')
@@ -473,16 +473,14 @@ class shell(cmd2.Cmd):
         print(hora_actual)
         actualHora=hora_actual.hour
         actualMin=hora_actual.minute
-        band=False
         i=0
         username = getpass.getuser()
-        if os.path.exists('var/log/registrosUsuarios.log')==True:
-            for line in open('var/log/etc/passwd', 'r'):
-                i=i+1
-                if re.search(username, line):
-                    print("en la linea:",i,  line)
-                    band=True
-            cadena=line.split(' ', 5)
+        for line in open('/etc/passwd', 'r'):
+            i=i+1
+            if re.search(username, line):
+                print("en la linea:",i,  line)
+             
+        cadena=line.split(' ', 5)
 
         entrada=cadena[2].split(':', 2)
         salida=cadena[3].split(':', 2)
@@ -684,7 +682,6 @@ class shell(cmd2.Cmd):
 
     def do_clean(self,args):
         name = 'clean'
-        #self.logRegistroDiario(''.join(name)) 
         _ = system('clear')  #limpiar pantalla
         
     
@@ -693,13 +690,13 @@ class shell(cmd2.Cmd):
         print(check)
         if check in ["y","Y"]: 
             print("EXIT!")
-            #self.verificarHorario(datetime.now().time()) # enviamos horario actual para verificar horario
+           # self.verificarHorario(datetime.now().time()) # enviamos horario actual para verificar horario
             return True
         
     
     def do_shutdown(self,e): 
         #self.verificarHorario(datetime.now().time()) #enviamos horario actual para verificar horario si desea apagar la maquina
-        return os.system("shutdown /s /t 1")
+        return os.system("shutdown 0 /t 1")
     
 
 if __name__ == '__main__':
