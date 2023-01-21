@@ -123,7 +123,7 @@ class shell(cmd2.Cmd):
         print(ch)
         direccion='/var/log/shell/sistema_error.log'
         direccion = mutilities.getAbs(direccion)
-        
+
         logger = logging.getLogger('RegistroError')
         logger.setLevel(logging.ERROR) #ERROR un problema más grave, el software no ha sido capaz de realizar alguna función.
        
@@ -269,17 +269,21 @@ class shell(cmd2.Cmd):
     
     ###4.5. Crear un directorio - creardir
     ###4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
+    makeParser=Cmd2ArgumentParser()
+    makeParser.add_argument('dir',nargs=(1,),help=' Path of directory to be made.')
+
+
+    @with_argparser(makeParser)
     def do_makedir(self,dirnames):
         name = "makedir"
         guardarParam=(name, dirnames)
         cwd=os.getcwd() # obtenemos directorio actual
-        dirlen=len(dirnames.arg_list) 
+        dirlen=len(dirnames.dir) 
         try:
             for i in range(dirlen):
-                dirname=f"{dirnames.arg_list[i]}" #con un for vamos creando uno o mas directorios
+                dirname=f"{dirnames.dir[i]}" #con un for vamos creando uno o mas directorios
                 path=os.path.join(cwd,dirname) # Une uno o mas directorios 
                 os.mkdir(path)
-                #guardarParam.append(dirnames.arg_list[i])
         except:
             print(self.colors.FAIL+"error makedir")
             self.logRegistroError(' '.join(guardarParam))
@@ -435,7 +439,7 @@ class shell(cmd2.Cmd):
         if flagP==True:
             self.poutput('Path already exists. Exiting...')
             return
-        os.makedirs(homeDirAbs)
+        self.do_makedir(homeDirAbs)
         groupID = mutilities.getGID()
         userID = mutilities.getUID()
         os.chown(homeDirAbs,userID,groupID) 
@@ -455,11 +459,11 @@ class shell(cmd2.Cmd):
         horario=mutilities.verifyTime()
         workphone=input("Teléfono del Trabajo:")
         homephone=input("Teléfono de casa: ")
-        GECOS = [f'{fullname}-{workphone}-{homephone}-{ipadresses}',horario[0],horario[1]]
+        GECOS = [f'{fullname} {workphone} {homephone} {ipadresses}',horario[0],horario[1]]
         GECOS=mutilities.joinList(GECOS,',')
         for path in range(len(paths)):
             files[path] = open(paths[path],"a+") 
-        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDirAbs}:{mutilities.getAbs(shellPATH)}\n")
+        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}"+':'+homeDirAbs+':'+mutilities.getAbs(shellPATH)+'\n')
         files[1].write(f"{username}:!:0:0:99999:7:::\n")
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
@@ -723,8 +727,8 @@ if __name__ == '__main__':
     #             break
     # currentWorkingHours=passwdtextline.split(',')
     # print(currentWorkingHours)
-    # startHours = datetime.strptime(currentWorkingHours[1], '%H%M')
-    # endHours = datetime.strptime(currentWorkingHours[2], '%H%M')
+    # startHours = datetime.strptime(currentWorkingHours[1], '%H:%M')
+    # endHours = datetime.strptime(currentWorkingHours[2], '%H:%M')
     # gecosLen=len(currentWorkingHours)
     # now=datetime.now('%H:%M')
     # if gecosLen == 3:
