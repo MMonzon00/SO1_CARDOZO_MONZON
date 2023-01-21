@@ -51,7 +51,6 @@ class shell(cmd2.Cmd):
     
     def logRegistroDiario(self,ch):
         direccion='/var/log/comandosDiarios.log'
-        file = open(direccion, 'a')
         logger = logging.getLogger('RegistroDiario')
         logger.setLevel(logging.DEBUG) #DEBUG Reportar eventos que ocurren durante el funcionamiento normal de un programa
        
@@ -68,7 +67,6 @@ class shell(cmd2.Cmd):
 
     def logRegistroUsuario(self,ch):
         direccion='/var/log/registrosUsuarios.log'
-        file = open(direccion, 'a')
 
         logger = logging.getLogger('RegistroUsuario')
         logger.setLevel(logging.DEBUG) # DEBUG Reportar eventos que ocurren durante el funcionamiento normal de un programa
@@ -87,7 +85,6 @@ class shell(cmd2.Cmd):
     # def logRegistroHorario(self,ch): # log para guardar usuarios fuera de horario
     def logRegistroHorario(self,ch):
         direccion='/var/log/(usuario_horarios_log).log'
-        file = open(direccion, 'a')
 
         logger = logging.getLogger('RegistroFueraHorario')
         logger.setLevel(logging.WARNING) #Un indicio de que algo inesperado sucedió
@@ -106,7 +103,6 @@ class shell(cmd2.Cmd):
     # log FTP
     def logShellTransferencia(self,ch):
         direccion='/var/log/Shell_transferencias.log'
-        file = open(direccion, 'a')
         
         logger = logging.getLogger('ShellTransferencia')
         logger.setLevel(logging.DEBUG) #DEBUG Información detallada
@@ -122,13 +118,12 @@ class shell(cmd2.Cmd):
         logger.removeHandler(fileHandler)
         fileHandler.close()
     #log error
+    
     def logRegistroError(self,ch):
         print(ch)
         direccion='/var/log/shell/sistema_error.log'
         direccion = mutilities.getAbs(direccion)
-        file = open(direccion, 'a')
-        if (os.path.exists(direccion)==False):
-            os.mkdir(direccion,int('755',8))
+        
         logger = logging.getLogger('RegistroError')
         logger.setLevel(logging.ERROR) #ERROR un problema más grave, el software no ha sido capaz de realizar alguna función.
        
@@ -440,7 +435,7 @@ class shell(cmd2.Cmd):
         if flagP==True:
             self.poutput('Path already exists. Exiting...')
             return
-        os.mkdir(homeDirAbs)
+        os.makedirs(homeDirAbs)
         groupID = mutilities.getGID()
         userID = mutilities.getUID()
         os.chown(homeDirAbs,userID,groupID) 
@@ -480,7 +475,6 @@ class shell(cmd2.Cmd):
         print(hora_actual)
         actualHora=hora_actual.hour
         actualMin=hora_actual.minute
-        band=False
         i=0
         username = getpass.getuser()
         if os.path.exists('var/log/registrosUsuarios.log')==True:
@@ -488,7 +482,6 @@ class shell(cmd2.Cmd):
                 i=i+1
                 if re.search(username, line):
                     print("en la linea:",i,  line)
-                    band=True
             cadena=line.split(' ', 5)
 
         entrada=cadena[2].split(':', 2)
@@ -713,13 +706,13 @@ if __name__ == '__main__':
         
     
     c = shell()
-    # username = getpass.getuser()
-    # hostname = socket.gethostname()
-    # currentIP= socket.gethostbyname(hostname)  
-    # currentPasswdLine=pwd.getpwuid(os.getuid())
-    # paths = ["/etc/passwd"]
-    # files = []
-    # files = mutilities.parseFile(files,paths)
+    username = getpass.getuser()
+    hostname = socket.gethostname()
+    currentIP= socket.gethostbyname(hostname)  
+    paths = ["/etc/passwd"]
+    files = []
+    files = mutilities.parseFile(files,paths)
+    print = (files)
     # passwdFile = files[0]
     # usernameline='hello'
     # for i in range(len(passwdFile)):
@@ -742,6 +735,5 @@ if __name__ == '__main__':
     #         print("This incident will be reported.")#sino se reporta (mandar a un log)
     # else:
     #     c.logRegistroHorario(f"User {getpass.getuser()} loggins without working hours set from IP:{currentIP}")
-    c.cmdloop()
-    sys.exit(0)
+    sys.exit(c.cmdloop())
 
