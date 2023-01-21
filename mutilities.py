@@ -81,6 +81,9 @@ def isValidTime(self,data):
         except ValueError:
             return False
 
+def getAbsPath(rePath):
+    rePath=(os.path.abspath(os.path.expanduser(rePath)))
+
 def rmquotes(byteline):
     byteline = str(byteline).replace('b','').replace("'",'')
     return byteline

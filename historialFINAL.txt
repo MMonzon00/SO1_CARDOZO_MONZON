@@ -47,3 +47,42 @@ daemonControl main.py start
 daemonControl main.py start
 daemonControl main.py start
 daemonControl .py start
+daemonControl hey.py start
+daemonControl hey.py start
+daemonControl hey.py start
+clean
+makedir dirtest
+copy hey.py heycpy.py
+move hey.py /dirtest
+move hey
+move hey.py /dirtest
+move /hey.py /dirtest
+move hey.py dirtest
+move hey.py dirtest
+move hey.py
+move hey.py
+move hey.py dirtest
+move hey.py dirtest
+clear
+move heycpy.py dirtest
+move hey.py dirtest
+move heycpy.py dirtest
+move /heycpy.py SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py /SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py /SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py /SO1_CARDOZO_MONZON
+move /dirtest/heycpy.py /SO1_CARDOZO_MONZON
+move /dirtest /SO1_CARDOZO_MONZON
+move /SO1_CARDOZO_MONZON/dirtest ..
+move dirtest
+move dirtest SO1_CARDOZO_MONZON
+move dirtest SO1_CARDOZO_MONZON
+move historial.txt dirtest
+move historial.txt /dirtest
+move historial.txt /dirtest
+move historial.txt dirtest
+set debug true
+set debug true
+move historial.txt dirtest
+move historial.txt dirtest

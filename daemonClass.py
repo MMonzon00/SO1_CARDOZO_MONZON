@@ -70,7 +70,7 @@ class daemon:
 			message = "pidfile {0} already exist. " + \
 					"Daemon already running?\n"
 			sys.stderr.write(message.format(self.pidfile))
-			sys.exit(1)
+			return
 		
 		# Start the daemon
 		self.daemonize()
@@ -89,7 +89,7 @@ class daemon:
 			message = "pidfile {0} does not exist. " + \
 					"Daemon not running?\n"
 			sys.stderr.write(message.format(self.pidfile))
-			return # not an error in a restart
+			return 1# not an error in a restart
 
 		# Try killing the daemon process	
 		try:
@@ -103,7 +103,7 @@ class daemon:
 					os.remove(self.pidfile)
 			else:
 				print (str(err.args))
-				sys.exit(1)
+				return 1
 
 	def restart(self):
 		"""Restart the daemon."""

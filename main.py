@@ -210,25 +210,33 @@ class shell(cmd2.Cmd):
     
     ###4.2. Mover - mover
     ###4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s) DirectorioDestino.
-    def do_move(self,arguments):
-        dirsrc=arguments.arg_list[0]
-        dirdst=arguments.arg_list[1]
-        src = f'{dirsrc}'
-        dst = f'{dirdst}'
+    moveParser=Cmd2ArgumentParser()
+    moveParser.add_argument('src',nargs=1,help='Source Path of file or directory.')
+    moveParser.add_argument('dst',nargs=1,help='Destiny Path of file or directory.')
+    
+    @with_argparser(moveParser)
+    def do_move(self,args):
+        src=(os.path.abspath(os.path.expanduser(args.src[0])))
+        dst=str(os.path.abspath(os.path.expanduser(args.dst[0])))
         name = "move"
         guardarParam = (name,src,dst)
         self.guardar(guardarParam)
-        if src!=dst:
-            shutil.move(src,dst)
-            self.popout("File moved successfully.")
+        if os.path.isfile(src)==True:
+            shutil.move(src, dst)
+            return 0
+        file_names = os.listdir(src)
+        try:   
+            for file_name in file_names:
+                shutil.move(file_names[file_name], dst)
+            self.popout("File/s moved successfully.")
             self.logRegistroDiario(' '.join(guardarParam))
-        elif src==dst:
+            return 0
+        except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
             self.logRegistroError(' '.join(guardarParam))
-        # except PermissionError:
-        #     self.poutput("Permission denied.")
-        # except:
-        #     self.poutput("Error occurred while moving file/s.")
+        except PermissionError:
+            self.poutput("Permission denied.")
+            self.logRegistroError(' '.join(guardarParam))
     
     ###4.3. Renombrar - renombrar
     def do_rename(self,FILENAME): #these are the parameters needed
