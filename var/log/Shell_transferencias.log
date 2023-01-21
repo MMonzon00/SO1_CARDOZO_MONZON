@@ -1,0 +1,6 @@
+2023-01-21 00:34:57,620 - ShellTransferencia - DEBUG - ('ftpTransferencia', ['ftp.dlptest.com', 'dlpuser', 'gfg.txt'])
+2023-01-21 00:37:09,833 - ShellTransferencia - DEBUG - ('ftpTransferencia', Statement(args='ftp.dlptest.com dlpuser gfg.txt', raw='ftpTransferencia ftp.dlptest.com dlpuser gfg.txt', command='ftpTransferencia', arg_list=['ftp.dlptest.com', 'dlpuser', 'gfg.txt'], multiline_command='', terminator='', suffix='', pipe_to='', output='', output_to=''))
+2023-01-21 00:40:57,443 - ShellTransferencia - DEBUG - ('ftpTransferencia', 'ftp.dlptest.com dlpuser e.txt')
+2023-01-21 00:45:38,731 - ShellTransferencia - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:49:28,006 - ShellTransferencia - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:50:37,037 - ShellTransferencia - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser pruebi

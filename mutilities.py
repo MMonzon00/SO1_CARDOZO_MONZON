@@ -29,7 +29,7 @@ def readFile(filePATH,separator):
         return resultMatrix
 
 def getUID():
-    filePATH='/etc/passwd'
+    filePATH='etc/passwd'
     separator=':'
     resultMatrix=readFile(filePATH,separator)
     UID_list = []
@@ -43,7 +43,7 @@ def getUID():
     return UID
 
 def getGID():
-    filePATH='/etc/passwd'
+    filePATH='etc/passwd'
     separator=':'
     resultMatrix=readFile(filePATH,separator)
     UID_list = []

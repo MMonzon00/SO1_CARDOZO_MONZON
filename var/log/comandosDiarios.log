@@ -128,3 +128,119 @@
 2023-01-20 12:54:45,369 - RegistroDiario - DEBUG - ir ..
 2023-01-20 13:20:01,494 - RegistroDiario - DEBUG - ir ..
 2023-01-20 13:54:08,987 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 22:48:12,310 - RegistroDiario - DEBUG - listar
+2023-01-20 22:48:12,311 - RegistroDiario - DEBUG - listar /home/erika/SO1_CARDOZO_MONZON-1
+2023-01-20 23:28:42,369 - RegistroDiario - DEBUG - copy new1 holas
+2023-01-20 23:28:54,189 - RegistroDiario - DEBUG - copy erfkd holas
+2023-01-20 23:29:14,759 - RegistroDiario - DEBUG - copy holas holas
+2023-01-20 23:29:51,031 - RegistroDiario - DEBUG - copy new1 ne.txt hoa
+2023-01-20 23:33:31,817 - RegistroDiario - DEBUG - move ne.txt new.txt hoa
+2023-01-20 23:33:57,110 - RegistroDiario - DEBUG - move ne.txt hoa
+2023-01-20 23:34:29,184 - RegistroDiario - DEBUG - move holi.txt hoa
+2023-01-20 23:35:13,077 - RegistroDiario - DEBUG - move hoe.txt hoa
+2023-01-20 23:35:42,998 - RegistroDiario - DEBUG - move test hoa
+2023-01-20 23:36:35,611 - RegistroDiario - DEBUG - move gfg.txt c
+2023-01-20 23:40:19,434 - RegistroDiario - DEBUG - move historial.txt c
+2023-01-20 23:42:04,194 - RegistroDiario - DEBUG - rename testt test1
+2023-01-20 23:42:10,606 - RegistroDiario - DEBUG - rename testtdff test1
+2023-01-20 23:42:20,012 - RegistroDiario - DEBUG - rename 
+2023-01-20 23:42:23,251 - RegistroDiario - DEBUG - rename f
+2023-01-20 23:42:35,775 - RegistroDiario - DEBUG - eof
+2023-01-20 23:42:37,878 - RegistroDiario - DEBUG - eof
+2023-01-20 23:45:46,927 - RegistroDiario - DEBUG - move hola holaaaa.txt
+2023-01-20 23:46:00,200 - RegistroDiario - DEBUG - move hola hola
+2023-01-20 23:46:05,145 - RegistroDiario - DEBUG - move hola holafds
+2023-01-20 23:46:48,788 - RegistroDiario - DEBUG - move holas c
+2023-01-20 23:47:04,248 - RegistroDiario - DEBUG - move holas sdd
+2023-01-20 23:47:11,635 - RegistroDiario - DEBUG - move holas holas
+2023-01-20 23:48:10,084 - RegistroDiario - DEBUG - move new.txt c
+2023-01-20 23:48:22,042 - RegistroDiario - DEBUG - move c c
+2023-01-20 23:48:34,788 - RegistroDiario - DEBUG - move c c
+2023-01-20 23:54:58,580 - RegistroDiario - DEBUG - vi a.txt
+2023-01-20 23:55:08,733 - RegistroDiario - DEBUG - vi b.txt
+2023-01-20 23:55:19,070 - RegistroDiario - DEBUG - vi a.txt
+2023-01-20 23:55:38,871 - RegistroDiario - DEBUG - move a.txt new1 c
+2023-01-20 23:57:28,570 - RegistroDiario - DEBUG - move x 1 c
+2023-01-20 23:57:48,631 - RegistroDiario - DEBUG - move c hoa test1
+2023-01-20 23:58:10,992 - RegistroDiario - DEBUG - ir c
+2023-01-21 00:05:51,698 - RegistroDiario - DEBUG - ir c
+2023-01-21 00:06:42,243 - RegistroDiario - DEBUG - move holas test1/holas
+2023-01-21 00:08:28,769 - RegistroDiario - DEBUG - move holas test1/holas
+2023-01-21 00:08:49,418 - RegistroDiario - DEBUG - move holas test1
+2023-01-21 00:10:32,770 - RegistroDiario - DEBUG - move holas test1
+2023-01-21 00:10:54,546 - RegistroDiario - DEBUG - move holas holas
+2023-01-21 00:16:37,086 - RegistroDiario - DEBUG - makedir m
+2023-01-21 00:16:42,986 - RegistroDiario - DEBUG - makedir 
+2023-01-21 00:17:13,369 - RegistroDiario - DEBUG - permisos 777 holas
+2023-01-21 00:17:25,864 - RegistroDiario - DEBUG - permisos 777 c
+2023-01-21 00:17:33,121 - RegistroDiario - DEBUG - ls -l
+2023-01-21 00:19:22,132 - RegistroDiario - DEBUG - permisos 777 cgfds
+2023-01-21 00:20:12,651 - RegistroDiario - DEBUG - propietario root:root test1 hoa
+2023-01-21 00:20:21,257 - RegistroDiario - DEBUG - ls -l
+2023-01-21 00:20:45,450 - RegistroDiario - DEBUG - propietario root:root test1 hoagfrdes
+2023-01-21 00:21:02,402 - RegistroDiario - DEBUG - setPass
+2023-01-21 00:21:10,362 - RegistroDiario - DEBUG - setPass erika
+2023-01-21 00:24:13,763 - RegistroDiario - DEBUG - setPass erika
+2023-01-21 00:29:39,871 - RegistroDiario - DEBUG - fgrep probando tes1/new.txt
+2023-01-21 00:29:50,950 - RegistroDiario - DEBUG - fgrep probando test1/new.txt
+2023-01-21 00:30:09,984 - RegistroDiario - DEBUG - historial
+2023-01-21 00:30:42,581 - RegistroDiario - DEBUG - historial
+2023-01-21 00:31:37,244 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:34:37,857 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:36:54,163 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:38:26,550 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:39:15,755 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser e.txt
+2023-01-21 00:45:20,697 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:47:46,140 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:48:12,318 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:48:59,826 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:49:14,655 - RegistroDiario - DEBUG - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:50:11,872 - RegistroDiario - DEBUG -  ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:51:05,737 - RegistroDiario - DEBUG - mkdir etc
+2023-01-21 00:51:13,774 - RegistroDiario - DEBUG - ir etc
+2023-01-21 00:56:56,411 - RegistroDiario - DEBUG - makedir etc/passwd
+2023-01-21 00:57:18,000 - RegistroDiario - DEBUG - makedir etc/shadow
+2023-01-21 00:57:29,300 - RegistroDiario - DEBUG - makedir etc/group
+2023-01-21 00:57:44,357 - RegistroDiario - DEBUG - addusuario martim
+2023-01-21 01:02:14,409 - RegistroDiario - DEBUG - addusuario erika
+2023-01-21 01:02:19,415 - RegistroDiario - DEBUG - addusuario eriki
+2023-01-21 01:02:25,363 - RegistroDiario - DEBUG - addusuario so1
+2023-01-21 01:04:46,189 - RegistroDiario - DEBUG - cat etc/passwd
+2023-01-21 01:10:33,915 - RegistroDiario - DEBUG - cat /passwd
+2023-01-21 01:10:42,483 - RegistroDiario - DEBUG - ir etc
+2023-01-21 01:16:55,967 - RegistroDiario - DEBUG - copy c m
+2023-01-21 01:17:15,243 - RegistroDiario - DEBUG - copy c m
+2023-01-21 01:18:50,731 - RegistroDiario - DEBUG - copy m c
+2023-01-21 01:19:02,125 - RegistroDiario - DEBUG - copy m cdd
+2023-01-21 01:19:18,378 - RegistroDiario - DEBUG - copy m c
+2023-01-21 01:19:24,908 - RegistroDiario - DEBUG - copy pruebi c
+2023-01-21 01:19:40,978 - RegistroDiario - DEBUG - copy c c
+2023-01-21 01:19:49,920 - RegistroDiario - DEBUG - copy hoa c
+2023-01-21 01:23:37,889 - RegistroDiario - DEBUG - copy pruebi c
+2023-01-21 01:23:52,684 - RegistroDiario - DEBUG - move pruebi test1
+2023-01-21 01:24:30,356 - RegistroDiario - DEBUG - move pruebi test1
+2023-01-21 01:24:39,814 - RegistroDiario - DEBUG - move pruebi test1
+2023-01-21 01:26:53,489 - RegistroDiario - DEBUG - move 1 test1
+2023-01-21 01:28:36,560 - RegistroDiario - DEBUG - move 1 1
+2023-01-21 01:29:27,566 - RegistroDiario - DEBUG - eof
+2023-01-21 01:29:51,912 - RegistroDiario - DEBUG - move m test1
+2023-01-21 01:30:00,697 - RegistroDiario - DEBUG - move m m
+2023-01-21 01:31:43,561 - RegistroDiario - DEBUG - move m test1
+2023-01-21 01:31:46,612 - RegistroDiario - DEBUG - move m test1sd
+2023-01-21 01:31:58,796 - RegistroDiario - DEBUG - move usuarios.txt test1
+2023-01-21 01:32:50,432 - RegistroDiario - DEBUG - move m test1
+2023-01-21 01:33:03,495 - RegistroDiario - DEBUG - move Usuarios.txt test1
+2023-01-21 01:34:30,647 - RegistroDiario - DEBUG - move gfg.txt test1
+2023-01-21 01:36:18,622 - RegistroDiario - DEBUG - move historial1.txt test1
+2023-01-21 01:36:50,308 - RegistroDiario - DEBUG - move historial1.txt hoa
+2023-01-21 01:39:09,905 - RegistroDiario - DEBUG - vi pruebaa.txt
+2023-01-21 01:39:22,697 - RegistroDiario - DEBUG - vi pruebaa.txt
+2023-01-21 01:39:40,633 - RegistroDiario - DEBUG - move prueba.txt hoa/prueba.txt
+2023-01-21 01:39:48,054 - RegistroDiario - DEBUG - move prueba.txt hoa
+2023-01-21 01:39:59,582 - RegistroDiario - DEBUG - move pruebaa.txt hoa
+2023-01-21 01:41:01,416 - RegistroDiario - DEBUG - rm -Rf c
+2023-01-21 01:41:05,554 - RegistroDiario - DEBUG - rm -Rf etc
+2023-01-21 01:41:15,539 - RegistroDiario - DEBUG - rm -Rf holaaaa.txt
+2023-01-21 01:41:22,580 - RegistroDiario - DEBUG - rm -Rf test1
+2023-01-21 01:41:28,307 - RegistroDiario - DEBUG - rm -Rf test1
+2023-01-21 01:47:12,899 - RegistroDiario - DEBUG - eof

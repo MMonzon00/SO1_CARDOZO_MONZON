@@ -15,3 +15,61 @@
 2023-01-20 13:22:51,435 - RegistroError - ERROR - ir ajs noExiste
 2023-01-20 13:23:29,640 - RegistroError - ERROR - ir jsd noExiste
 2023-01-20 13:24:01,391 - RegistroError - ERROR - ir shhd file not such directory
+2023-01-20 22:35:56,769 - RegistroError - ERROR - listar test
+2023-01-20 22:37:28,395 - RegistroError - ERROR - listar hnsjh
+2023-01-20 23:28:54,190 - RegistroError - ERROR - copy erfkd holas
+2023-01-20 23:29:14,760 - RegistroError - ERROR - copy holas holas
+2023-01-20 23:33:31,819 - RegistroError - ERROR - move ne.txt new.txt
+2023-01-20 23:33:57,110 - RegistroError - ERROR - move ne.txt hoa
+2023-01-20 23:34:29,186 - RegistroError - ERROR - move holi.txt hoa
+2023-01-20 23:35:13,078 - RegistroError - ERROR - move hoe.txt hoa
+2023-01-20 23:35:42,999 - RegistroError - ERROR - move test hoa
+2023-01-20 23:36:35,613 - RegistroError - ERROR - move gfg.txt c
+2023-01-20 23:40:19,435 - RegistroError - ERROR - move historial.txt c
+2023-01-20 23:42:10,607 - RegistroError - ERROR - rename /home/erika/SO1_CARDOZO_MONZON-1/testtdff /home/erika/SO1_CARDOZO_MONZON-1/test1
+2023-01-20 23:46:00,201 - RegistroError - ERROR - move hola hola
+2023-01-20 23:47:04,249 - RegistroError - ERROR - move holas sdd
+2023-01-20 23:47:11,636 - RegistroError - ERROR - move holas holas
+2023-01-20 23:48:22,042 - RegistroError - ERROR - move c c
+2023-01-20 23:57:28,571 - RegistroError - ERROR - move x 1 c
+2023-01-20 23:57:48,631 - RegistroError - ERROR - move c hoa test1
+2023-01-21 00:06:42,244 - RegistroError - ERROR - move holas test1/holas
+2023-01-21 00:08:28,770 - RegistroError - ERROR - move holas test1/holas
+2023-01-21 00:08:49,419 - RegistroError - ERROR - move holas test1
+2023-01-21 00:10:32,771 - RegistroError - ERROR - move holas test1
+2023-01-21 00:10:54,547 - RegistroError - ERROR - move holas holas
+2023-01-21 00:17:13,370 - RegistroError - ERROR - permisos 777 holas
+2023-01-21 00:19:22,133 - RegistroError - ERROR - permisos 777 cgfds
+2023-01-21 00:20:45,451 - RegistroError - ERROR - propietario root:root test1 hoagfrdes
+2023-01-21 00:29:39,872 - RegistroError - ERROR - fgrep probando tes1/new.txt
+2023-01-21 00:32:24,774 - RegistroError - ERROR - ('ftpTransferencia', Statement(args='ftp.dlptest.com dlpuser gfg.txt', raw='ftpTransferencia ftp.dlptest.com dlpuser gfg.txt', command='ftpTransferencia', arg_list=['ftp.dlptest.com', 'dlpuser', 'gfg.txt'], multiline_command='', terminator='', suffix='', pipe_to='', output='', output_to=''))
+2023-01-21 00:38:40,528 - RegistroError - ERROR - ('ftpTransferencia', 'ftp.dlptest.com dlpuser gfg.txt')
+2023-01-21 00:47:58,708 - RegistroError - ERROR - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:48:24,782 - RegistroError - ERROR - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 00:49:12,109 - RegistroError - ERROR - ftpTransferencia ftp.dlptest.com dlpuser gfg.txt
+2023-01-21 01:02:14,411 - RegistroError - ERROR - erika already exists. 01:02:14
+2023-01-21 01:02:19,417 - RegistroError - ERROR - eriki already exists. 01:02:19
+2023-01-21 01:17:15,244 - RegistroError - ERROR - copy c m
+2023-01-21 01:17:15,245 - RegistroError - ERROR - copy c m
+2023-01-21 01:17:15,245 - RegistroError - ERROR - copy c m
+2023-01-21 01:17:15,246 - RegistroError - ERROR - copy c m
+2023-01-21 01:17:15,247 - RegistroError - ERROR - copy c m
+2023-01-21 01:19:40,978 - RegistroError - ERROR - copy c c
+2023-01-21 01:19:40,979 - RegistroError - ERROR - copy c c
+2023-01-21 01:19:40,980 - RegistroError - ERROR - copy c c
+2023-01-21 01:19:40,981 - RegistroError - ERROR - copy c c
+2023-01-21 01:19:40,981 - RegistroError - ERROR - copy c c
+2023-01-21 01:19:49,923 - RegistroError - ERROR - copy hoa c
+2023-01-21 01:19:49,924 - RegistroError - ERROR - copy hoa c
+2023-01-21 01:23:52,685 - RegistroError - ERROR - move pruebi test1
+2023-01-21 01:24:30,356 - RegistroError - ERROR - move pruebi test1
+2023-01-21 01:24:39,815 - RegistroError - ERROR - move pruebi test1
+2023-01-21 01:26:53,490 - RegistroError - ERROR - move 1 test1
+2023-01-21 01:28:36,561 - RegistroError - ERROR - move 1 1
+2023-01-21 01:29:51,913 - RegistroError - ERROR - move m test1
+2023-01-21 01:30:00,698 - RegistroError - ERROR - move m m
+2023-01-21 01:31:43,562 - RegistroError - ERROR - move m test1
+2023-01-21 01:31:46,613 - RegistroError - ERROR - move m test1sd
+2023-01-21 01:31:58,796 - RegistroError - ERROR - move usuarios.txt test1
+2023-01-21 01:32:50,433 - RegistroError - ERROR - move m test1
+2023-01-21 01:33:03,496 - RegistroError - ERROR - move Usuarios.txt test1
