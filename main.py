@@ -150,15 +150,15 @@ class shell(cmd2.Cmd):
         dst=str(os.path.abspath(os.path.expanduser(args.dst[0])))
         name = "copy"
         guardarParam = (name,src,dst)
-        if os.path.isfile(src)==True:
+        if os.path.isfile(src)==True: # verificar si existe
             shutil.copy(src, dst)
             return 0
-        file_names = os.listdir(src)
+        file_names = os.listdir(src) # listar 
         try:   
             for file_name in file_names:
                 shutil.copy(file_names[file_name], dst)
             self.poutput("File copied successfully.")
-            self.logRegistroDiario(' '.join(guardarParam))
+            #self.logRegistroDiario(' '.join(guardarParam))
             return 0
         
         # If src and dst are same
@@ -189,15 +189,15 @@ class shell(cmd2.Cmd):
         name = "move"
         guardarParam = (name,src,dst)
         self.guardar(guardarParam)
-        if os.path.isfile(src)==True:
+        if os.path.isfile(src)==True: #verificar
             shutil.move(src, dst)
             return 0
-        file_names = os.listdir(src)
+        file_names = os.listdir(src) #listar
         try:   
             for file_name in file_names:
                 shutil.move(file_names[file_name], dst)
             self.popout("File/s moved successfully.")
-            self.logRegistroDiario(' '.join(guardarParam))
+           # self.logRegistroDiario(' '.join(guardarParam))
             return 0
         except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
@@ -616,9 +616,9 @@ class shell(cmd2.Cmd):
         #datos para la prueba!!!!!!!!!!!!!!!!!
         #hostname = "ftp.dlptest.com"
         #username = "dlpuser"
-        passw = "rNrKYTX9g7z3RgJRmxWuGHbeu"
+        #passw = "rNrKYTX9g7z3RgJRmxWuGHbeu"
         #filename = "gfg.txt"
-        #passw = getpass.getpass()
+        passw = getpass.getpass()
 
         while len(b)==0: #si se ingresa vacio
             b = input("ingrese datos novacio, ej: hostname user file  ")
@@ -654,7 +654,6 @@ class shell(cmd2.Cmd):
                     ftp_server.quit()
                 
                 elif x=='nuevo':
-                   # 
                     filen=input("ingrese nombre del archivo nuevo: ") #crear archivo y editar par subir
                     contenido=input("ingrese texto para el archivo nuevo: ")
                     archivo=open(filen, "a")
@@ -685,8 +684,8 @@ class shell(cmd2.Cmd):
 
     def do_clean(self,args):
         name = 'clean'
-        self.logRegistroDiario(''.join(name)) #limpiar terminal
-        _ = system('clear')  
+        #self.logRegistroDiario(''.join(name)) 
+        _ = system('clear')  #limpiar pantalla
         
     
     def do_exit(self,e): 
