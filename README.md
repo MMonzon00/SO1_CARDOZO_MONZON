@@ -1,22 +1,16 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 0afdff117869d538d882f4f158f70bacabcc1e1e
 # Implementacion de Linux Shell en Python
 
 Se implemento una shell de linux en python para una version de linux siguiendo el manual de LFS.
 
+## Made with:
 
-## API Reference
+![Image](https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg)
 
-<<<<<<< HEAD
-#### Copy
+## API Reference:
 
-```http
-  Guardar dirsrc dirdst
-=======
+
 ### Copy
-
+___
 ```
 copy dirsrc dirdst
 dirsrc=origen
@@ -32,7 +26,7 @@ Copia el archivo de la direccion especificada a la direccion de destino, si no s
 
 
 ### Move
-
+___
 ```
   move dirsrc dirdst
   dirsrc=origen archivo/directorio
@@ -46,7 +40,7 @@ Mover un archivo/directorio de la direccion especificada a la direccion de desti
 
 
 ### Rename
-
+___
 ```
   rename src dst
   src=nombre actual archivo/directorio
@@ -56,12 +50,11 @@ Mover un archivo/directorio de la direccion especificada a la direccion de desti
 #### move (dirsrc,dirdst)
 #### ejemplo: rename hola.txt hola1.txt
 
-Renombrar archivos/directorios
-En caso de algun error, se lanza una excepcion.
+Renombrar archivos/directorios.\ En caso de algun error, se lanza una excepcion.
 
 
 ### List
-
+___
 ```
   list 
   list dirPATH
@@ -72,11 +65,10 @@ En caso de algun error, se lanza una excepcion.
 #### list dirPATH
 #### ejemplo: list carpeta
 
-Listar un directorio 
-En caso de algun error o directorio inexistente, se lanza una excepcion.
+Listar un directorio.\ En caso de algun error o directorio inexistente, se lanza una excepcion.
 
 ### Makedir
-
+___
 ```
   makedir dirnames 
   dirNAMES= nombre(s) de carpetas a crear
@@ -85,12 +77,12 @@ En caso de algun error o directorio inexistente, se lanza una excepcion.
 #### makedir dirnames
 #### ejemplo: makedir a
 
-Crear un directorio 
+Crear un directorio. 
 En caso de algun error o el directorio ya existe, se lanza una excepcion.
 
 
 ### Ir
-
+___
 ```
   ir dirPATH 
   dirPATH=direccion para cambiar de directorio 
@@ -99,12 +91,12 @@ En caso de algun error o el directorio ya existe, se lanza una excepcion.
 #### ir dirPATH
 #### ejemplo: ir carpeta
 
-Cambiar de directorio 
+Cambiar de directorio.\
 En caso de algun error o el directorio no existe, se lanza una excepcion.
 
 
 ### Permisos
-
+___
 ```
   permisos perPATH 
   perPATH=contiene los permisos y el archivo/directorio que desea cambiar sus permisos. 
@@ -113,12 +105,12 @@ En caso de algun error o el directorio no existe, se lanza una excepcion.
 #### permisos perPATH
 #### ejemplo: permisos 777 a.txt
 
-Cambiar los permisos sobre un archivo o un directorio  
+Cambiar los permisos sobre un archivo o un directorio.\
 En caso de algun error o el archivo/directorio no existe, se lanza una excepcion.
 
 
 ### Propietario
-
+___
 ```
   propietario cad 
   cad=contiene el usuario/grupo y el archivo/directorio. 
@@ -127,32 +119,28 @@ En caso de algun error o el archivo/directorio no existe, se lanza una excepcion
 #### propietario usuario:grupo archivo/carpeta
 #### ejemplo: propietario erika:erikaGroup a.txt
 
-Cambiar los propietarios sobre un archivo  
+Cambiar los propietarios sobre un archivo.\
 En caso de algun error o el archivo/directorio no existe, se lanza una excepcion.
 
 
 ### Contraseña
+___
+```
+  setPass usuario
+  usuario = nombre de usuario
 
 ```
-  setPass usuario 
-  // que recibe
-```
-
-#### como es el comando
-#### un ejemplo
-
-Cambiar contraseña  
-En caso de algun error se lanza una excepcion.
+Recibe el nombre de usuario, luego verfifica si existe y cambia la contraseña \
+en el formato correspondiente. En caso de algun error se lanza una excepcion.
 
 ### Agregar Usuario
-
+___
 ```
   addsuario usuario
-  // que recibe
+  usuario = nombre de usuario a ser creado.
 ```
-
-#### como es el comando
-#### un ejemplo
+Recibe el nombre de usuario, luego verfifica si existe,lanza una excepcion si es asi, \
+y crea el usuario y su direccion de Home si es que no existe un usuario con ese nombre.
 
 Agregar usuario, se registran los datos personales del mismo incluyendo
 su horario de trabajo y posibles lugares de conexión
@@ -160,7 +148,7 @@ En caso de algun error se lanza una excepcion.
 
 
 ### Imprimir directorio
-
+___
 ```
   printdir  
 ```
@@ -173,21 +161,19 @@ En caso de algun error, se lanza una excepcion.
 
 
 ### Kill
-
+___
 ```
-  kill //  
-  que recibe //
-``
-
-#### kill
-#### ejemplo para kill: //
+  kill PIDs señal 
+  PIDs = lista de procesos a ser terminados
+  señal = 3 señales disponibles KILL, STOP, TERMINATE
+```
 
 Terminar procesos con señales determinadas.
 En caso de algun error, se lanza una excepcion.
 
 
 ### Grep
-
+___
 ```
   fgrep gpath
   gpath= Contiene el string a buscar y el archivo
@@ -202,35 +188,36 @@ En caso de algun error, archivo inexistente o palabra no encontrada, se lanza un
 
 
 ### History
+___
 
 ```
   history
 ```
 
 #### history
-#### ejemplo: history
+#### ejemplo: historial
 
 Imprime el historial de comandos.
 En caso de algun error, se lanza una excepcion.
 
 
 ### Daemons
+___
 
 ```
-    daemonControl señal accion //  
-    que recibe //
+    daemonControl daemonPATH accion 
+    deamon = direccion del daemon a ser ejecutado
+    accion = accion a ser tomada start|stop|restart
   
 ```
-
-#### daemons
-#### ejemplo: 
 
 Levantar y apagar demonios dentro del sistema.
 En caso de algun error, se lanza una excepcion.
 
 ### Transferencia ftp
+___
 
-```http
+```
   ftpTransferencia b
   b= Contiene hostname, username y archivo a enviar/descargar.
 ```
@@ -241,106 +228,27 @@ En caso de algun error, se lanza una excepcion.
 Ejecutar una transferencia, bajar o subir archivo.
 En caso de algun error, se lanza una excepcion.
 
-#### ARCHIVOS LOGS ####
+## ARCHIVOS LOGS 
 
-usuario_horarios_log.log
+#### usuario_horarios_log.log
 
-```http
-  Guarda los horarios de los usuarios que ingresan fuera de horario laboral.
-```
+- Guarda los horarios de los usuarios que ingresan fuera de horario laboral.
 
-Shell_transferencias.log
+#### Shell_transferencias.log
 
-```http
-  Guarda las trasnferecias realizadas.
-```
+- Guarda las trasnferecias realizadas.
 
-comandosDiarios.log
+#### comandosDiarios.log
 
-```http
-  Guarda los comandos diarios realizados.
-```
+ * Guarda los comandos diarios realizados.
 
-sistema_error.log
+#### sistema_error.log
 
-```http
-  Guarda los errores que se obtuvieron.
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* Guarda los errores que se obtuvieron.
 
 ## Autores
 
 - [Martin Monzon](https://www.github.com/c4russian)
 - [Erika Cardozo](https://github.com/erikacardozo)
 
-## Acknowledgements
-
- - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
-
-
-## API Reference
-
-#### Get all items
-
-```http
-  GET /api/items
->>>>>>> 0afdff117869d538d882f4f158f70bacabcc1e1e
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
-#### Get item
-
-```http
-  GET /api/items/${id}
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
-<<<<<<< HEAD
-#### Copy (dirsrc,dirdst)
-
-Copia el archivo en la direccion especificada a la direccion de destino, si no se ingresa una direccion de destino la copia se hace en la misma direccion.
-
-
-## Autores
-
-- [Martin Monzon](https://www.github.com/c4russian)
-- [Erika Cardozo](https://github.com/erikacardozo)
-=======
-#### add(num1, num2)
-
-Takes two numbers and returns the sum.
-
-
-## Appendix
-
-Any additional information goes here
->>>>>>> 0afdff117869d538d882f4f158f70bacabcc1e1e
 
