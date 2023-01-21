@@ -467,6 +467,7 @@ class shell(cmd2.Cmd):
         homephone=input("Teléfono de casa: ")
         GECOS = [f'{fullname} {workphone} {homephone} {ipadresses}',horario[0],horario[1]]
         GECOS=mutilities.joinList(GECOS,',')
+        logusuario = GECOS
         for path in range(len(paths)):
             files[path] = open(paths[path],"a+") 
         files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}"+':'+homeDirAbs+':'+mutilities.getAbs(shellPATH)+'\n')
@@ -474,9 +475,9 @@ class shell(cmd2.Cmd):
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
             files[path].close()
-        
         self.poutput(f'Path {homeDIR} created.')
         self.poutput(f'User {username} created.\nSet password with setPass ''<username>''.\n ')
+        self.logRegistroUsuario(logusuario)
         return 0
     
     # verficar horario laboral-falta
