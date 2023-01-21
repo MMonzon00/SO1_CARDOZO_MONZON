@@ -420,7 +420,7 @@ class shell(cmd2.Cmd):
     def do_addusuario(self,args):
         separator=','
         username = args.usr[0]
-        paths = ["etc/passwd","etc/shadow","etc/group"]
+        paths = ["/etc/passwd","/etc/shadow","/etc/group"]
         files = []
         files = mutilities.parseFile(files,paths)
         # print(files)
