@@ -1,41 +1,48 @@
-### Documentación LFS
-# Grupo: Erika Cardozo – Martin Monzón
+# Documentación LFS
 
-##Capítulo 1##: En el primer capítulo nos enseña cómo construir un sistema LFS, los cambios realizados y las novedades con respecto a la versión anterior.
+## Grupo: Erika Cardozo – Martin Monzón
 
-
-
-##Capítulo 2##: Con root instalamos las herramientas de host y paquetes necesarios para construir LFS. Se verifica si el sistema host tiene todas las versiones apropiadas y la capacidad de compilar programas.
-
-Describe cómo crear una nueva partición, un sistema de archivos y luego montarlos.
-
-Se realiza la configuración de la variable $LFS export LFS=/mnt/lfs donde construirá el sistema LFS.
-
-El tamaño del disco de Ubuntu tiene 10GB.
-
-El tamaño del disco para LFS tiene 35GB.
+### Capítulo 1: 
+En el primer capítulo nos enseña cómo construir un sistema LFS, los cambios realizados y las novedades con respecto a la versión anterior.
 
 
 
-##Capítulo 3##: Explica qué paquetes y parches deben descargarse para construir un sistema LFS y cómo almacenarlos en el nuevo sistema de archivos.
+### Capítulo 2: 
+Con root instalamos las herramientas de host y paquetes necesarios para construir LFS. Se verifica si el sistema host tiene todas las versiones apropiadas y la capacidad de compilar programas.
 
-Se crea el directorio $LFS/sources la cual se puede utilizar como lugar para almacenar los tarballs, paquetes, parches y también como directorio de trabajo. Así al utilizar este directorio, todos sus elementos estarían disponible durante la construcción. 
+- Describe cómo crear una nueva partición, un sistema de archivos y luego montarlos.
 
-Para descargar los paquetes utilizamos wget wget-list-systemd (un enlace la cual contiene todos los paquetes y parches necesarios).
+- Se realiza la configuración de la variable $LFS export LFS=/mnt/lfs donde construirá el sistema LFS.
 
-Todo esto se realiza en root.
+- El tamaño del disco de Ubuntu tiene 10GB.
 
-
-
-##Capítulo 4##: Trata sobre la construcción de un sistema temporal. Se crean un conjunto de directorios donde se instalan herramientas temporales (etc, var, tools y otros).
-
-Como root cometer un solo error puede dañar un sistema entonces agregaremos un usuario sin privilegios llamado lfs y crearemos un entorno de compilación apropiado para ese usuario.
-
-También habla de cuánto tiempo se tarda aproximadamente en compilar e instalar cada paquete y sobre el conjunto de pruebas que se realizan.
+- El tamaño del disco para LFS tiene 35GB.
 
 
 
-##Capítulo 5##: Explica la instalación de la cadena de herramientas inicial (binutils, gcc y glibc) utilizando técnicas de compilación cruzada para aislar las nuevas herramientas del sistema host y se instalan en el directorio $LFS/tools.
+### Capítulo 3: 
+
+- Explica qué paquetes y parches deben descargarse para construir un sistema LFS y cómo almacenarlos en el nuevo sistema de archivos.
+
+- Se crea el directorio $LFS/sources la cual se puede utilizar como lugar para almacenar los tarballs, paquetes, parches y también como directorio de trabajo. Así al utilizar este directorio, todos sus elementos estarían disponible durante la construcción. 
+
+- Para descargar los paquetes utilizamos wget wget-list-systemd (un enlace la cual contiene todos los paquetes y parches necesarios).
+
+- Todo esto se realiza en root.
+
+
+
+### Capítulo 4: 
+Trata sobre la construcción de un sistema temporal. Se crean un conjunto de directorios donde se instalan herramientas temporales (etc, var, tools y otros).
+
+- Como root cometer un solo error puede dañar un sistema entonces agregaremos un usuario sin privilegios llamado lfs y crearemos un entorno de compilación apropiado para ese usuario.
+
+- También habla de cuánto tiempo se tarda aproximadamente en compilar e instalar cada paquete y sobre el conjunto de pruebas que se realizan.
+
+
+
+### Capítulo 5: 
+Explica la instalación de la cadena de herramientas inicial (binutils, gcc y glibc) utilizando técnicas de compilación cruzada para aislar las nuevas herramientas del sistema host y se instalan en el directorio $LFS/tools.
 
 Como usuario lfs dentro del directorio /mnt/lfs/sources/ utilizamos tar -xvf paquete para extraer el paquete a construir.
 
@@ -47,7 +54,8 @@ Nos tomó alrededor de 1 hora o menos compilar los paquetes.
 
 
 
-##Capítulo 6##: Este capítulo muestra cómo realizar una compilación cruzada de utilidades básicas utilizando la cadena de herramientas cruzada recién construida y debe realizarse como usuario lfs
+### Capítulo 6: 
+Este capítulo muestra cómo realizar una compilación cruzada de utilidades básicas utilizando la cadena de herramientas cruzada recién construida y debe realizarse como usuario lfs
 
 Luego como en el Capítulo 5 con el usuario lfs dentro del directorio /mnt/lfs/sources/ utilizamos tar -xvf paquete para extraer el paquete a construir.
 
@@ -59,7 +67,8 @@ Nos tomó alrededor de 2 horas o menos compilar los paquetes.
 
 
 
-##Capítulo 7##: Ingresa a un entorno "chroot", donde usamos las nuevas herramientas para construir el resto de las herramientas necesarias para crear el sistema LFS.
+### Capítulo 7: 
+Ingresa a un entorno "chroot", donde usamos las nuevas herramientas para construir el resto de las herramientas necesarias para crear el sistema LFS.
 
 Para que el entorno funcione correctamente, se deben los llamados sistemas de archivos de kernel virtual, que se montarán antes de ingresar al entorno chroot. Si se apaga la maquina o mejor dicho si es posible siempre se debe verificar que estén montados los sistemas de archivos de este capítulo con el comando findmnt | grep $LFS, ya que es importante para los siguientes capítulos.
 
@@ -75,7 +84,8 @@ Nos tomó alrededor de 30 minutos compilar los paquetes.
 
 
 
-##Capítulo 8##: Se construye el sistema LFS completo. Se instalan paquetes con tar -xvf paquete, se compilan y luego se realizan pruebas de cada paquete, es importante verificar que no obtengamos errores ya que es un capítulo super importante para el sistema. Algunos errores el libro avisa la cual podrías ignorar, pero hay otros que se debe buscar la manera de solucionar. Lo malo de este capítulo es que te lleva como varios días (si Tenes actividades en el día) ya que son más de 70 paquetes por instalar y hay algunos que tardan bastante, uno de ellos es GCC.
+### Capítulo 8: 
+Se construye el sistema LFS completo. Se instalan paquetes con tar -xvf paquete, se compilan y luego se realizan pruebas de cada paquete, es importante verificar que no obtengamos errores ya que es un capítulo super importante para el sistema. Algunos errores el libro avisa la cual podrías ignorar, pero hay otros que se debe buscar la manera de solucionar. Lo malo de este capítulo es que te lleva como varios días (si Tenes actividades en el día) ya que son más de 70 paquetes por instalar y hay algunos que tardan bastante, uno de ellos es GCC.
 
 Nos tomó 1 semana este capítulo. 
 
@@ -87,14 +97,17 @@ Problemas y soluciones encontradas: Con los paquetes: man-pages, binutils y ncur
 
 
 
-##Capítulo 9##: Este capítulo trata sobre los archivos de configuración general necesarios para configurar la red, analizan los problemas que afectan la configuración adecuada de los dispositivos, configuración del reloj del sistema y la disposición del teclado, breve introducción a los scripts y archivos de configuración utilizados cuando el usuario inicia sesión en el sistema (Creación del archivo /etc/inputrc y /etc/shells), configuración del comportamiento de systemd.
+### Capítulo 9: 
+
+Este capítulo trata sobre los archivos de configuración general necesarios para configurar la red, analizan los problemas que afectan la configuración adecuada de los dispositivos, configuración del reloj del sistema y la disposición del teclado, breve introducción a los scripts y archivos de configuración utilizados cuando el usuario inicia sesión en el sistema (Creación del archivo /etc/inputrc y /etc/shells), configuración del comportamiento de systemd.
 
 Todo este capítulo se realiza en el entorno chroot.
 
 Problemas y soluciones encontradas: No lograba conectar a internet, pero leyendo mejor el libro y editando los archivos de configuración general logramos conectar.
 
 
-##Capítulo 10##: Hacer que el sistema LFS sea de arranque. Todo este capítulo se realiza en el entorno chroot.
+### Capítulo 10: 
+Hacer que el sistema LFS sea de arranque. Todo este capítulo se realiza en el entorno chroot.
 
 La creación del archivo /etc/fstab dónde se montarán los sistemas de archivos. 
 
@@ -112,7 +125,8 @@ Problemas con Grub para el Dual boot: No encontraba el disco y otros errores, pe
 
 
 
-##Capítulo 11##: LFS instalado.  Se crea un /etc/lfs-release archivo para saber qué versión de LFS está instalada en el sistema.
+### Capítulo 11: 
+LFS instalado.  Se crea un /etc/lfs-release archivo para saber qué versión de LFS está instalada en el sistema.
 
 Salimos del entorno chroot y luego desmontamos los sistemas de archivos virtuales, desmontar particiones y el sistema de archivos LFS. ¡¡¡Luego reiniciamos y todo LISTO!!!
 
