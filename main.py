@@ -37,7 +37,6 @@ class shell(cmd2.Cmd):
         self.poutput("\nWelcome to So1_Shell_2022. \nMade by: Cardozo & Monzon.")
  
     def onecmd( self, s, **kwargs): #  **kwargs simplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
-        print(s.raw)
         comando=s.raw
         ubi='historialFINAL.txt'
         f = open (ubi,'a')

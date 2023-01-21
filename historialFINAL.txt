@@ -86,3 +86,6 @@ set debug true
 set debug true
 move historial.txt dirtest
 move historial.txt dirtest
+move historial.txt dirtest
+move historial.txt dirtest
+clear
