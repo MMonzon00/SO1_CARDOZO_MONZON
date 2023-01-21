@@ -24,14 +24,6 @@ import sys
 
 #!/usr/bin/env python
 """A simple shell application."""
-OKBLUE = '\033[94m'
-OKCYAN = '\033[96m'
-OKGREEN = '\033[92m'
-BOLD = '\033[1m'
-WHITE = '\033[37m'
-MAGENTA='\033[35m'
-WARNING = '\033[93m'
-FAIL = '\033[91m'
 class shell(cmd2.Cmd):
     def __init__(self):
         super().__init__()
