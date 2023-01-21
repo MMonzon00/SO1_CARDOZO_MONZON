@@ -1,4 +1,5 @@
 import subprocess
+from datetime import datetime
 import cmd2
 import os 
 import shutil
@@ -21,6 +22,7 @@ import string
 import time
 from daemonClass import daemon
 import sys
+import pwd
 
 #!/usr/bin/env python
 """A simple shell application."""
@@ -121,9 +123,12 @@ class shell(cmd2.Cmd):
         fileHandler.close()
     #log error
     def logRegistroError(self,ch):
+        print(ch)
         direccion='/var/log/shell/sistema_error.log'
+        direccion = mutilities.getAbs(direccion)
         file = open(direccion, 'a')
-        
+        if (os.path.exists(direccion)==False):
+            os.mkdir(direccion,int('755',8))
         logger = logging.getLogger('RegistroError')
         logger.setLevel(logging.ERROR) #ERROR un problema más grave, el software no ha sido capaz de realizar alguna función.
        
@@ -388,19 +393,20 @@ class shell(cmd2.Cmd):
         saltstr = mutilities.rmquotes(salt)
         p_hashed = bcrypt.hashpw(base64.b64encode(hashlib.sha512(password).digest()),salt)
         passString= mutilities.rmquotes(p_hashed)
-        passwordFormat=f'$6${saltstr}${passString}'
+        passwordFormat1=f'$6${saltstr}${passString}'
+        passwordFormat2=f'x'
         
         for i in range(len(passwdFile)):
-            currentusername =passwdFile[i][0] #username
+            currentusername = passwdFile[i][0] #username
             if args.usr[0] == currentusername:
-                passwdFile[i][1] = passwordFormat
+                passwdFile[i][1] = passwordFormat2
                 passwdtextline=passwdFile[i]
                 passwdtextline = str(passwdtextline)
                 break
         for i in range(len(shadowFile)):
             currentusername=shadowFile[i][0]
             if args.usr[0] == currentusername:
-                shadowFile[i][1] = passwordFormat
+                shadowFile[i][1] = passwordFormat1
                 shadowFile[i][2] = str(lastchanged)
                 shadowtextline=shadowFile[i]
                 shadowtextline=str(shadowtextline)
@@ -416,12 +422,11 @@ class shell(cmd2.Cmd):
     #checkip
     @with_argparser(userparser)
     def do_addusuario(self,args):
-        separator=','
+        separator='|'
         username = args.usr[0]
         paths = ["/etc/passwd","/etc/shadow","/etc/group"]
         files = []
         files = mutilities.parseFile(files,paths)
-        # print(files)
         for path in range(len(files[2])):
             timeNow = datetime.now()
             current_time = timeNow.strftime("%H:%M:%S")
@@ -430,14 +435,17 @@ class shell(cmd2.Cmd):
                 self.poutput(f"{username} already exists.Try again")
                 return 
         homeDIR=f'/home/{username}'
-        flagP=mutilities.checkpath(homeDIR) #check if path exists
+        homeDirAbs=mutilities.getAbs(homeDIR)
+        flagP=mutilities.checkpath(homeDirAbs) #check if path exists
         if flagP==True:
             self.poutput('Path already exists. Exiting...')
             return
+        os.mkdir(homeDirAbs)
+        groupID = mutilities.getGID()
+        userID = mutilities.getUID()
+        os.chown(homeDirAbs,userID,groupID) 
         shellPATH='/bin/bash'
         encrypted_pwd= 'x'
-        groupID = os.getpgrp()
-        userID = mutilities.getUID()
         fullname =input('Insert your Name and Surname: ')
         ipadresses = []
         exit=0
@@ -452,19 +460,18 @@ class shell(cmd2.Cmd):
         horario=mutilities.verifyTime()
         workphone=input("Teléfono del Trabajo:")
         homephone=input("Teléfono de casa: ")
-        horario=mutilities.joinList(horario,',')
-        GECOS = [fullname,workphone,homephone,horario,ipadresses]
+        GECOS = [f'{fullname}-{workphone}-{homephone}-{ipadresses}',horario[0],horario[1]]
         GECOS=mutilities.joinList(GECOS,',')
         for path in range(len(paths)):
             files[path] = open(paths[path],"a+") 
-        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDIR}:{shellPATH}\n")
+        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDirAbs}:{mutilities.getAbs(shellPATH)}\n")
         files[1].write(f"{username}:!:0:0:99999:7:::\n")
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
             files[path].close()
-        os.mkdir(homeDIR)
+        
         self.poutput(f'Path {homeDIR} created.')
-        self.poutput(f'User {username} created.\nSet password with passSet ''<username>''.\n ')
+        self.poutput(f'User {username} created.\nSet password with setPass ''<username>''.\n ')
         return 0
     
     # verficar horario laboral-falta
@@ -704,7 +711,39 @@ class shell(cmd2.Cmd):
     
 
 if __name__ == '__main__':
+        
+    
     c = shell()
-    #c.verificarHorario(datetime.now().time()) # para inicio sesion
-    sys.exit(c.cmdloop())
+    # username = getpass.getuser()
+    # hostname = socket.gethostname()
+    # currentIP= socket.gethostbyname(hostname)  
+    # currentPasswdLine=pwd.getpwuid(os.getuid())
+    # paths = ["/etc/passwd"]
+    # files = []
+    # files = mutilities.parseFile(files,paths)
+    # passwdFile = files[0]
+    # usernameline='hello'
+    # for i in range(len(passwdFile)):
+    #         currentusername = passwdFile[i][4] #username
+    #         if username == currentusername:
+    #             passwdtextline = passwdFile[i]
+    #             passwdtextline = str(passwdtextline)
+    #             break
+    # currentWorkingHours=passwdtextline.split(',')
+    # print(currentWorkingHours)
+    # startHours = datetime.strptime(currentWorkingHours[1], '%H%M')
+    # endHours = datetime.strptime(currentWorkingHours[2], '%H%M')
+    # gecosLen=len(currentWorkingHours)
+    # now=datetime.now('%H:%M')
+    # if gecosLen == 3:
+    #     if (now>=startHours and now<=gecosLen): 
+    #         c.logRegistroUsuario(f"User {hostname} is in range of working hours.")
+    #     else:
+    #         c.logRegistroHorario(f"User {getpass.getuser()} loggins outside working hours from IP:{currentIP}")
+    #         print("This incident will be reported.")#sino se reporta (mandar a un log)
+    # else:
+    #     c.logRegistroHorario(f"User {getpass.getuser()} loggins without working hours set from IP:{currentIP}")
+    # #c.verificarHorario(datetime.now().time()) # para inicio sesion
+    c.cmdloop()
+    sys.exit(0)
 

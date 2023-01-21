@@ -18,6 +18,7 @@ class colors:
     
 def checkpath(path):
     return os.path.exists(path)
+
 def readFile(filePATH,separator):
         f = open(filePATH ,'r')
         fileList = f.readlines()
@@ -28,32 +29,32 @@ def readFile(filePATH,separator):
         f.close()   
         return resultMatrix
 
+def getAbs(path):
+    path=(os.path.abspath(os.path.expanduser(path)))
+    return path
+
 def getUID():
     filePATH='/etc/passwd'
     separator=':'
     resultMatrix=readFile(filePATH,separator)
     UID_list = []
-    GID_list = []
     for i in range(len(resultMatrix)):
         UID_list.append(resultMatrix[i][2])
-        GID_list.append(resultMatrix[i][3])
+        LEN=i
     UID_list = list(map(int, UID_list))
-    GID_list = list(map(int, GID_list))
-    UID=max(UID_list)+1
+    UID=UID_list[LEN]+1
     return UID
 
 def getGID():
     filePATH='/etc/passwd'
     separator=':'
     resultMatrix=readFile(filePATH,separator)
-    UID_list = []
     GID_list = []
     for i in range(len(resultMatrix)):
-        UID_list.append(resultMatrix[i][2])
         GID_list.append(resultMatrix[i][3])
-    UID_list = list(map(int, UID_list))
+        LEN=i
     GID_list = list(map(int, GID_list))
-    GID=max(GID_list)+1
+    GID=GID_list[LEN]+1
     return GID
 
 def days_since():
@@ -81,8 +82,6 @@ def isValidTime(self,data):
         except ValueError:
             return False
 
-def getAbsPath(rePath):
-    rePath=(os.path.abspath(os.path.expanduser(rePath)))
 
 def rmquotes(byteline):
     byteline = str(byteline).replace('b','').replace("'",'')
