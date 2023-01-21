@@ -1,4 +1,5 @@
 import subprocess
+from datetime import datetime
 import cmd2
 import os 
 import shutil
@@ -21,6 +22,7 @@ import string
 import time
 from daemonClass import daemon
 import sys
+import pwd
 
 #!/usr/bin/env python
 """A simple shell application."""
@@ -48,7 +50,7 @@ class shell(cmd2.Cmd):
         return cmd2.Cmd.onecmd(self, s ,**kwargs)
     
     def logRegistroDiario(self,ch):
-        direccion='var/log/shell/comandosDiarios.log'
+        direccion='/var/log/shell/comandosDiarios.log'
         file = open(direccion, 'a')
         logger = logging.getLogger('RegistroDiario')
         logger.setLevel(logging.DEBUG) #DEBUG Reportar eventos que ocurren durante el funcionamiento normal de un programa
@@ -120,8 +122,9 @@ class shell(cmd2.Cmd):
         logger.removeHandler(fileHandler)
         fileHandler.close()
     #log error
+    
     def logRegistroError(self,ch):
-        direccion='var/log/shell/sistema_error.log'
+        direccion='/var/log/shell/sistema_error.log'
         file = open(direccion, 'a')
         
         logger = logging.getLogger('RegistroError')
@@ -175,6 +178,8 @@ class shell(cmd2.Cmd):
         except:
             self.poutput(self.colors.FAIL+"Error occurred while copying file/s.")
             self.logRegistroError(' '.join(guardarParam))
+        return
+
     
     ###4.2. Mover - mover
     ###4.2.1. El input debe tener el siguiente formato: Archivo(s)/Directorio(s) DirectorioDestino.
@@ -188,23 +193,24 @@ class shell(cmd2.Cmd):
         dst=str(os.path.abspath(os.path.expanduser(args.dst[0])))
         name = "move"
         guardarParam = (name,src,dst)
-        self.guardar(guardarParam)
-        if os.path.isfile(src)==True: #verificar
+        if (os.path.exists(src)==False):
+            self.poutput("Destination doesn't exist.")
+            self.logRegistroError(' '.join(guardarParam))
+            return 1
+        if os.path.isfile(src): #verificar
             shutil.move(src, dst)
             return 0
-        file_names = os.listdir(src) #listar
         try:   
-            for file_name in file_names:
-                shutil.move(file_names[file_name], dst)
+            if os.path.isdir(src): #verificar
+                shutil.move(src, dst)
             self.popout("File/s moved successfully.")
-           # self.logRegistroDiario(' '.join(guardarParam))
-            return 0
         except shutil.SameFileError:
             self.poutput("Source and destination represents the same file.")
             self.logRegistroError(' '.join(guardarParam))
         except PermissionError:
             self.poutput("Permission denied.")
             self.logRegistroError(' '.join(guardarParam))
+        return
     
     ###4.3. Renombrar - renombrar
     def do_rename(self,FILENAME): #these are the parameters needed
@@ -223,6 +229,7 @@ class shell(cmd2.Cmd):
         except:
             print("renaming Error")
             self.logRegistroError(' '.join(guardarParam))
+        return
      
     ###4.4. Listar un directorio (no puede ser una llamada a sistema a la función ls) - listar
     ###4.4.1. Si no recibe argumentos, debe listar los archivos/directorios de la carpeta actual.
@@ -269,17 +276,20 @@ class shell(cmd2.Cmd):
     
     ###4.5. Crear un directorio - creardir
     ###4.5.1. Debe recibir 1 o más argumentos y crear un directorio por cada uno.
+    makeParser=Cmd2ArgumentParser()
+    makeParser.add_argument('dir',nargs=(1,),help=' Path of directory to be made.')
+
+    @with_argparser(makeParser)
     def do_makedir(self,dirnames):
         name = "makedir"
         guardarParam=(name, dirnames)
         cwd=os.getcwd() # obtenemos directorio actual
-        dirlen=len(dirnames.arg_list) 
+        dirlen=len(dirnames.dir) 
         try:
             for i in range(dirlen):
-                dirname=f"{dirnames.arg_list[i]}" #con un for vamos creando uno o mas directorios
+                dirname=f"{dirnames.dir[i]}" #con un for vamos creando uno o mas directorios
                 path=os.path.join(cwd,dirname) # Une uno o mas directorios 
                 os.mkdir(path)
-                #guardarParam.append(dirnames.arg_list[i])
         except:
             print(self.colors.FAIL+"error makedir")
             self.logRegistroError(' '.join(guardarParam))
@@ -388,19 +398,20 @@ class shell(cmd2.Cmd):
         saltstr = mutilities.rmquotes(salt)
         p_hashed = bcrypt.hashpw(base64.b64encode(hashlib.sha512(password).digest()),salt)
         passString= mutilities.rmquotes(p_hashed)
-        passwordFormat=f'$6${saltstr}${passString}'
+        passwordFormat1=f'$6${saltstr}${passString}'
+        passwordFormat2=f'x'
         
         for i in range(len(passwdFile)):
-            currentusername =passwdFile[i][0] #username
+            currentusername = passwdFile[i][0] #username
             if args.usr[0] == currentusername:
-                passwdFile[i][1] = passwordFormat
+                passwdFile[i][1] = passwordFormat2
                 passwdtextline=passwdFile[i]
                 passwdtextline = str(passwdtextline)
                 break
         for i in range(len(shadowFile)):
             currentusername=shadowFile[i][0]
             if args.usr[0] == currentusername:
-                shadowFile[i][1] = passwordFormat
+                shadowFile[i][1] = passwordFormat1
                 shadowFile[i][2] = str(lastchanged)
                 shadowtextline=shadowFile[i]
                 shadowtextline=str(shadowtextline)
@@ -416,12 +427,11 @@ class shell(cmd2.Cmd):
     #checkip
     @with_argparser(userparser)
     def do_addusuario(self,args):
-        separator=','
+        separator='|'
         username = args.usr[0]
         paths = ["/etc/passwd","/etc/shadow","/etc/group"]
         files = []
         files = mutilities.parseFile(files,paths)
-        # print(files)
         for path in range(len(files[2])):
             timeNow = datetime.now()
             current_time = timeNow.strftime("%H:%M:%S")
@@ -430,14 +440,17 @@ class shell(cmd2.Cmd):
                 self.poutput(f"{username} already exists.Try again")
                 return 
         homeDIR=f'/home/{username}'
-        flagP=mutilities.checkpath(homeDIR) #check if path exists
+        homeDirAbs=mutilities.getAbs(homeDIR)
+        flagP=mutilities.checkpath(homeDirAbs) #check if path exists
         if flagP==True:
             self.poutput('Path already exists. Exiting...')
             return
+        self.do_makedir(homeDirAbs)
+        groupID = mutilities.getGID()
+        userID = mutilities.getUID()
+        os.chown(homeDirAbs,userID,groupID) 
         shellPATH='/bin/bash'
         encrypted_pwd= 'x'
-        groupID = os.getpgrp()
-        userID = mutilities.getUID()
         fullname =input('Insert your Name and Surname: ')
         ipadresses = []
         exit=0
@@ -452,19 +465,18 @@ class shell(cmd2.Cmd):
         horario=mutilities.verifyTime()
         workphone=input("Teléfono del Trabajo:")
         homephone=input("Teléfono de casa: ")
-        horario=mutilities.joinList(horario,',')
-        GECOS = [fullname,workphone,homephone,horario,ipadresses]
+        GECOS = [f'{fullname} {workphone} {homephone} {ipadresses}',horario[0],horario[1]]
         GECOS=mutilities.joinList(GECOS,',')
         for path in range(len(paths)):
             files[path] = open(paths[path],"a+") 
-        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}:{homeDIR}:{shellPATH}\n")
+        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}"+':'+homeDirAbs+':'+mutilities.getAbs(shellPATH)+'\n')
         files[1].write(f"{username}:!:0:0:99999:7:::\n")
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
             files[path].close()
-        os.mkdir(homeDIR)
+        
         self.poutput(f'Path {homeDIR} created.')
-        self.poutput(f'User {username} created.\nSet password with passSet ''<username>''.\n ')
+        self.poutput(f'User {username} created.\nSet password with setPass ''<username>''.\n ')
         return 0
     
     # verficar horario laboral-falta
@@ -475,12 +487,12 @@ class shell(cmd2.Cmd):
         actualMin=hora_actual.minute
         i=0
         username = getpass.getuser()
-        for line in open('/etc/passwd', 'r'):
-            i=i+1
-            if re.search(username, line):
-                print("en la linea:",i,  line)
-             
-        cadena=line.split(' ', 5)
+        if os.path.exists('var/log/registrosUsuarios.log')==True:
+            for line in open('var/log/etc/passwd', 'r'):
+                i=i+1
+                if re.search(username, line):
+                    print("en la linea:",i,  line)
+            cadena=line.split(' ', 5)
 
         entrada=cadena[2].split(':', 2)
         salida=cadena[3].split(':', 2)
@@ -700,7 +712,37 @@ class shell(cmd2.Cmd):
     
 
 if __name__ == '__main__':
+        
+    
     c = shell()
-    #c.verificarHorario(datetime.now().time()) # para inicio sesion
+    # username = getpass.getuser()
+    # hostname = socket.gethostname()
+    # currentIP= socket.gethostbyname(hostname)  
+    # paths = ["/etc/passwd"]
+    # files = []
+    # files = mutilities.parseFile(files,paths)
+    # print = (files)
+    # passwdFile = files[0]
+    # usernameline='hello'
+    # for i in range(len(passwdFile)):
+    #         currentusername = passwdFile[i][4] #username
+    #         if username == currentusername:
+    #             passwdtextline = passwdFile[i]
+    #             passwdtextline = str(passwdtextline)
+    #             break
+    # currentWorkingHours=passwdtextline.split(',')
+    # print(currentWorkingHours)
+    # startHours = datetime.strptime(currentWorkingHours[1], '%H:%M')
+    # endHours = datetime.strptime(currentWorkingHours[2], '%H:%M')
+    # gecosLen=len(currentWorkingHours)
+    # now=datetime.now('%H:%M')
+    # if gecosLen == 3:
+    #     if (now>=startHours and now<=gecosLen): 
+    #         c.logRegistroUsuario(f"User {hostname} is in range of working hours.")
+    #     else:
+    #         c.logRegistroHorario(f"User {getpass.getuser()} loggins outside working hours from IP:{currentIP}")
+    #         print("This incident will be reported.")#sino se reporta (mandar a un log)
+    # else:
+    #     c.logRegistroHorario(f"User {getpass.getuser()} loggins without working hours set from IP:{currentIP}")
     sys.exit(c.cmdloop())
 

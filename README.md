@@ -246,6 +246,27 @@ En caso de algun error, se lanza una excepcion.
 
 * Guarda los errores que se obtuvieron.
 
+
+#### Implementación del LFS y SHELL
+
+```
+    Ingresamos en /sources y clonamos el repositorio.
+    Luego copiamos o movemos el repositorio clonado a una carpeta creada llamada SO1 ubicada en /.
+    chmod -R 777 /SO1 (todos los permisos)
+    luego dentro de / realizamos vi shell.sh y escribimos:
+     
+      #!/bin/bash
+      cd /SO1/SO1_CARDOZO_MONZON
+      python3 main.py
+
+    Despues ingresamos a /etc/profile y escribimos:
+      bash /shell.sh
+    
+    Y por ultimo, en / realizar mkdir var/log/shell (crear carpeta shell para los logs) 
+    chmod -R 777 /var/log/shell (todos los permisos) y listo.
+  
+```
+
 ## Autores
 
 - [Martin Monzon](https://www.github.com/c4russian)
