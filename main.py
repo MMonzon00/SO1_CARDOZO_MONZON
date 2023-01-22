@@ -23,6 +23,7 @@ import time
 from daemonClass import daemon
 import sys
 import pwd
+import crypt
 
 #!/usr/bin/env python
 """A simple shell application."""
@@ -41,6 +42,9 @@ class shell(cmd2.Cmd):
  
     def onecmd( self, s, **kwargs): #  **kwargs simplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
         #print(s.raw)
+        a=s.command
+        if a=='su':
+            self.controlHorario(s)
         comando=s.raw # obtenemos cada comando realizado
         ubi='/historialFINAL.txt'
         f = open (ubi,'a')
@@ -389,15 +393,17 @@ class shell(cmd2.Cmd):
         password = getpass.getpass('New password:')
         passwordcheck = getpass.getpass('Retype new password:')
         if password == passwordcheck:
-            password = password.encode("utf-8")
+            self.poutput('nice.')
         else:
             self.poutput('Sorry, passwords do not match.')
             self.poutput('passSet: password unchanged.')
             return
         salt = bcrypt.gensalt(prefix=b"2a")
+        salt = mutilities.rmDolar(salt)
         saltstr = mutilities.rmquotes(salt)
-        p_hashed = bcrypt.hashpw(base64.b64encode(hashlib.sha512(password).digest()),salt)
+        p_hashed = crypt.crypt(str(password),f"$6${saltstr}")
         passString= mutilities.rmquotes(p_hashed)
+        passString=passString.replace('$','')
         passwordFormat1=f'$6${saltstr}${passString}'
         passwordFormat2=f'x'
         
@@ -465,43 +471,47 @@ class shell(cmd2.Cmd):
         horario=mutilities.verifyTime()
         workphone=input("Teléfono del Trabajo:")
         homephone=input("Teléfono de casa: ")
-        GECOS = [f'{fullname} {workphone} {homephone} {ipadresses}',horario[0],horario[1]]
+        GECOS = [f'{fullname} {workphone} {homephone} {ipadresses}', horario[0], horario[1]]
         GECOS=mutilities.joinList(GECOS,',')
-        logusuario = GECOS
+        self.logRegistroUsuario(''.join(GECOS))# registro usuario IMPORTANTE!!!!!!
         for path in range(len(paths)):
             files[path] = open(paths[path],"a+") 
-        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}"+':'+homeDirAbs+':'+mutilities.getAbs(shellPATH)+'\n')
+        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS.replace(':','')}"+':'+homeDirAbs+':'+mutilities.getAbs(shellPATH)+'\n')
         files[1].write(f"{username}:!:0:0:99999:7:::\n")
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
             files[path].close()
+        
         self.poutput(f'Path {homeDIR} created.')
         self.poutput(f'User {username} created.\nSet password with setPass ''<username>''.\n ')
-        self.logRegistroUsuario(logusuario)
         return 0
     
     # verficar horario laboral-falta
-    def verificarHorario(self,b):
-        hora_actual = b
+    def controlHorario(self,b):
+        hora_actual = datetime.now().time()
         print(hora_actual)
         actualHora=hora_actual.hour
         actualMin=hora_actual.minute
         i=0
-        username = getpass.getuser()
-        if os.path.exists('var/log/registrosUsuarios.log')==True:
-            for line in open('var/log/etc/passwd', 'r'):
-                i=i+1
-                if re.search(username, line):
-                    print("en la linea:",i,  line)
-            cadena=line.split(' ', 5)
-
-        entrada=cadena[2].split(':', 2)
-        salida=cadena[3].split(':', 2)
-        if (int(entrada[0])>actualHora or int(entrada[1])>actualMin) or (int(salida[0])<actualHora or int(salida[1])<actualMin): #ver 
-            print("FUERA DE HORARIO LABORAL")
+     #   username = getpass.getuser()
+       # if os.path.exists('var/log/registrosUsuarios.log')==True:
+        for line in open('/var/log/shell/registrosUsuarios.log', 'r'):
+            i=i+1
+            if re.search(str(b), line):
+                print("en la linea:",i,  line)
+            cadena=line.split(',',4)
+     #      print(cadena)
+        entrada=cadena[2].split(' ', 4)
+        salida=cadena[3].split(' ', 4)
+        print(entrada,"h",salida)
+        if int(entrada[0].replace(':',''))>actualHora or int(salida[0].replace(':',''))<actualHora: #ver 
+            print("Outside working hours.")
+            print("This incident will be reported.")
             ip=socket.gethostbyname(socket.gethostname())#obtener ip
-            guardarParam=(username, cadena[2],cadena[3],ip)
+            guardarParam=(b, entrada[0],salida[0],ip)
             self.logRegistroHorario(''.join(guardarParam))
+            return 
+        return
             
     ### 4.11. Imprimir el directorio en el que se encuentra la shell actualmente - pwd
     def do_printdir(self,c):
@@ -558,14 +568,14 @@ class shell(cmd2.Cmd):
             for line in open(gpath[1], 'r'):
                 i=i+1
                 if re.search(gpath[0], line):
-                    print("en la linea:",i,  line) #buscamos el string en todo el archivo
+                    print("On the line:",i,  line) #buscamos el string en todo el archivo
                     band=True
            
             if band==False: #si la bandera queda false, no se encontro string
-                print(self.colors.FAIL+"Error: El string no existe")
+                print(self.colors.FAIL+"Error: the string doesn't exist.")
                 self.logRegistroError(' '.join(guardarParam))
         else:
-            print(self.colors.FAIL+"Error: El archivo no existe") #archivo no existe
+            print(self.colors.FAIL+"Error: the file doesn't exist.") #archivo no existe
             self.logRegistroError(' '.join(guardarParam))
         
     ###4.14. Imprimir un historial de comandos - history
@@ -644,17 +654,17 @@ class shell(cmd2.Cmd):
         ftp_server = ftplib.FTP(hostname, username, passw) #datos del sitio
         ftp_server.encoding = "utf-8"
         
-        typ = input("Ingrese s para subir o b para bajar: ") #verificacion si desea subir o bajar archivos
+        typ = input("Type s to upload or b to download: ") #verificacion si desea subir o bajar archivos
         while typ!='s' and typ!='b':
-            typ = input("Ingrese s para subir o b para bajar: ")
+            typ = input("Type s to upload or b to download: ")
 
         try:
             if typ=='s':
-                print("subir archivos")
+                print("Upload files")
                 
-                x=input("desea subir el archivo existente o crear? ingrese existente o nuevo: ") #verificacion si desea subir archivo existente o nuevo
+                x=input("Do you wish to upload the existing file or make one? type existente or nuevo: ") #verificacion si desea subir archivo existente o nuevo
                 while(x!='existente' and x!='nuevo'):
-                    x=input("desea subir archivo existente o crear? ingrese existente o nuevo: ")
+                    x=input("Do you wish to upload the existing file or make one? type existente or nuevo: ")
                 
                 if x=='existente':
                     while (os.path.exists(filename)==False): # verificacion si existe archivo
@@ -665,8 +675,8 @@ class shell(cmd2.Cmd):
                     ftp_server.quit()
                 
                 elif x=='nuevo':
-                    filen=input("ingrese nombre del archivo nuevo: ") #crear archivo y editar par subir
-                    contenido=input("ingrese texto para el archivo nuevo: ")
+                    filen=input("Type the name of the new file: ") #crear archivo y editar par subir
+                    contenido=input("Type text for the new file: ")
                     archivo=open(filen, "a")
                     archivo.write(contenido)
                     archivo.close()
@@ -677,7 +687,7 @@ class shell(cmd2.Cmd):
                     ftp_server.quit()
             
             elif typ =='b':
-                print("bajar archivo")
+                print("Download file")
                 with open(filename, "wb") as file: 
                     ftp_server.retrbinary(f"RETR {filename}", file.write) #bajar archivo , obtiene nombre del archivo y archivo de ftp
                 
@@ -686,11 +696,11 @@ class shell(cmd2.Cmd):
                 print('File Content:', file.read()) #imprime el contenido
                 ftp_server.quit()
             
-            print(self.colors.OKGREEN+"Transferencia OK")
+            print(self.colors.OKGREEN+"Transfer OK")
             self.logShellTransferencia(' '.join(guardarParam))
 
         except: 
-            print(self.colors.FAIL+"Error al hacer TransferenciaFTP") 
+            print(self.colors.FAIL+"Error TransferenciaFTP") 
             self.logRegistroError(' '.join(guardarParam))
 
     def do_clean(self,args):
@@ -703,7 +713,7 @@ class shell(cmd2.Cmd):
         print(check)
         if check in ["y","Y"]: 
             print("EXIT!")
-           # self.verificarHorario(datetime.now().time()) # enviamos horario actual para verificar horario
+            self.controlHorario(getpass.getuser()) # enviamos horario actual para verificar horario
             return True
         
     

@@ -20,6 +20,7 @@ dirdst=destino
 
 
 #### Copy (dirsrc,dirdst)
+
 #### ejemplo: copy archivo carpeta
 
 Copia el archivo de la direccion especificada a la direccion de destino, si no se ingresa una direccion de destino la copia se hace en la misma direccion.
