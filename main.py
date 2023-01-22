@@ -592,9 +592,6 @@ class shell(cmd2.Cmd):
         def run(self):
                 while True:
                         time.sleep(1)
-        def quit(self):
-                while True:
-                    time.sleep(1)
                     
     daemonParser = Cmd2ArgumentParser()
     daemonParser.add_argument('daemon',nargs=1,type=str,help='Program to daemonize.')
@@ -604,21 +601,24 @@ class shell(cmd2.Cmd):
     def do_daemonControl(self,args):
         daemonPath=(os.path.abspath(os.path.expanduser(args.daemon[0])))
         daemon = self.Cdaemon(daemonPath)
-        sysargsv = [args.daemon[0],args.sig[0]]
-        if len(sysargsv) == 2:
-                if 'start' == sysargsv[1]:
+        sysargv=[args.daemon[0],args.sig[0]]
+        print(sysargv[0])
+        print(sysargv[1])
+        if len(sysargv) == 2:
+                if 'start' == sysargv[1]:
                         daemon.start()
-                elif 'stop' == sysargsv[1]:
+                elif 'stop' == sysargv[1]:
                         daemon.stop()
-                elif 'restart' == sysargsv[1]:
+                elif 'restart' == sysargv[1]:
                         daemon.restart()
                 else:
                         print('Unknown command')
-                        return 1
-                sys.exit(0)
+                        sys.exit(2)
+                return
         else:
-                print(f"usage: {sysargsv[0]} start|stop|restart")
-                return 1
+                print(f'usage: {sysargv[0]} start|stop|restart')
+                self.logRegistroError(' '.join(sysargv))
+                return 
         
 
     ###4.16. Proveer la capacidad de poder ejecutar comandos del sistema, que no 
