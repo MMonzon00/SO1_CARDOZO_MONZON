@@ -23,6 +23,7 @@ import time
 from daemonClass import daemon
 import sys
 import pwd
+import crypt
 
 #!/usr/bin/env python
 """A simple shell application."""
@@ -392,15 +393,17 @@ class shell(cmd2.Cmd):
         password = getpass.getpass('New password:')
         passwordcheck = getpass.getpass('Retype new password:')
         if password == passwordcheck:
-            password = password.encode("utf-8")
+            self.poutput('nice.')
         else:
             self.poutput('Sorry, passwords do not match.')
             self.poutput('passSet: password unchanged.')
             return
         salt = bcrypt.gensalt(prefix=b"2a")
+        salt = mutilities.rmDolar(salt)
         saltstr = mutilities.rmquotes(salt)
-        p_hashed = bcrypt.hashpw(base64.b64encode(hashlib.sha512(password).digest()),salt)
+        p_hashed = crypt.crypt(str(password),f"$6${saltstr}")
         passString= mutilities.rmquotes(p_hashed)
+        passString=passString.replace('$','')
         passwordFormat1=f'$6${saltstr}${passString}'
         passwordFormat2=f'x'
         
@@ -470,10 +473,10 @@ class shell(cmd2.Cmd):
         homephone=input("Teléfono de casa: ")
         GECOS = [f'{fullname} {workphone} {homephone} {ipadresses}', horario[0], horario[1]]
         GECOS=mutilities.joinList(GECOS,',')
-        self.logRegistroUsuario(''.join(GECOS))# registro usuario
+        self.logRegistroUsuario(''.join(GECOS))# registro usuario IMPORTANTE!!!!!!
         for path in range(len(paths)):
             files[path] = open(paths[path],"a+") 
-        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS}"+':'+homeDirAbs+':'+mutilities.getAbs(shellPATH)+'\n')
+        files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS.replace(':','')}"+':'+homeDirAbs+':'+mutilities.getAbs(shellPATH)+'\n')
         files[1].write(f"{username}:!:0:0:99999:7:::\n")
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
@@ -503,7 +506,7 @@ class shell(cmd2.Cmd):
         print(entrada,"h",salida)
         print(entrada[0])
         print(salida[0])
-        if int(entrada[0])>actualHora or int(salida[0])<actualHora: #ver 
+        if int(entrada[0].replace(':',''))>actualHora or int(salida[0].replace(':',''))<actualHora: #ver 
             print("FUERA DE HORARIO LABORAL")
             ip=socket.gethostbyname(socket.gethostname())#obtener ip
             guardarParam=(b, entrada[0],salida[0],ip)

@@ -63,6 +63,11 @@ def days_since():
     days_since=dateNow - dateThen
     return days_since.days
 
+def rmDolar(byteline):
+    dolar= bytes('$','utf8')
+    blank= bytes('','utf8')
+    byteline = byteline.replace(dolar,blank)
+    return byteline
 
 def checkip(ip):
     ipFormat=0
