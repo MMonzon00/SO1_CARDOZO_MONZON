@@ -1,0 +1,14 @@
+2023-01-22 01:39:23,009 - RegistroDiario - DEBUG - s
+2023-01-22 01:39:23,476 - RegistroDiario - DEBUG - s
+2023-01-22 01:39:23,768 - RegistroDiario - DEBUG - s
+2023-01-22 01:39:24,016 - RegistroDiario - DEBUG - s
+2023-01-22 01:39:24,248 - RegistroDiario - DEBUG - s
+2023-01-22 01:39:59,569 - RegistroDiario - DEBUG - sudo cat /etc/passwd
+2023-01-22 01:40:15,682 - RegistroDiario - DEBUG - su gato
+2023-01-22 01:40:22,377 - RegistroDiario - DEBUG - su gato
+2023-01-22 01:40:27,465 - RegistroDiario - DEBUG - su gato
+2023-01-22 01:40:38,416 - RegistroDiario - DEBUG - addusuario
+2023-01-22 01:40:47,368 - RegistroDiario - DEBUG - userdel gato
+2023-01-22 01:40:53,627 - RegistroDiario - DEBUG - sudo -i
+2023-01-22 03:08:19,773 - RegistroDiario - DEBUG - sudo -i
+2023-01-22 03:08:41,230 - RegistroDiario - DEBUG - eof

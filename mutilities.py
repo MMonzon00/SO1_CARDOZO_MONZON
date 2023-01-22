@@ -2,6 +2,7 @@ from datetime import date
 import datetime
 import os
 import time
+import random
 
 class colors:
     OKBLUE = '\033[94m'
@@ -87,24 +88,30 @@ def rmquotes(byteline):
     byteline = str(byteline).replace('b','').replace("'",'')
     return byteline
 
+def rmDolar(byteline):
+    dolar= bytes('$','utf8')
+    blank= bytes('','utf8')
+    byteline = byteline.replace(dolar,blank)
+    return byteline
+
 def verifyTime():
     try:
-        hentrada = datetime.datetime.strptime(input(r'Specify starting working hours in HHMM format: '), "%H%M")
-        hsalida = datetime.datetime.strptime(input(r'Specify end working hours in HHMM format: '), "%H%M")
+        hentrada = datetime.datetime.strptime(input(r'Specify starting working hours in HH format: '), "%H")
+        hsalida = datetime.datetime.strptime(input(r'Specify end working hours in HH format: '), "%H")
         flag=False
     except:
-        print("Please enter correct time in HHMM format")
+        print("Please enter correct time in HH format")
         flag=True
     if flag==True:
         while flag==True:
             try:
-                hentrada = datetime.datetime.strptime(input(r'Please Specify starting working hours in HHMM format: '), "%H%M")
-                hsalida = datetime.datetime.strptime(input(r'Please Specify end working hours in HHMM format: '), "%H%M")
+                hentrada = datetime.datetime.strptime(input(r'Please Specify starting working hours in HHMM format: '), "%H")
+                hsalida = datetime.datetime.strptime(input(r'Please Specify end working hours in HHMM format: '), "%H")
                 flag=False
             except:
-                print("Please enter correct time in HHMM format")
-    hentradastr = hentrada.strftime("%H:%M")
-    hsalidastr = hsalida.strftime("%H:%M")
+                print("Please enter correct time in HH format")
+    hentradastr = hentrada.strftime("%H")
+    hsalidastr = hsalida.strftime("%H")
     horario=[hentradastr,hsalidastr]
     return horario
 
@@ -138,4 +145,5 @@ def joinList(list,separator):
 
 
 if __name__== '__main__':
-    print(days_since())
+    print(genSalt())
+    print(type(genSalt()))

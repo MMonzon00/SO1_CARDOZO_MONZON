@@ -23,6 +23,7 @@ import time
 from daemonClass import daemon
 import sys
 import pwd
+import crypt
 
 #!/usr/bin/env python
 """A simple shell application."""
@@ -42,7 +43,7 @@ class shell(cmd2.Cmd):
     def onecmd( self, s, **kwargs): #  **kwargs simplemente captura todos los argumentos de palabras clave y los pasa al método de la clase base. 
         #print(s.raw)
         comando=s.raw # obtenemos cada comando realizado
-        ubi='/historialFINAL.txt'
+        ubi='historialFINAL.txt'
         f = open (ubi,'a')
         f.write(f'{comando}\n') #guardamos para historial
         f.close()
@@ -50,7 +51,7 @@ class shell(cmd2.Cmd):
         return cmd2.Cmd.onecmd(self, s ,**kwargs)
     
     def logRegistroDiario(self,ch):
-        direccion='/var/log/shell/comandosDiarios.log'
+        direccion='var/log/shell/comandosDiarios.log'
         file = open(direccion, 'a')
         logger = logging.getLogger('RegistroDiario')
         logger.setLevel(logging.DEBUG) #DEBUG Reportar eventos que ocurren durante el funcionamiento normal de un programa
@@ -67,7 +68,7 @@ class shell(cmd2.Cmd):
         fileHandler.close()
 
     def logRegistroUsuario(self,ch):
-        direccion='/var/log/shell/registrosUsuarios.log'
+        direccion='var/log/shell/registrosUsuarios.log'
         file = open(direccion, 'a')
 
         logger = logging.getLogger('RegistroUsuario')
@@ -86,7 +87,7 @@ class shell(cmd2.Cmd):
 
     # def logRegistroHorario(self,ch): # log para guardar usuarios fuera de horario
     def logRegistroHorario(self,ch):
-        direccion='/var/log/shell/usuario_horarios_log.log'
+        direccion='var/log/shell/usuario_horarios_log.log'
         file = open(direccion, 'a')
 
         logger = logging.getLogger('RegistroFueraHorario')
@@ -105,7 +106,7 @@ class shell(cmd2.Cmd):
 
     # log FTP
     def logShellTransferencia(self,ch):
-        direccion='/var/log/shell/Shell_transferencias.log'
+        direccion='var/log/shell/Shell_transferencias.log'
         file = open(direccion, 'a')
         
         logger = logging.getLogger('ShellTransferencia')
@@ -124,7 +125,7 @@ class shell(cmd2.Cmd):
     #log error
     
     def logRegistroError(self,ch):
-        direccion='/var/log/shell/sistema_error.log'
+        direccion='var/log/shell/sistema_error.log'
         file = open(direccion, 'a')
         
         logger = logging.getLogger('RegistroError')
@@ -389,15 +390,19 @@ class shell(cmd2.Cmd):
         password = getpass.getpass('New password:')
         passwordcheck = getpass.getpass('Retype new password:')
         if password == passwordcheck:
-            password = password.encode("utf-8")
+            self.poutput('nice.')
         else:
             self.poutput('Sorry, passwords do not match.')
             self.poutput('passSet: password unchanged.')
             return
         salt = bcrypt.gensalt(prefix=b"2a")
+        salt = mutilities.rmDolar(salt)
         saltstr = mutilities.rmquotes(salt)
-        p_hashed = bcrypt.hashpw(base64.b64encode(hashlib.sha512(password).digest()),salt)
+        print(saltstr)
+        p_hashed = crypt.crypt(str(password),f"$6${saltstr}")
         passString= mutilities.rmquotes(p_hashed)
+        passString=passString.replace('$','')
+        print(passString)
         passwordFormat1=f'$6${saltstr}${passString}'
         passwordFormat2=f'x'
         
@@ -475,6 +480,7 @@ class shell(cmd2.Cmd):
         files[2].write(f"{username}:{encrypted_pwd}:{groupID}:\n")
         for path in range(len(paths)):
             files[path].close()
+        # shutil.copy('/etc/skel/.bash*',homeDirAbs)
         self.poutput(f'Path {homeDIR} created.')
         self.poutput(f'User {username} created.\nSet password with setPass ''<username>''.\n ')
         self.logRegistroUsuario(logusuario)
@@ -571,7 +577,7 @@ class shell(cmd2.Cmd):
     ###4.14. Imprimir un historial de comandos - history
     def do_historial (self,arg):
         name = 'historial'
-        f = open ('/historialFINAL.txt','r') #muestra en pantalla el historial
+        f = open ('historialFINAL.txt','r') #muestra en pantalla el historial
         for linea in f:
            print (linea)
 
@@ -694,16 +700,47 @@ class shell(cmd2.Cmd):
             self.logRegistroError(' '.join(guardarParam))
 
     def do_clean(self,args):
-        name = 'clean'
         _ = system('clear')  #limpiar pantalla
+
+    def controlHorario(self):
+        username = getpass.getuser()
+        hostname = socket.gethostname()
+        currentIP= socket.gethostbyname(hostname)  
+        paths = ["/etc/passwd"]
+        files = []
+        files = mutilities.parseFile(files,paths)
+        print = (files)
+        passwdFile = files[0]
+        for i in range(len(passwdFile)):
+                currentusername = passwdFile[i][0] #username
+                if username == currentusername:
+                    passwdtextline = passwdFile[i]
+                    passwdtextline = str(passwdtextline)
+                    break
+        textlineList=passwdtextline.split(',')
+        try:
+            startHours = datetime.strptime(textlineList[1], '%H%M')
+            endHours = datetime.strptime(textlineList[2], '%H%M')
+        except ValueError:
+            self.poutput(self.colors.FAIL+'The user has no working hours set.')
+            # self.logRegistroError(' '.join(f"User{username}, has no working hours set."))
+            return 1
+        now=datetime.now('%H%M')
+        if (now>startHours and now<endHours): 
+            self.poutput(f"User {username} is in range of working hours.")
+        else:
+            self.logRegistroHorario(f"User {getpass.getuser()} loggins outside working hours from IP:{currentIP}")
+            self.poutput(self.colors.WARNING+"This incident will be reported.")
         
+            
+
     
     def do_exit(self,e): 
         check=input('Are you sure you want to exit?. y/n: ') #cerrar sesion y verificacion de horario
         print(check)
         if check in ["y","Y"]: 
             print("EXIT!")
-           # self.verificarHorario(datetime.now().time()) # enviamos horario actual para verificar horario
+            self.controlHorario() # enviamos horario actual para verificar horario
             return True
         
     
@@ -713,37 +750,8 @@ class shell(cmd2.Cmd):
     
 
 if __name__ == '__main__':
-        
-    
     c = shell()
-    # username = getpass.getuser()
-    # hostname = socket.gethostname()
-    # currentIP= socket.gethostbyname(hostname)  
-    # paths = ["/etc/passwd"]
-    # files = []
-    # files = mutilities.parseFile(files,paths)
-    # print = (files)
-    # passwdFile = files[0]
-    # usernameline='hello'
-    # for i in range(len(passwdFile)):
-    #         currentusername = passwdFile[i][4] #username
-    #         if username == currentusername:
-    #             passwdtextline = passwdFile[i]
-    #             passwdtextline = str(passwdtextline)
-    #             break
-    # currentWorkingHours=passwdtextline.split(',')
-    # print(currentWorkingHours)
-    # startHours = datetime.strptime(currentWorkingHours[1], '%H:%M')
-    # endHours = datetime.strptime(currentWorkingHours[2], '%H:%M')
-    # gecosLen=len(currentWorkingHours)
-    # now=datetime.now('%H:%M')
-    # if gecosLen == 3:
-    #     if (now>=startHours and now<=gecosLen): 
-    #         c.logRegistroUsuario(f"User {hostname} is in range of working hours.")
-    #     else:
-    #         c.logRegistroHorario(f"User {getpass.getuser()} loggins outside working hours from IP:{currentIP}")
-    #         print("This incident will be reported.")#sino se reporta (mandar a un log)
-    # else:
-    #     c.logRegistroHorario(f"User {getpass.getuser()} loggins without working hours set from IP:{currentIP}")
+    c.controlHorario()
     sys.exit(c.cmdloop())
+
 
