@@ -466,7 +466,11 @@ class shell(cmd2.Cmd):
         homephone=input("Teléfono de casa: ")
         GECOS = [f'{fullname} {workphone} {homephone} {ipadresses}', horario[0], horario[1]]
         GECOS=mutilities.joinList(GECOS,',')
-        self.logRegistroUsuario(''.join(GECOS))# registro usuario IMPORTANTE!!!!!!
+        horario1=horario[0].split(':')
+        horario2=horario[1].split(':')
+        new=(username, horario1[0], horario2[0])
+        new=mutilities.joinList(new,',')
+        self.logRegistroUsuario(''.join(new))# registro usuario IMPORTANTE!!!!!!
         for path in range(len(paths)):
             files[path] = open(paths[path],"a+") 
         files[0].write(f"{username}:{encrypted_pwd}:{userID}:{groupID}:{GECOS.replace(':','')}"+':'+homeDirAbs+':'+mutilities.getAbs(shellPATH)+'\n')
@@ -492,16 +496,16 @@ class shell(cmd2.Cmd):
             i=i+1
             if re.search(str(b), line):
                 print("en la linea:",i,  line)
-                cadena=line.split(',',4)
+                cadena=line.split(',',3)
      #          print(cadena)
-                entrada=cadena[2].split(' ', 2)
-                salida=cadena[3].split(' ', 2)
+                entrada=cadena[2]
+                salida=cadena[3]
                 print(entrada,"h",salida)
-        if int(entrada[0].replace(':',''))>actualHora or int(salida[0].replace(':',''))<actualHora: #ver 
+        if int(entrada.replace(':',''))>actualHora or int(salida.replace(':',''))<actualHora: #ver 
             print("Outside working hours.")
             print("This incident will be reported.")
             ip=socket.gethostbyname(socket.gethostname())#obtener ip
-            guardarParam=(b, entrada[0],salida[0],ip)
+            guardarParam=(b, entrada,salida,ip)
             self.logRegistroHorario(''.join(guardarParam))
             return 
         return
