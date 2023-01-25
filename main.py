@@ -309,15 +309,8 @@ class shell(cmd2.Cmd):
                 self.poutput("Path is the same as current directory. \n")
                 cwd2=cwd1
             
-            if dirPATH!=cwd1 and dirPATH[0]=='/': # si se ingresa directorio dif y con /
-                i="/"
-                indice=dirPATH.index(i)
-                dirB=dirPATH[indice+1:len(dirPATH)]
-                print("dir",dirB)
-                os.chdir(dirB)
-                cwd2 = os.getcwd()
 
-            elif dirPATH!=cwd1: # si queremos salir, ejemplo: ir .. o ir directorio sin /
+            elif dirPATH!=cwd1: # si queremos salir, ejemplo: ir .. o ir directorio 
                 os.chdir(dirPATH)
                 cwd2 = os.getcwd()
 
@@ -499,11 +492,11 @@ class shell(cmd2.Cmd):
             i=i+1
             if re.search(str(b), line):
                 print("en la linea:",i,  line)
-            cadena=line.split(',',4)
-     #      print(cadena)
-        entrada=cadena[2].split(' ', 4)
-        salida=cadena[3].split(' ', 4)
-        print(entrada,"h",salida)
+                cadena=line.split(',',4)
+     #          print(cadena)
+                entrada=cadena[2].split(' ', 2)
+                salida=cadena[3].split(' ', 2)
+                print(entrada,"h",salida)
         if int(entrada[0].replace(':',''))>actualHora or int(salida[0].replace(':',''))<actualHora: #ver 
             print("Outside working hours.")
             print("This incident will be reported.")
@@ -522,7 +515,7 @@ class shell(cmd2.Cmd):
             self.poutput(cwd)#imprimir directorio actual
         except:
             print(self.colors.FAIL+"Error printdir",cwd)
-            self.logRegistroHorario(''.join(guardarParam))
+            self.logRegistroError(''.join(guardarParam))
     
     
     ###4.12. Terminar procesos con señales determinadas - kill
